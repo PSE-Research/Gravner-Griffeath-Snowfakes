@@ -108,10 +108,10 @@ unsigned long g_xBlack, g_xWhite;
 int g_exit_flag;
 
 // x11 windows in args
-char gui_ICON_NAME_STR[] = "sn";
-char gui_WINDOW_NAME_STR[] = "digital snowflake";
-char gui_TIME_STR[] = "time:";
-char gui_ACTIVE_STR[] = "active area:";
+const char gui_ICON_NAME_STR[] = "sn";
+const char gui_WINDOW_NAME_STR[] = "digital snowflake";
+const char gui_TIME_STR[] = "time:";
+const char gui_ACTIVE_STR[] = "active area:";
 
 // ---- color map
 Colormap g_cmap;
