@@ -357,6 +357,10 @@ void dynamics_pop()
     }
 } /* dynamics_pop() */
 
+/**
+ * 
+ * Note: 仅在从状态文件 (in file) 读取状态后调用.
+ */
 void dynamics_pop1()
 {
     int i, j;
