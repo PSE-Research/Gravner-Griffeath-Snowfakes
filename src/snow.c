@@ -1172,29 +1172,28 @@ void gui_draw_buttons()
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 240, 25, readstring, strlen(readstring));
 } /* gui_draw_buttons() */
 
+/**
+ * 实时绘制雪花到 GUI.
+ * Draw snowflakes to the GUI in real time.
+ */
 void gui_picture_big()
 {
     int i, j, k, pqn, kf;
-
     double y;
-
     char pqc[10];
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-
             if (apic[i][j] == 0)
             {
-
                 k = floor(63.0 * (adif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
             else
             {
-
                 y = alm[i][j] + adif[i][j];
 
                 k = floor((33.0 * y - alpha) / (beta - alpha));
@@ -1207,6 +1206,7 @@ void gui_picture_big()
         }
     }
 
+    /* g_pq to string: sprintf(pqc, "%d", g_pq); */
     if (g_pq == 0)
     {
         pqc[0] = '0';
@@ -1239,17 +1239,14 @@ void gui_picture_big()
 void gui_picture_rings()
 {
     int i, j, k, pqn, kf;
-
     char pqc[10];
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-
             if (apic[i][j] == 0)
             {
-
                 k = floor(63.0 * (adif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
@@ -1278,6 +1275,7 @@ void gui_picture_rings()
         }
     }
 
+    /* g_pq to string: sprintf(pqc, "%d", g_pq); */
     if (g_pq == 0)
     {
         pqc[0] = '0';
