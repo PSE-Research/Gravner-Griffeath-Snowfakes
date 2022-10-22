@@ -9,12 +9,11 @@
  */
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h> // true; false
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#define T 1
-#define F 0
 
 #define NR_MAX 1002
 #define NC_MAX 1002
@@ -337,7 +336,7 @@ void initialize()
 
     pq = 0;
 
-    stop = F;
+    stop = false;
     parupdate = 0;
 
     srand48();
@@ -557,7 +556,7 @@ void dynamicsunfre()
     iup = centeri + rnew + 1;
     jlo = centerj - rnew - 1;
     jup = centerj + rnew + 1;
-    frchange = F;
+    frchange = false;
 
     for (i = ilo; i <= iup; i++)
     {
@@ -604,7 +603,7 @@ void dynamicsfre()
     iup = centeri + rnew + 1;
     jlo = centerj - rnew - 1;
     jup = centerj + rnew + 1;
-    frchange = F;
+    frchange = false;
 
     for (i = ilo; i <= iup; i++)
         for (j = jlo; j <= jup; j++)
@@ -683,9 +682,9 @@ void dynamicsfre()
                 if (k > rnew)
                     rnew = k;
                 if (rnew > 2 * nr / 3)
-                    stop = T;
+                    stop = true;
                 ash[i][j] = parash;
-                frchange = T;
+                frchange = true;
             }
         }
     }
@@ -717,7 +716,7 @@ void dynamicsfre1()
     iup = centeri + rnew + 1;
     jlo = centerj - rnew - 1;
     jup = centerj + rnew + 1;
-    frchange = F;
+    frchange = false;
 
     for (i = ilo; i <= iup; i++)
     {
@@ -1288,7 +1287,7 @@ void main(int argc, char *argv[])
 
     XMapRaised(g_xDisplay, g_xWindow);
 
-    g_exit_flag = F;
+    g_exit_flag = false;
 
     XNextEvent(g_xDisplay, &g_xEvent);
 
@@ -1301,7 +1300,7 @@ void main(int argc, char *argv[])
 
     pq = 0;
 
-    while (g_exit_flag == F)
+    while (g_exit_flag == false)
     {
         XNextEvent(g_xDisplay, &g_xEvent);
         switch (g_xEvent.type)
@@ -1315,7 +1314,7 @@ void main(int argc, char *argv[])
             {
 
                 printf("QUIT\n");
-                g_exit_flag = T;
+                g_exit_flag = true;
             }
             else if ((posx >= 65) && (posx <= 115) && (posy >= 10) && (posy <= 30))
             {
@@ -1330,7 +1329,7 @@ void main(int argc, char *argv[])
 
                 printf("play\n");
 
-                while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (pq != -1) && (stop == F))
+                while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (pq != -1) && (stop == false))
                 {
                     noac = 0;
                     pq++;
