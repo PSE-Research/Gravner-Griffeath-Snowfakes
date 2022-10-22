@@ -90,7 +90,7 @@ int flags = {DoRed | DoGreen | DoBlue};
 char gui_ICON_NAME_STR[] = "sn";
 char gui_WINDOW_NAME_STR[] = "digital snowflake";
 
-int red[125], green[125], blue[125];
+int g_red[125], g_green[125], g_blue[125];
 
 FILE *g_picture_file;
 
@@ -107,109 +107,109 @@ char g_comments[100];
 void bluecolors33()
 {
     int i;
-    red[0]= 71; green[0]=204; blue[0]=231;
-    red[1]= 70; green[1]=200; blue[1]=230;
-    red[2]= 69; green[2]=196; blue[2]=229;
-    red[3]= 68; green[3]=192; blue[3]=228;
-    red[4]= 67; green[4]=188; blue[4]=227;
-    red[5]= 66; green[5]=184; blue[5]=226;
-    red[6]= 65; green[6]=180; blue[6]=225;
-    red[7]= 64; green[7]=176; blue[7]=224;
-    red[8]= 63; green[8]=172; blue[8]=223;
-    red[9]= 62; green[9]=168; blue[9]=222;
-    red[10]= 61; green[10]=164; blue[10]=221;
-    red[11]= 60; green[11]=160; blue[11]=220;
-    red[12]= 59; green[12]=156; blue[12]=219;
-    red[13]= 58; green[13]=152; blue[13]=218;
-    red[14]= 57; green[14]=148; blue[14]=217;
-    red[15]= 56; green[15]=144; blue[15]=216;
-    red[16]= 55; green[16]=140; blue[16]=215;
-    red[17]= 54; green[17]=136; blue[17]=214;
-    red[18]= 53; green[18]=132; blue[18]=213;
-    red[19]= 52; green[19]=128; blue[19]=212;
-    red[20]= 51; green[20]=124; blue[20]=211;
-    red[21]= 50; green[21]=120; blue[21]=210;
-    red[22]= 49; green[22]=116; blue[22]=209;
-    red[23]= 48; green[23]=112; blue[23]=208;
-    red[24]= 47; green[24]=108; blue[24]=207;
-    red[25]= 46; green[25]=104; blue[25]=206;
-    red[26]= 45; green[26]=100; blue[26]=205;
-    red[27]= 44; green[27]=96; blue[27]=204;
-    red[28]= 43; green[28]=92; blue[28]=203;
-    red[29]= 42; green[29]=88; blue[29]=202;
-    red[30]= 41; green[30]=84; blue[30]=201;
-    red[31]= 40; green[31]=80; blue[31]=200;
-    red[32]= 10; green[32]=20; blue[32]=100;
+    g_red[0]= 71; g_green[0]=204; g_blue[0]=231;
+    g_red[1]= 70; g_green[1]=200; g_blue[1]=230;
+    g_red[2]= 69; g_green[2]=196; g_blue[2]=229;
+    g_red[3]= 68; g_green[3]=192; g_blue[3]=228;
+    g_red[4]= 67; g_green[4]=188; g_blue[4]=227;
+    g_red[5]= 66; g_green[5]=184; g_blue[5]=226;
+    g_red[6]= 65; g_green[6]=180; g_blue[6]=225;
+    g_red[7]= 64; g_green[7]=176; g_blue[7]=224;
+    g_red[8]= 63; g_green[8]=172; g_blue[8]=223;
+    g_red[9]= 62; g_green[9]=168; g_blue[9]=222;
+    g_red[10]= 61; g_green[10]=164; g_blue[10]=221;
+    g_red[11]= 60; g_green[11]=160; g_blue[11]=220;
+    g_red[12]= 59; g_green[12]=156; g_blue[12]=219;
+    g_red[13]= 58; g_green[13]=152; g_blue[13]=218;
+    g_red[14]= 57; g_green[14]=148; g_blue[14]=217;
+    g_red[15]= 56; g_green[15]=144; g_blue[15]=216;
+    g_red[16]= 55; g_green[16]=140; g_blue[16]=215;
+    g_red[17]= 54; g_green[17]=136; g_blue[17]=214;
+    g_red[18]= 53; g_green[18]=132; g_blue[18]=213;
+    g_red[19]= 52; g_green[19]=128; g_blue[19]=212;
+    g_red[20]= 51; g_green[20]=124; g_blue[20]=211;
+    g_red[21]= 50; g_green[21]=120; g_blue[21]=210;
+    g_red[22]= 49; g_green[22]=116; g_blue[22]=209;
+    g_red[23]= 48; g_green[23]=112; g_blue[23]=208;
+    g_red[24]= 47; g_green[24]=108; g_blue[24]=207;
+    g_red[25]= 46; g_green[25]=104; g_blue[25]=206;
+    g_red[26]= 45; g_green[26]=100; g_blue[26]=205;
+    g_red[27]= 44; g_green[27]=96; g_blue[27]=204;
+    g_red[28]= 43; g_green[28]=92; g_blue[28]=203;
+    g_red[29]= 42; g_green[29]=88; g_blue[29]=202;
+    g_red[30]= 41; g_green[30]=84; g_blue[30]=201;
+    g_red[31]= 40; g_green[31]=80; g_blue[31]=200;
+    g_red[32]= 10; g_green[32]=20; g_blue[32]=100;
 }
 
 void braquecolors64()
 {
     int i;
 
-    red[0]= 130; green[0]=166; blue[0]=167;
-    red[1]= 140; green[1]=176; blue[1]=186;
-    red[2]= 156; green[2]=193; blue[2]=200;
-    red[3]= 163; green[3]=204; blue[3]=212;
-    red[4]= 167; green[4]=213; blue[4]=212;
-    red[5]= 169; green[5]=207; blue[5]=215;
-    red[6]= 168; green[6]=207; blue[6]=211;
-    red[7]= 157; green[7]=199; blue[7]=205;
-    red[8]= 145; green[8]=162; blue[8]=155;
-    red[9]= 122; green[9]=137; blue[9]=151;
-    red[10]= 114; green[10]=128; blue[10]=136;
-    red[11]= 101; green[11]=130; blue[11]=142;
-    red[12]= 102; green[12]=130; blue[12]=157;
-    red[13]= 96; green[13]=129; blue[13]=162;
-    red[14]= 96; green[14]=130; blue[14]=165;
-    red[15]= 98; green[15]=131; blue[15]=166;
-    red[16]= 130; green[16]=166; blue[16]=167;
-    red[17]= 140; green[17]=176; blue[17]=186;
-    red[18]= 156; green[18]=193; blue[18]=200;
-    red[19]= 163; green[19]=204; blue[19]=212;
-    red[20]= 167; green[20]=213; blue[20]=212;
-    red[21]= 169; green[21]=207; blue[21]=215;
-    red[22]= 168; green[22]=207; blue[22]=211;
-    red[23]= 157; green[23]=199; blue[23]=205;
-    red[24]= 137; green[24]=175; blue[24]=189;
-    red[25]= 130; green[25]=166; blue[25]=174;
-    red[26]= 118; green[26]=152; blue[26]=164;
-    red[27]= 118; green[27]=153; blue[27]=157;
-    red[28]= 118; green[28]=158; blue[28]=160;
-    red[29]= 123; green[29]=164; blue[29]=166;
-    red[30]= 136; green[30]=177; blue[30]=177;
-    red[31]= 146; green[31]=191; blue[31]=197;
-    red[32]= 106; green[32]=140; blue[32]=143;
-    red[33]= 116; green[33]=162; blue[33]=160;
-    red[34]= 142; green[34]=183; blue[34]=185;
-    red[35]= 184; green[35]=201; blue[35]=205;
-    red[36]= 189; green[36]=224; blue[36]=229;
-    red[37]= 214; green[37]=248; blue[37]=247;
-    red[38]= 224; green[38]=232; blue[38]=240;
-    red[39]= 201; green[39]=228; blue[39]=234;
-    red[40]= 187; green[40]=218; blue[40]=222;
-    red[41]= 170; green[41]=194; blue[41]=203;
-    red[42]= 138; green[42]=175; blue[42]=176;
-    red[43]= 115; green[43]=153; blue[43]=162;
-    red[44]= 101; green[44]=137; blue[44]=151;
-    red[45]= 83; green[45]=126; blue[45]=132;
-    red[46]= 67; green[46]=106; blue[46]=111;
-    red[47]= 70; green[47]=87; blue[47]=93;
-    red[48]= 162; green[48]=197; blue[48]=198;
-    red[49]= 166; green[49]=201; blue[49]=203;
-    red[50]= 161; green[50]=200; blue[50]=203;
-    red[51]= 153; green[51]=189; blue[51]=200;
-    red[52]= 137; green[52]=175; blue[52]=185;
-    red[53]= 121; green[53]=163; blue[53]=167;
-    red[54]= 108; green[54]=147; blue[54]=151;
-    red[55]= 106; green[55]=141; blue[55]=153;
-    red[56]= 98; green[56]=131; blue[56]=161;
-    red[57]= 96; green[57]=131; blue[57]=161;
-    red[58]= 100; green[58]=136; blue[58]=155;
-    red[59]= 111; green[59]=132; blue[59]=145;
-    red[60]= 112; green[60]=134; blue[60]=144;
-    red[61]= 105; green[61]=134; blue[61]=138;
-    red[62]= 101; green[62]=134; blue[62]=138;
-    red[63]= 105; green[63]=130; blue[63]=141;
+    g_red[0]= 130; g_green[0]=166; g_blue[0]=167;
+    g_red[1]= 140; g_green[1]=176; g_blue[1]=186;
+    g_red[2]= 156; g_green[2]=193; g_blue[2]=200;
+    g_red[3]= 163; g_green[3]=204; g_blue[3]=212;
+    g_red[4]= 167; g_green[4]=213; g_blue[4]=212;
+    g_red[5]= 169; g_green[5]=207; g_blue[5]=215;
+    g_red[6]= 168; g_green[6]=207; g_blue[6]=211;
+    g_red[7]= 157; g_green[7]=199; g_blue[7]=205;
+    g_red[8]= 145; g_green[8]=162; g_blue[8]=155;
+    g_red[9]= 122; g_green[9]=137; g_blue[9]=151;
+    g_red[10]= 114; g_green[10]=128; g_blue[10]=136;
+    g_red[11]= 101; g_green[11]=130; g_blue[11]=142;
+    g_red[12]= 102; g_green[12]=130; g_blue[12]=157;
+    g_red[13]= 96; g_green[13]=129; g_blue[13]=162;
+    g_red[14]= 96; g_green[14]=130; g_blue[14]=165;
+    g_red[15]= 98; g_green[15]=131; g_blue[15]=166;
+    g_red[16]= 130; g_green[16]=166; g_blue[16]=167;
+    g_red[17]= 140; g_green[17]=176; g_blue[17]=186;
+    g_red[18]= 156; g_green[18]=193; g_blue[18]=200;
+    g_red[19]= 163; g_green[19]=204; g_blue[19]=212;
+    g_red[20]= 167; g_green[20]=213; g_blue[20]=212;
+    g_red[21]= 169; g_green[21]=207; g_blue[21]=215;
+    g_red[22]= 168; g_green[22]=207; g_blue[22]=211;
+    g_red[23]= 157; g_green[23]=199; g_blue[23]=205;
+    g_red[24]= 137; g_green[24]=175; g_blue[24]=189;
+    g_red[25]= 130; g_green[25]=166; g_blue[25]=174;
+    g_red[26]= 118; g_green[26]=152; g_blue[26]=164;
+    g_red[27]= 118; g_green[27]=153; g_blue[27]=157;
+    g_red[28]= 118; g_green[28]=158; g_blue[28]=160;
+    g_red[29]= 123; g_green[29]=164; g_blue[29]=166;
+    g_red[30]= 136; g_green[30]=177; g_blue[30]=177;
+    g_red[31]= 146; g_green[31]=191; g_blue[31]=197;
+    g_red[32]= 106; g_green[32]=140; g_blue[32]=143;
+    g_red[33]= 116; g_green[33]=162; g_blue[33]=160;
+    g_red[34]= 142; g_green[34]=183; g_blue[34]=185;
+    g_red[35]= 184; g_green[35]=201; g_blue[35]=205;
+    g_red[36]= 189; g_green[36]=224; g_blue[36]=229;
+    g_red[37]= 214; g_green[37]=248; g_blue[37]=247;
+    g_red[38]= 224; g_green[38]=232; g_blue[38]=240;
+    g_red[39]= 201; g_green[39]=228; g_blue[39]=234;
+    g_red[40]= 187; g_green[40]=218; g_blue[40]=222;
+    g_red[41]= 170; g_green[41]=194; g_blue[41]=203;
+    g_red[42]= 138; g_green[42]=175; g_blue[42]=176;
+    g_red[43]= 115; g_green[43]=153; g_blue[43]=162;
+    g_red[44]= 101; g_green[44]=137; g_blue[44]=151;
+    g_red[45]= 83; g_green[45]=126; g_blue[45]=132;
+    g_red[46]= 67; g_green[46]=106; g_blue[46]=111;
+    g_red[47]= 70; g_green[47]=87; g_blue[47]=93;
+    g_red[48]= 162; g_green[48]=197; g_blue[48]=198;
+    g_red[49]= 166; g_green[49]=201; g_blue[49]=203;
+    g_red[50]= 161; g_green[50]=200; g_blue[50]=203;
+    g_red[51]= 153; g_green[51]=189; g_blue[51]=200;
+    g_red[52]= 137; g_green[52]=175; g_blue[52]=185;
+    g_red[53]= 121; g_green[53]=163; g_blue[53]=167;
+    g_red[54]= 108; g_green[54]=147; g_blue[54]=151;
+    g_red[55]= 106; g_green[55]=141; g_blue[55]=153;
+    g_red[56]= 98; g_green[56]=131; g_blue[56]=161;
+    g_red[57]= 96; g_green[57]=131; g_blue[57]=161;
+    g_red[58]= 100; g_green[58]=136; g_blue[58]=155;
+    g_red[59]= 111; g_green[59]=132; g_blue[59]=145;
+    g_red[60]= 112; g_green[60]=134; g_blue[60]=144;
+    g_red[61]= 105; g_green[61]=134; g_blue[61]=138;
+    g_red[62]= 101; g_green[62]=134; g_blue[62]=138;
+    g_red[63]= 105; g_green[63]=130; g_blue[63]=141;
 }
 
 void offcolors()
@@ -218,9 +218,9 @@ void offcolors()
 
     for (i = 0; i < 64; i++)
     {
-        red[i] = 129 + 2 * i;
-        green[i] = 129 + 2 * i;
-        blue[i] = 129 + 2 * i;
+        g_red[i] = 129 + 2 * i;
+        g_green[i] = 129 + 2 * i;
+        g_blue[i] = 129 + 2 * i;
     }
 }
 
@@ -1392,9 +1392,9 @@ void main(int argc, char *argv[])
     braquecolors64();
     for (i = 0; i < KAPPA_MAX; i++)
     {
-        g_color[i].red = red[i] * 65535 / 255;
-        g_color[i].green = green[i] * 65535 / 255;
-        g_color[i].blue = blue[i] * 65535 / 255;
+        g_color[i].red = g_red[i] * 65535 / 255;
+        g_color[i].green = g_green[i] * 65535 / 255;
+        g_color[i].blue = g_blue[i] * 65535 / 255;
         XAllocColor(g_xDisplay, cmap, &g_color[i]);
     }
 
@@ -1403,9 +1403,9 @@ void main(int argc, char *argv[])
     for (i = 0; i <= 32; i++)
     {
 
-        g_color_on[i].red = red[i] * 65535 / 255;
-        g_color_on[i].green = green[i] * 65535 / 255;
-        g_color_on[i].blue = blue[i] * 65535 / 255;
+        g_color_on[i].red = g_red[i] * 65535 / 255;
+        g_color_on[i].green = g_green[i] * 65535 / 255;
+        g_color_on[i].blue = g_blue[i] * 65535 / 255;
         XAllocColor(g_xDisplay, cmap, &g_color_on[i]);
     }
 
@@ -1414,9 +1414,9 @@ void main(int argc, char *argv[])
     for (i = 0; i <= 63; i++)
     {
 
-        g_color_off[63 - i].red = red[i] * 65535 / 255;
-        g_color_off[63 - i].green = green[i] * 65535 / 255;
-        g_color_off[63 - i].blue = blue[i] * 65535 / 255;
+        g_color_off[63 - i].red = g_red[i] * 65535 / 255;
+        g_color_off[63 - i].green = g_green[i] * 65535 / 255;
+        g_color_off[63 - i].blue = g_blue[i] * 65535 / 255;
         XAllocColor(g_xDisplay, cmap, &g_color_off[63 - i]);
     }
 
