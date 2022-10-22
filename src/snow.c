@@ -505,10 +505,11 @@ void dynamicsdif()
     }
 }
 
+/**
+ * Add Noise to `adif[]`
+ */
 void dynamicspop()
-
 {
-
     double b[NR_MAX][NC_MAX];
     double x, y;
     int i, j, k;
@@ -521,7 +522,6 @@ void dynamicspop()
     {
         for (j = 0; j < nc; j++)
         {
-
             x = myrand();
             if (x < 0.5)
             {
@@ -531,12 +531,10 @@ void dynamicspop()
                 adif[i][j] = adif[i][j] * (1 - sigma);
         }
     }
-}
+} /* dynamicspop() */
 
 void dynamicspop1()
-
 {
-
     int i, j;
     double offset;
 
@@ -552,7 +550,7 @@ void dynamicspop1()
                 }
             }
     }
-}
+} /* dynamicspop1() */
 
 void dynamicsunfre()
 
@@ -783,6 +781,7 @@ void dynamics()
     dynamicsfre();
     dynamicsunfre();
 
+    // add Noise
     if (sigma > 0.0)
         dynamicspop();
 
