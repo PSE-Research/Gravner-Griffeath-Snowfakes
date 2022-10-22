@@ -1066,7 +1066,7 @@ void io_skip()
         dum = getchar();
 }
 
-void io_read_picture()
+void io_read_state()
 
 {
     int i, j, k;
@@ -1505,7 +1505,7 @@ void main(int argc, char *argv[])
             {
 
                 printf("[read] from file %s\n", g_in_file_path);
-                io_read_picture();
+                io_read_state();
                 dynamics_pop1();
                 createbdry();
                 gui_picture_big();

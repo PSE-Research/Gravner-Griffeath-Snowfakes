@@ -704,9 +704,10 @@ void io_get_input_params()
 } /* io_get_input_params() */
 
 /** 
- * 读取 g_in_file_path 里的模拟状态
+ * 读取 "input file" 里的模拟状态.
+ * Read the simulation status from "input file".
  **/
-void io_read_picture()
+void io_read_state()
 {
     int i, j, k;
     double x;
@@ -736,7 +737,7 @@ void io_read_picture()
     fscanf(g_picture_file, "%d", &k);
     g_pq = k;
     fclose(g_picture_file);
-} /* io_read_picture() */
+} /* io_read_state() */
 
 /** 
  * 保存模拟状态到 "output file"
@@ -1361,7 +1362,7 @@ int main(int argc, char *argv[])
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
             {
                 printf("[read] from file %s\n", g_in_file_path);
-                io_read_picture();
+                io_read_state();
                 dynamics_pop1();
                 gui_picture_big();
             }
