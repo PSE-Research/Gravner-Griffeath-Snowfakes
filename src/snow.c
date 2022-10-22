@@ -21,7 +21,6 @@
 
 #define KAPPA_MAX 64
 
-int sp;
 
 /** diffusion field */
 double  adif[NR_MAX][NC_MAX];
@@ -35,9 +34,29 @@ double  alm[NR_MAX][NC_MAX];
 /** rings pallette */
 int     ash[NR_MAX][NC_MAX];
 
-/* parameters*/
 
-/** Dynamics params */
+/* ==== Input Parameters ==== */
+/* --- [Initial state] */
+/**
+ * `rho` the density of diffusing particles elsewhere
+ */
+double rho;
+/**
+ * `h` is the radius of the initial hexagon of density `p` in the middle of the array
+ * 
+ * Note. h<0 is interpreted as special initialization with radius -h.
+ */
+int r_init;
+int twelve_sided;
+/**
+ * density `p`
+ */
+double rhor_init;
+
+/* --- [Dynamics] */
+/** Dynamics params
+ * 
+ */
 double beta, kappa, mu, theta, alpha, gam, sigma;
 
 /** Size of the (square) LxL system.
@@ -46,6 +65,18 @@ double beta, kappa, mu, theta, alpha, gam, sigma;
  * nc = n_col;
  */
 int nr, nc;
+/** size of the pixel */
+int sp;
+
+/** Input/output files. */
+FILE *g_picture_file;
+FILE *_not_use_prof;
+char g_in_file_path[30];
+char g_out_file_path[30];
+char g_graphics_file_path[30];
+char po[30];
+char g_comments[100];
+
 
 // center (1, 1)
 int _not_use_change, g_center_i, g_center_j;
@@ -55,17 +86,10 @@ int g_par_ash;
 
 int g_r_old, g_r_new;
 
-int r_init;
-double rhor_init;
-
 int g_frchange;
-int twelve_sided;
-
-double rho;
 
 int g_stop;
 
-char po[30];
 
 /* ==== X11 Window ==== */
 Display *g_xDisplay;
@@ -102,13 +126,6 @@ char gui_WINDOW_NAME_STR[] = "digital snowflake";
 
 int g_red[125], g_green[125], g_blue[125];
 
-FILE *g_picture_file;
-FILE *_not_use_prof;
-
-char g_in_file_path[30];
-char g_out_file_path[30];
-char g_graphics_file_path[30];
-char g_comments[100];
 
 void bluecolors33()
 {
