@@ -243,7 +243,7 @@ void gui_off_colors64()
     }
 }
 
-double myrand()
+double uniform_01rand()
 
 {
     double drand48();
@@ -251,7 +251,7 @@ double myrand()
     return drand48();
 }
 
-int norminf(int i, int j)
+int norm_inf(int i, int j)
 {
     if (i < 0)
         i = -i;
@@ -263,7 +263,7 @@ int norminf(int i, int j)
         return j;
 }
 
-int seminorm(int i, int j)
+int semi_norm(int i, int j)
 {
     int k;
 
@@ -274,7 +274,7 @@ int seminorm(int i, int j)
         return -k;
 }
 
-int shape12(double x, double y)
+int in_shape12(double x, double y)
 {
     if (x < 0)
         x = -x;
@@ -287,7 +287,7 @@ int shape12(double x, double y)
         return 0;
 }
 
-int shapecircle(double x, double y)
+int in_shape_circle1(double x, double y)
 {
 
     if (x * x + y * y <= 1)
@@ -495,11 +495,11 @@ void initialize()
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
-            x = myrand();
+            x = uniform_01rand();
 
             if (twelve_sided == 0)
             {
-                if ((norminf(i - g_center_i, j - g_center_j) <= r_init) && (seminorm(i - g_center_i, j - g_center_j) <= r_init) &&
+                if ((norm_inf(i - g_center_i, j - g_center_j) <= r_init) && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) &&
                     (x <= rhor_init))
                 {
                     adif[i][j] = 0.0;
@@ -507,7 +507,7 @@ void initialize()
                     afr[i][j] = 0;
                     ash[i][j] = 0;
                     alm[i][j] = 1.0;
-                    k = norminf(i - g_center_i, j - g_center_j);
+                    k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
@@ -525,14 +525,14 @@ void initialize()
 
                 x1 = (double)(i - g_center_i) / r_init;
                 y1 = (double)(j - g_center_j) / r_init;
-                if (shapecircle((x1 - y1) / sqrt(2.0), sqrt(3.0) * (x1 + y1) / sqrt(2.0)) == 1)
+                if (in_shape_circle1((x1 - y1) / sqrt(2.0), sqrt(3.0) * (x1 + y1) / sqrt(2.0)) == 1)
                 {
                     adif[i][j] = 0.0;
                     apic[i][j] = 1;
                     afr[i][j] = 1;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
-                    k = norminf(i - g_center_i, j - g_center_j);
+                    k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
@@ -650,7 +650,7 @@ void dynamics_pop()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            x = myrand();
+            x = uniform_01rand();
             if (x < 0.5)
             {
                 adif[i][j] = adif[i][j] * (1 + sigma);
@@ -819,7 +819,7 @@ void dynamics_fre()
 
                 alm[i][j] += afr[i][j];
                 afr[i][j] = 0.0;
-                k = norminf(i - g_center_i, j - g_center_j);
+                k = norm_inf(i - g_center_i, j - g_center_j);
                 if (k > g_r_new)
                     g_r_new = k;
                 if (g_r_new > 2 * nr / 3)

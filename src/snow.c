@@ -123,16 +123,20 @@ XColor g_othp[20];
 int g_red[125], g_green[125], g_blue[125];
 
 
+/* ==== Math helper functions ==== */
 
-double myrand()
-
+/**
+ * nonnegative doubleprecision floating-point values uniformly distributed
+ *  over the interval [0.0, 1.0).
+ */
+double uniform_01rand()
 {
     double drand48();
 
     return drand48();
-}
+} /* uniform_01rand() */
 
-int norminf(int i, int j)
+int norm_inf(int i, int j)
 {
     if (i < 0)
         i = -i;
@@ -142,9 +146,9 @@ int norminf(int i, int j)
         return i;
     else
         return j;
-}
+} /* norm_inf(int i, int j) */
 
-int seminorm(int i, int j)
+int semi_norm(int i, int j)
 {
     int k;
 
@@ -153,9 +157,9 @@ int seminorm(int i, int j)
         return k;
     else
         return -k;
-}
+} /* semi_norm(int i, int j) */
 
-int shape12(double x, double y)
+int in_shape12(double x, double y)
 {
     if (x < 0)
         x = -x;
@@ -166,16 +170,15 @@ int shape12(double x, double y)
         return 1;
     else
         return 0;
-}
+} /* in_shape12(double x, double y) */
 
-int shapecircle(double x, double y)
+int in_shape_circle1(double x, double y)
 {
-
     if (x * x + y * y <= 1)
         return 1;
     else
         return 0;
-}
+} /* in_shape_circle1(double x, double y) */
 
 int chi(int i)
 {
@@ -189,8 +192,6 @@ double sqr(double x)
 {
     return x * x;
 }
-
-
 
 void check()
 {
@@ -246,11 +247,11 @@ void initialize()
     {
         for (j = 0; j < nc; j++)
         {
-            x = myrand();
+            x = uniform_01rand();
 
             if (twelve_sided == 0)
             {
-                if ((norminf(i - g_center_i, j - g_center_j) <= r_init) && (seminorm(i - g_center_i, j - g_center_j) <= r_init) &&
+                if ((norm_inf(i - g_center_i, j - g_center_j) <= r_init) && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) &&
                     (x <= rhor_init))
                 {
                     adif[i][j] = 0.0;
@@ -258,7 +259,7 @@ void initialize()
                     afr[i][j] = 1;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
-                    k = norminf(i - g_center_i, j - g_center_j);
+                    k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
@@ -285,7 +286,7 @@ void initialize()
                     afr[i][j] = 0.0;
                     ash[i][j] = 0;
                     alm[i][j] = 1.0;
-                    k = norminf(i - g_center_i, j - g_center_j);
+                    k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
@@ -390,7 +391,7 @@ void dynamics_pop()
     {
         for (j = 0; j < nc; j++)
         {
-            x = myrand();
+            x = uniform_01rand();
             if (x < 0.5)
             {
                 adif[i][j] = adif[i][j] * (1 + sigma);
@@ -556,7 +557,7 @@ void dynamics_fre()
 
                 alm[i][j] += afr[i][j];
                 afr[i][j] = 0.0;
-                k = norminf(i - g_center_i, j - g_center_j);
+                k = norm_inf(i - g_center_i, j - g_center_j);
                 if (k > g_r_new)
                     g_r_new = k;
                 if (g_r_new > 2 * nr / 3)
