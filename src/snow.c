@@ -23,12 +23,17 @@
 
 int sp;
 
-double adif[NR_MAX][NC_MAX]; /*diffusion field*/
-int apic[NR_MAX][NC_MAX];    /*indicator of snowflake sites*/
-double afr[NR_MAX][NC_MAX];  /* boundary mass*/
-double alm[NR_MAX][NC_MAX];  /*crystal mass*/
+/** diffusion field */
+double  adif[NR_MAX][NC_MAX];
+/** indicator of snowflake sites */
+int     apic[NR_MAX][NC_MAX];
+/** boundary mass */
+double  afr[NR_MAX][NC_MAX];
+/** crystal mass */
+double  alm[NR_MAX][NC_MAX];
 
-int ash[NR_MAX][NC_MAX]; /*rings pallette*/
+/** rings pallette */
+int     ash[NR_MAX][NC_MAX];
 
 /* parameters*/
 

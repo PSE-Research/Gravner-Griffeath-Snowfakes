@@ -23,12 +23,17 @@
 
 int sp;
 
-double adif[NR_MAX][NC_MAX]; /*diffusion field*/
-int apic[NR_MAX][NC_MAX];    /*indicator of snowflake sites*/
-double afr[NR_MAX][NC_MAX];  /* boundary mass*/
-double alm[NR_MAX][NC_MAX];  /*crystal mass*/
+/** diffusion field */
+double  adif[NR_MAX][NC_MAX];
+/** indicator of snowflake sites */
+int     apic[NR_MAX][NC_MAX];
+/** boundary mass */
+double  afr[NR_MAX][NC_MAX];
+/** crystal mass */
+double  alm[NR_MAX][NC_MAX];
 
-int ash[NR_MAX][NC_MAX]; /*rings pallette*/
+/** rings pallette */
+int     ash[NR_MAX][NC_MAX];
 
 /* parameters*/
 
@@ -335,9 +340,10 @@ void check()
     }
 }
 
-/*The procedure below implements hexagonal boundary conditions. A mass
-correction step is necessary in the diffusion step to preserve mass.*/
-
+/** 
+ * The procedure below implements hexagonal boundary conditions. 
+ * A mass correction step is necessary in the diffusion step to preserve mass.
+ */
 void createbdry()
 
 {
@@ -1155,8 +1161,11 @@ void savesnowflake()
 
     FILE *dum;
 
-    void transform() /* takes (i,j) from 0 ... 2(nc-2)+1, outputs (i1,j1) in the 4th quadrant*/
-
+    /** 
+     * takes (i,j) from 0 ... 2(nc-2)+1,
+     * outputs (i1,j1) in the 4th quadrant
+     **/
+    void transform()
     {
         int x1, y1, z1, n1;
 
