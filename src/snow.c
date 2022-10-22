@@ -96,17 +96,13 @@ char gui_WINDOW_NAME_STR[] = "digital snowflake";
 
 int red[125], green[125], blue[125];
 
-FILE *picf;
+FILE *g_picture_file;
+FILE *_not_use_prof;
 
-FILE *prof;
-
-char infile[30];
-
-char outfile[30];
-
-char graphicsfile[30];
-
-char comments[100];
+char g_in_file_path[30];
+char g_out_file_path[30];
+char g_graphics_file_path[30];
+char g_comments[100];
 
 void bluecolors33()
 {
@@ -957,31 +953,31 @@ void readpicture()
     int i, j, k;
     double x;
 
-    picf = fopen(infile, "r");
+    g_picture_file = fopen(g_in_file_path, "r");
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-            fscanf(picf, "%lf", &x);
+            fscanf(g_picture_file, "%lf", &x);
             adif[i][j] = x;
-            fscanf(picf, "%d", &k);
+            fscanf(g_picture_file, "%d", &k);
             apic[i][j] = k;
-            fscanf(picf, "%lf", &x);
+            fscanf(g_picture_file, "%lf", &x);
             afr[i][j] = x;
-            fscanf(picf, "%d", &k);
+            fscanf(g_picture_file, "%d", &k);
             ash[i][j] = k;
-            fscanf(picf, "%lf", &x);
+            fscanf(g_picture_file, "%lf", &x);
             alm[i][j] = x;
         }
     }
-    fscanf(picf, "%d", &k);
+    fscanf(g_picture_file, "%d", &k);
     rold = k;
-    fscanf(picf, "%d", &k);
+    fscanf(g_picture_file, "%d", &k);
     rnew = k;
-    fscanf(picf, "%d", &k);
+    fscanf(g_picture_file, "%d", &k);
     pq = k;
-    fclose(picf);
+    fclose(g_picture_file);
 }
 
 void savepicture()
@@ -989,18 +985,18 @@ void savepicture()
 {
     int i, j;
 
-    picf = fopen(outfile, "w");
+    g_picture_file = fopen(g_out_file_path, "w");
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-            fprintf(picf, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
+            fprintf(g_picture_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
         }
     }
-    fprintf(picf, "%d %d ", rold, rnew);
-    fprintf(picf, "%d ", pq);
-    fclose(picf);
+    fprintf(g_picture_file, "%d %d ", rold, rnew);
+    fprintf(g_picture_file, "%d ", pq);
+    fclose(g_picture_file);
 }
 
 void savesnowflake()
@@ -1017,30 +1013,30 @@ void savesnowflake()
 
     FILE *dum;
 
-    picf = fopen(graphicsfile, "w");
-    fprintf(picf, "P3\n");
+    g_picture_file = fopen(g_graphics_file_path, "w");
+    fprintf(g_picture_file, "P3\n");
 
-    fprintf(picf, "#rho:%lf\n", rho);
-    fprintf(picf, "#h:%d\n", rinit);
-    fprintf(picf, "#p:%lf\n", rhorinit);
-    fprintf(picf, "#beta:%lf\n", beta);
-    fprintf(picf, "#alpha:%lf\n", alpha);
-    fprintf(picf, "#theta:%lf\n", theta);
-    fprintf(picf, "#kappa:%lf\n", kappa);
-    fprintf(picf, "#mu:%lf\n", mu);
-    fprintf(picf, "#gam:%lf\n", gam);
-    fprintf(picf, "#sigma:%lf\n", sigma);
+    fprintf(g_picture_file, "#rho:%lf\n", rho);
+    fprintf(g_picture_file, "#h:%d\n", rinit);
+    fprintf(g_picture_file, "#p:%lf\n", rhorinit);
+    fprintf(g_picture_file, "#beta:%lf\n", beta);
+    fprintf(g_picture_file, "#alpha:%lf\n", alpha);
+    fprintf(g_picture_file, "#theta:%lf\n", theta);
+    fprintf(g_picture_file, "#kappa:%lf\n", kappa);
+    fprintf(g_picture_file, "#mu:%lf\n", mu);
+    fprintf(g_picture_file, "#gam:%lf\n", gam);
+    fprintf(g_picture_file, "#sigma:%lf\n", sigma);
 
-    fprintf(picf, "#L:%d\n", nr);
-    fprintf(picf, "#Z:%d\n", sp);
+    fprintf(g_picture_file, "#L:%d\n", nr);
+    fprintf(g_picture_file, "#Z:%d\n", sp);
 
-    fprintf(picf, "#: no : no : no \n");
+    fprintf(g_picture_file, "#: no : no : no \n");
 
-    fprintf(picf, "#: %s\n", po);
-    fprintf(picf, "#: %s\n", comments);
+    fprintf(g_picture_file, "#: %s\n", po);
+    fprintf(g_picture_file, "#: %s\n", g_comments);
 
-    fprintf(picf, "%d %d\n", nr, nr);
-    fprintf(picf, "255\n");
+    fprintf(g_picture_file, "%d %d\n", nr, nr);
+    fprintf(g_picture_file, "255\n");
     printf("\n");
 
     for (i = 0; i < nr; i++)
@@ -1055,7 +1051,7 @@ void savesnowflake()
                 {
 
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(picf, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                    fprintf(g_picture_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
@@ -1067,7 +1063,7 @@ void savesnowflake()
                     if (k > 32)
                         k = 32;
 
-                    fprintf(picf, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
+                    fprintf(g_picture_file, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
                             g_color_on[k].blue * 255 / 65535);
                 }
             }
@@ -1076,7 +1072,7 @@ void savesnowflake()
                 if (apic[i1][j1] == 0)
                 {
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(picf, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                    fprintf(g_picture_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
@@ -1091,26 +1087,26 @@ void savesnowflake()
                             k = 14;
                         if (alm[i1][j1] >= beta)
                             k = 15;
-                        fprintf(picf, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
+                        fprintf(g_picture_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
                                 g_othp[k].blue * 255 / 65535);
                     }
                     else
                     {
                         k = ash[i1][j1];
                         k = k % KAPPA_MAX;
-                        fprintf(picf, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
+                        fprintf(g_picture_file, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
                                 g_color[k].blue * 255 / 65535);
                     }
                 }
             }
         }
-        fprintf(picf, "\n");
+        fprintf(g_picture_file, "\n");
     }
 
-    fclose(picf);
+    fclose(g_picture_file);
 
     strcat(po, " ");
-    strcat(po, graphicsfile);
+    strcat(po, g_graphics_file_path);
     dum = popen(po, "r");
 }
 
@@ -1186,25 +1182,25 @@ void main(int argc, char *argv[])
     skip();
     scanf("%d", &sp);
 
-    printf("infile:");
+    printf("g_in_file_path:");
     skip();
-    scanf("%s", infile);
+    scanf("%s", g_in_file_path);
 
-    printf("outfile:");
+    printf("g_out_file_path:");
     skip();
-    scanf("%s", outfile);
+    scanf("%s", g_out_file_path);
 
-    printf("graphicsfile:");
+    printf("g_graphics_file_path:");
     skip();
-    scanf("%s", graphicsfile);
+    scanf("%s", g_graphics_file_path);
 
     printf("po:");
     skip();
     scanf("%s", po);
 
-    printf("comments:");
+    printf("g_comments:");
     skip();
-    scanf("%s", comments);
+    scanf("%s", g_comments);
 
     /* end data*/
 
@@ -1343,7 +1339,7 @@ void main(int argc, char *argv[])
             }
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
-                printf("save to file %s\n", outfile);
+                printf("save to file %s\n", g_out_file_path);
                 savepicture();
                 savesnowflake();
             }
@@ -1351,7 +1347,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
             {
 
-                printf("read from file %s\n", infile);
+                printf("read from file %s\n", g_in_file_path);
                 readpicture();
                 dynamicspop1();
                 picturebig();
