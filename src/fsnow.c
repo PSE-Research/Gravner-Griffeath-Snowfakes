@@ -41,23 +41,23 @@ double beta, kappa, mu, theta, alpha, gam, sigma;
 
 int nr, nc;
 
-int change, centeri, centerj;
+int _not_use_change, g_center_i, g_center_j;
 
-int parupdate;
+int g_par_update;
 
-int parash;
+int g_par_ash;
 
-int rold, rnew;
+int g_r_old, g_r_new;
 
-int rinit;
-double rhorinit;
+int r_init;
+double rhor_init;
 
-int frchange;
-int twelvesided;
+int g_frchange;
+int twelve_sided;
 
 double rho;
 
-int stop;
+int g_stop;
 
 char po[30];
 
@@ -65,27 +65,27 @@ Display *g_xDisplay;
 Window g_xWindow;
 GC g_xGC;
 XEvent g_xEvent;
-KeySym tk;
+KeySym _not_use_tk;
 XSizeHints g_xSizeHints;
 int g_xScreen;
 unsigned long g_xBlack, g_xWhite;
-char tbuf[8];
-int kc;
+char _not_use_tbuf[8];
+int _not_use_kc;
 int g_exit_flag;
 
 char gui_TIME_STR[] = "time:";
 char gui_ACTIVE_STR[] = "active area:";
 
-int noac, pq;
+int g_noac, g_pq;
 
-Colormap cmap;
+Colormap g_cmap;
 XColor g_color[KAPPA_MAX];
 
 XColor g_color_on[128];
 XColor g_color_off[128];
 XColor g_othp[20];
 
-int flags = {DoRed | DoGreen | DoBlue};
+int _not_use_flags = {DoRed | DoGreen | DoBlue};
 
 char gui_ICON_NAME_STR[] = "sn";
 char gui_WINDOW_NAME_STR[] = "digital snowflake";
@@ -310,7 +310,7 @@ void check()
 
     int i, j, iup;
 
-    iup = centeri + rnew + 1;
+    iup = g_center_i + g_r_new + 1;
     for (i = 1; i <= iup; i++)
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
@@ -450,10 +450,10 @@ void initialize()
     double drand48();
     double x1, y1;
 
-    pq = 0;
+    g_pq = 0;
 
-    stop = false;
-    parupdate = 0;
+    g_stop = false;
+    g_par_update = 0;
 
     srand48();
     t1 = time(&t2);
@@ -466,11 +466,11 @@ void initialize()
         x = drand48();
     }
 
-    centeri = 1;
-    centerj = 1;
+    g_center_i = 1;
+    g_center_j = 1;
 
-    rold = 0;
-    rnew = 0;
+    g_r_old = 0;
+    g_r_new = 0;
 
     for (i = 1; i < nr; i++)
     {
@@ -478,19 +478,19 @@ void initialize()
         {
             x = myrand();
 
-            if (twelvesided == 0)
+            if (twelve_sided == 0)
             {
-                if ((norminf(i - centeri, j - centerj) <= rinit) && (seminorm(i - centeri, j - centerj) <= rinit) &&
-                    (x <= rhorinit))
+                if ((norminf(i - g_center_i, j - g_center_j) <= r_init) && (seminorm(i - g_center_i, j - g_center_j) <= r_init) &&
+                    (x <= rhor_init))
                 {
                     adif[i][j] = 0.0;
                     apic[i][j] = 1;
                     afr[i][j] = 0;
                     ash[i][j] = 0;
                     alm[i][j] = 1.0;
-                    k = norminf(i - centeri, j - centerj);
-                    if (k > rnew)
-                        rnew = k;
+                    k = norminf(i - g_center_i, j - g_center_j);
+                    if (k > g_r_new)
+                        g_r_new = k;
                 }
                 else
                 {
@@ -504,8 +504,8 @@ void initialize()
             else
             {
 
-                x1 = (double)(i - centeri) / rinit;
-                y1 = (double)(j - centerj) / rinit;
+                x1 = (double)(i - g_center_i) / r_init;
+                y1 = (double)(j - g_center_j) / r_init;
                 if (shapecircle((x1 - y1) / sqrt(2.0), sqrt(3.0) * (x1 + y1) / sqrt(2.0)) == 1)
                 {
                     adif[i][j] = 0.0;
@@ -513,9 +513,9 @@ void initialize()
                     afr[i][j] = 1;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
-                    k = norminf(i - centeri, j - centerj);
-                    if (k > rnew)
-                        rnew = k;
+                    k = norminf(i - g_center_i, j - g_center_j);
+                    if (k > g_r_new)
+                        g_r_new = k;
                 }
 
                 else
@@ -529,8 +529,8 @@ void initialize()
             }
         }
     }
-    rold = rnew;
-    parash = 1;
+    g_r_old = g_r_new;
+    g_par_ash = 1;
     createbdry();
     buildbig();
 }
@@ -678,8 +678,8 @@ void dynamicsunfre()
 
     int ilo, iup, jlo, jup;
 
-    iup = centeri + rnew + 1;
-    frchange = false;
+    iup = g_center_i + g_r_new + 1;
+    g_frchange = false;
 
     for (i = 1; i <= iup; i++)
     {
@@ -724,8 +724,8 @@ void dynamicsfre()
 
     int ilo, iup, jlo, jup;
 
-    iup = centeri + rnew + 1;
-    frchange = false;
+    iup = g_center_i + g_r_new + 1;
+    g_frchange = false;
 
     for (i = 1; i <= iup; i++)
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
@@ -800,21 +800,21 @@ void dynamicsfre()
 
                 alm[i][j] += afr[i][j];
                 afr[i][j] = 0.0;
-                k = norminf(i - centeri, j - centerj);
-                if (k > rnew)
-                    rnew = k;
-                if (rnew > 2 * nr / 3)
-                    stop = true;
-                ash[i][j] = parash;
-                frchange = true;
+                k = norminf(i - g_center_i, j - g_center_j);
+                if (k > g_r_new)
+                    g_r_new = k;
+                if (g_r_new > 2 * nr / 3)
+                    g_stop = true;
+                ash[i][j] = g_par_ash;
+                g_frchange = true;
             }
         }
     }
-    parupdate = 1 - parupdate;
-    if (rnew - rold == 1)
+    g_par_update = 1 - g_par_update;
+    if (g_r_new - g_r_old == 1)
     {
-        parash = parash + 1;
-        rold = rnew;
+        g_par_ash = g_par_ash + 1;
+        g_r_old = g_r_new;
     }
     createbdry();
 }
@@ -835,8 +835,8 @@ void dynamicsfre1()
     int ilo, iup, jlo, jup;
     double epsilon;
 
-    iup = centeri + rnew + 1;
-    frchange = false;
+    iup = g_center_i + g_r_new + 1;
+    g_frchange = false;
 
     for (i = 1; i <= iup; i++)
     {
@@ -931,14 +931,14 @@ void picturebig()
         }
     }
 
-    if (pq == 0)
+    if (g_pq == 0)
     {
         pqc[0] = '0';
         pqc[1] = '\0';
     }
     else
     {
-        pqn = pq;
+        pqn = g_pq;
         for (k = 9; k >= 0; k--)
         {
 
@@ -1004,14 +1004,14 @@ void picturerings()
         }
     }
 
-    if (pq == 0)
+    if (g_pq == 0)
     {
         pqc[0] = '0';
         pqc[1] = '\0';
     }
     else
     {
-        pqn = pq;
+        pqn = g_pq;
         for (k = 9; k >= 0; k--)
         {
 
@@ -1098,11 +1098,11 @@ void readpicture()
         }
     }
     fscanf(g_picture_file, "%d", &k);
-    rold = k;
+    g_r_old = k;
     fscanf(g_picture_file, "%d", &k);
-    rnew = k;
+    g_r_new = k;
     fscanf(g_picture_file, "%d", &k);
-    pq = k;
+    g_pq = k;
     fclose(g_picture_file);
 }
 
@@ -1120,8 +1120,8 @@ void savepicture()
             fprintf(g_picture_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
         }
     }
-    fprintf(g_picture_file, "%d %d ", rold, rnew);
-    fprintf(g_picture_file, "%d ", pq);
+    fprintf(g_picture_file, "%d %d ", g_r_old, g_r_new);
+    fprintf(g_picture_file, "%d ", g_pq);
     fclose(g_picture_file);
 }
 
@@ -1181,8 +1181,8 @@ void savesnowflake()
     fprintf(g_picture_file, "P3\n");
 
     fprintf(g_picture_file, "#rho:%lf\n", rho);
-    fprintf(g_picture_file, "#h:%d\n", rinit);
-    fprintf(g_picture_file, "#p:%lf\n", rhorinit);
+    fprintf(g_picture_file, "#h:%d\n", r_init);
+    fprintf(g_picture_file, "#p:%lf\n", rhor_init);
     fprintf(g_picture_file, "#beta:%lf\n", beta);
     fprintf(g_picture_file, "#alpha:%lf\n", alpha);
     fprintf(g_picture_file, "#theta:%lf\n", theta);
@@ -1209,7 +1209,7 @@ void savesnowflake()
         for (j = 0; j <= 2 * (nc - 2); j++)
         {
             transform();
-            if (pq % 2 == 1)
+            if (g_pq % 2 == 1)
             {
                 if (apic[i1][j1] == 0)
                 {
@@ -1291,20 +1291,20 @@ void main(int argc, char *argv[])
     skip();
     scanf("%lf", &rho);
 
-    printf("enter rinit:");
+    printf("enter r_init:");
     skip();
-    scanf("%d", &rinit);
+    scanf("%d", &r_init);
 
-    twelvesided = 0;
-    if (rinit < 0)
+    twelve_sided = 0;
+    if (r_init < 0)
     {
-        rinit = -rinit;
-        twelvesided = 1;
+        r_init = -r_init;
+        twelve_sided = 1;
     }
 
-    printf("enter rhorinit:");
+    printf("enter rhor_init:");
     skip();
-    scanf("%lf", &rhorinit);
+    scanf("%lf", &rhor_init);
 
     printf("enter beta:");
     skip();
@@ -1387,7 +1387,7 @@ void main(int argc, char *argv[])
 
     XSetStandardProperties(g_xDisplay, g_xWindow, gui_WINDOW_NAME_STR, gui_ICON_NAME_STR, None, argv, argc, &g_xSizeHints);
 
-    cmap = DefaultColormap(g_xDisplay, g_xScreen);
+    g_cmap = DefaultColormap(g_xDisplay, g_xScreen);
 
     braquecolors64();
     for (i = 0; i < KAPPA_MAX; i++)
@@ -1395,7 +1395,7 @@ void main(int argc, char *argv[])
         g_color[i].red = g_red[i] * 65535 / 255;
         g_color[i].green = g_green[i] * 65535 / 255;
         g_color[i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, cmap, &g_color[i]);
+        XAllocColor(g_xDisplay, g_cmap, &g_color[i]);
     }
 
     bluecolors33();
@@ -1406,7 +1406,7 @@ void main(int argc, char *argv[])
         g_color_on[i].red = g_red[i] * 65535 / 255;
         g_color_on[i].green = g_green[i] * 65535 / 255;
         g_color_on[i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, cmap, &g_color_on[i]);
+        XAllocColor(g_xDisplay, g_cmap, &g_color_on[i]);
     }
 
     offcolors();
@@ -1417,28 +1417,28 @@ void main(int argc, char *argv[])
         g_color_off[63 - i].red = g_red[i] * 65535 / 255;
         g_color_off[63 - i].green = g_green[i] * 65535 / 255;
         g_color_off[63 - i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, cmap, &g_color_off[63 - i]);
+        XAllocColor(g_xDisplay, g_cmap, &g_color_off[63 - i]);
     }
 
-    XAllocNamedColor(g_xDisplay, cmap, "orange", &g_othp[0], &g_othp[0]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray90", &g_othp[1], &g_othp[1]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray80", &g_othp[2], &g_othp[2]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray70", &g_othp[3], &g_othp[3]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray60", &g_othp[4], &g_othp[4]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray50", &g_othp[5], &g_othp[5]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray40", &g_othp[6], &g_othp[6]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray30", &g_othp[7], &g_othp[7]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray25", &g_othp[8], &g_othp[8]);
-    XAllocNamedColor(g_xDisplay, cmap, "gray20", &g_othp[9], &g_othp[9]);
-    XAllocNamedColor(g_xDisplay, cmap, "black", &g_othp[10], &g_othp[10]);
-    XAllocNamedColor(g_xDisplay, cmap, "azure", &g_othp[11], &g_othp[11]);
-    XAllocNamedColor(g_xDisplay, cmap, "lightblue2", &g_othp[12], &g_othp[12]);
-    XAllocNamedColor(g_xDisplay, cmap, "lightblue3", &g_othp[13], &g_othp[13]);
-    XAllocNamedColor(g_xDisplay, cmap, "lightblue4", &g_othp[14], &g_othp[14]);
-    XAllocNamedColor(g_xDisplay, cmap, "cornflowerblue", &g_othp[15], &g_othp[15]);
-    XAllocNamedColor(g_xDisplay, cmap, "white", &g_othp[16], &g_othp[16]);
-    XAllocNamedColor(g_xDisplay, cmap, "palegreen", &g_othp[17], &g_othp[17]);
-    XAllocNamedColor(g_xDisplay, cmap, "red", &g_othp[18], &g_othp[18]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "orange", &g_othp[0], &g_othp[0]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray90", &g_othp[1], &g_othp[1]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray80", &g_othp[2], &g_othp[2]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray70", &g_othp[3], &g_othp[3]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray60", &g_othp[4], &g_othp[4]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray50", &g_othp[5], &g_othp[5]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray40", &g_othp[6], &g_othp[6]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray30", &g_othp[7], &g_othp[7]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray25", &g_othp[8], &g_othp[8]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray20", &g_othp[9], &g_othp[9]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "black", &g_othp[10], &g_othp[10]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "azure", &g_othp[11], &g_othp[11]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue2", &g_othp[12], &g_othp[12]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue3", &g_othp[13], &g_othp[13]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue4", &g_othp[14], &g_othp[14]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "cornflowerblue", &g_othp[15], &g_othp[15]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "white", &g_othp[16], &g_othp[16]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "palegreen", &g_othp[17], &g_othp[17]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "red", &g_othp[18], &g_othp[18]);
 
     g_xGC = XCreateGC(g_xDisplay, g_xWindow, 0, 0);
 
@@ -1459,7 +1459,7 @@ void main(int argc, char *argv[])
     picturebig();
     /*plotstate(); */
 
-    pq = 0;
+    g_pq = 0;
 
     while (g_exit_flag == false)
     {
@@ -1480,7 +1480,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 65) && (posx <= 115) && (posy >= 10) && (posy <= 30))
             {
                 printf("pause\n");
-                if (pq % 2 == 0)
+                if (g_pq % 2 == 0)
                     picturerings();
                 else
                     picturebig();
@@ -1490,12 +1490,12 @@ void main(int argc, char *argv[])
 
                 printf("play\n");
 
-                while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (pq != -1) && (stop == false))
+                while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (g_pq != -1) && (g_stop == false))
                 {
-                    noac = 0;
-                    pq++;
+                    g_noac = 0;
+                    g_pq++;
                     dynamics();
-                    if (pq % 10 == 0)
+                    if (g_pq % 10 == 0)
                     {
                         picturebig();
                     }
@@ -1522,8 +1522,8 @@ void main(int argc, char *argv[])
             {
                 printf("step\n");
 
-                noac = 0;
-                pq++;
+                g_noac = 0;
+                g_pq++;
                 dynamics();
                 picturebig();
                 checkmass();
