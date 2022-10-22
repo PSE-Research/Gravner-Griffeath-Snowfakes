@@ -1289,17 +1289,18 @@ void gui_picture_rings()
 } /* gui_picture_rings() */
 
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int posx, posy;
     Window rw, cw;
     int rootx, rooty;
     unsigned int kgb;
 
-    /* ---- enter data */
+
+    // ---- enter data
     io_get_input_params();
 
-    /* ---- X11 GUI */
+    // ---- X11 GUI
     gui_X11init(argc, argv);
     gui_draw_buttons();
 
@@ -1308,21 +1309,23 @@ void main(int argc, char *argv[])
     gui_picture_big();
     /*io_plot_state(); */
 
+    // ---- main loop
     g_pq = 0;
-
     while (g_exit_flag == false)
     {
+        // 获取事件 | Get Events
         XNextEvent(g_xDisplay, &g_xEvent);
+        /** 根据事件类型进行处理
+         *  Processing based on event type
+         */
         switch (g_xEvent.type)
         {
 
         case ButtonPress:
-
+            // 查询鼠标位置 | Query mouse position
             XQueryPointer(g_xDisplay, g_xWindow, &rw, &cw, &rootx, &rooty, &posx, &posy, &kgb);
-
             if ((posx >= 10) && (posx <= 60) && (posy >= 10) && (posy <= 30))
             {
-
                 printf("QUIT\n");
                 g_exit_flag = true;
             }
@@ -1336,9 +1339,7 @@ void main(int argc, char *argv[])
             }
             else if ((posx >= 120) && (posx <= 170) && (posy >= 10) && (posy <= 30))
             {
-
                 printf("play\n");
-
                 while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (g_pq != -1) && (g_stop == false))
                 {
                     g_noac = 0;
@@ -1356,39 +1357,39 @@ void main(int argc, char *argv[])
                 io_save_picture();
                 io_save_snowflake();
             }
-
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
             {
-
                 printf("read from file %s\n", g_in_file_path);
                 io_read_picture();
                 dynamics_pop1();
                 gui_picture_big();
             }
-
             else
             {
                 printf("step\n");
-
                 g_noac = 0;
                 g_pq++;
                 dynamics();
                 gui_picture_big();
             }
-
             break;
 
         case Expose:
-
             if (g_xEvent.xexpose.count == 0)
             {
                 gui_picture_big();
                 gui_draw_buttons();
             }
             break;
-        }
-    }
+
+        default:
+            /* do nothing */
+            break;
+        } /* switch (g_xEvent.type) */
+    } /* while (g_exit_flag == false) */
 
     // do clean befor exit.
     gui_X11clean();
+    
+    return 0;
 } // main
