@@ -80,13 +80,13 @@ int g_center_i, g_center_j;
 int g_r_old, g_r_new;
 
 /** diffusion field */
-double  adif[NR_MAX][NC_MAX];
+double  d_dif[NR_MAX][NC_MAX];
 /** indicator of snowflake sites */
-int     apic[NR_MAX][NC_MAX];
+int     a_pic[NR_MAX][NC_MAX];
 /** boundary mass */
-double  afr[NR_MAX][NC_MAX];
+double  b__fr[NR_MAX][NC_MAX];
 /** crystal mass */
-double  alm[NR_MAX][NC_MAX];
+double  c__lm[NR_MAX][NC_MAX];
 
 /** rings pallette */
 int     ash[NR_MAX][NC_MAX];
@@ -292,7 +292,7 @@ void io_print_state()
     for (i = 0; i <= 9; i++)
     {
         for (j = 0; j <= 9; j++)
-            printf("%.5lf|", adif[i][j]);
+            printf("%.5lf|", d_dif[i][j]);
 
         printf("\n");
     }
@@ -311,8 +311,8 @@ void io_check_state()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if ((apic[i][j] == 1) && (adif[i][j] > 0.0))
-                printf("*%d %lf", apic[i][j], adif[i][j]);
+            if ((a_pic[i][j] == 1) && (d_dif[i][j] > 0.0))
+                printf("*%d %lf", a_pic[i][j], d_dif[i][j]);
         }
     }
 }
@@ -330,65 +330,65 @@ void createbdry()
     {
         ash[j - 1][j] = ash[j][j - 1];
         ash[j - 2][j] = ash[j][j - 2];
-        adif[j - 1][j] = adif[j][j - 1];
-        adif[j - 2][j] = adif[j][j - 2];
-        afr[j - 1][j] = afr[j][j - 1];
-        afr[j - 2][j] = afr[j][j - 2];
-        apic[j - 1][j] = apic[j][j - 1];
-        apic[j - 2][j] = apic[j][j - 2];
-        alm[j - 1][j] = alm[j][j - 1];
-        alm[j - 2][j] = alm[j][j - 2];
+        d_dif[j - 1][j] = d_dif[j][j - 1];
+        d_dif[j - 2][j] = d_dif[j][j - 2];
+        b__fr[j - 1][j] = b__fr[j][j - 1];
+        b__fr[j - 2][j] = b__fr[j][j - 2];
+        a_pic[j - 1][j] = a_pic[j][j - 1];
+        a_pic[j - 2][j] = a_pic[j][j - 2];
+        c__lm[j - 1][j] = c__lm[j][j - 1];
+        c__lm[j - 2][j] = c__lm[j][j - 2];
     }
     for (i = 2; i < nr; i++)
     {
         ash[i][0] = ash[i - 1][2];
-        adif[i][0] = adif[i - 1][2];
-        afr[i][0] = afr[i - 1][2];
-        apic[i][0] = apic[i - 1][2];
-        alm[i][0] = alm[i - 1][2];
+        d_dif[i][0] = d_dif[i - 1][2];
+        b__fr[i][0] = b__fr[i - 1][2];
+        a_pic[i][0] = a_pic[i - 1][2];
+        c__lm[i][0] = c__lm[i - 1][2];
     }
     ash[0][2] = ash[2][0];
     ash[0][1] = ash[2][0];
     ash[1][0] = ash[2][0];
-    adif[0][2] = adif[2][0];
-    adif[0][1] = adif[2][0];
-    adif[1][0] = adif[2][0];
-    afr[0][2] = afr[2][0];
-    afr[0][1] = afr[2][0];
-    afr[1][0] = afr[2][0];
-    apic[0][2] = apic[2][0];
-    apic[0][1] = apic[2][0];
-    apic[1][0] = apic[2][0];
-    alm[0][2] = alm[2][0];
-    alm[0][1] = alm[2][0];
-    alm[1][0] = alm[2][0];
+    d_dif[0][2] = d_dif[2][0];
+    d_dif[0][1] = d_dif[2][0];
+    d_dif[1][0] = d_dif[2][0];
+    b__fr[0][2] = b__fr[2][0];
+    b__fr[0][1] = b__fr[2][0];
+    b__fr[1][0] = b__fr[2][0];
+    a_pic[0][2] = a_pic[2][0];
+    a_pic[0][1] = a_pic[2][0];
+    a_pic[1][0] = a_pic[2][0];
+    c__lm[0][2] = c__lm[2][0];
+    c__lm[0][1] = c__lm[2][0];
+    c__lm[1][0] = c__lm[2][0];
     for (i = 1; i <= nr - 2; i++)
     {
         j = nr - i;
         ash[i][j] = ash[i][j - 1];
-        adif[i][j] = adif[i][j - 1];
-        afr[i][j] = afr[i][j - 1];
-        apic[i][j] = apic[i][j - 1];
-        alm[i][j] = alm[i][j - 1];
+        d_dif[i][j] = d_dif[i][j - 1];
+        b__fr[i][j] = b__fr[i][j - 1];
+        a_pic[i][j] = a_pic[i][j - 1];
+        c__lm[i][j] = c__lm[i][j - 1];
     }
 
     ash[nr - 1][1] = ash[nr - 2][1];
-    adif[nr - 1][1] = adif[nr - 2][1];
-    afr[nr - 1][1] = afr[nr - 2][1];
-    apic[nr - 1][1] = apic[nr - 2][1];
-    alm[nr - 1][1] = alm[nr - 2][1];
+    d_dif[nr - 1][1] = d_dif[nr - 2][1];
+    b__fr[nr - 1][1] = b__fr[nr - 2][1];
+    a_pic[nr - 1][1] = a_pic[nr - 2][1];
+    c__lm[nr - 1][1] = c__lm[nr - 2][1];
 
     ash[nr - 2][0] = ash[nr - 3][2];
-    adif[nr - 2][0] = adif[nr - 3][2];
-    afr[nr - 2][0] = afr[nr - 3][2];
-    apic[nr - 2][0] = apic[nr - 3][2];
-    alm[nr - 2][0] = alm[nr - 3][2];
+    d_dif[nr - 2][0] = d_dif[nr - 3][2];
+    b__fr[nr - 2][0] = b__fr[nr - 3][2];
+    a_pic[nr - 2][0] = a_pic[nr - 3][2];
+    c__lm[nr - 2][0] = c__lm[nr - 3][2];
 
     ash[nr - 1][0] = ash[nr - 3][2];
-    adif[nr - 1][0] = adif[nr - 3][2];
-    afr[nr - 1][0] = afr[nr - 3][2];
-    apic[nr - 1][0] = apic[nr - 3][2];
-    alm[nr - 1][0] = alm[nr - 3][2];
+    d_dif[nr - 1][0] = d_dif[nr - 3][2];
+    b__fr[nr - 1][0] = b__fr[nr - 3][2];
+    a_pic[nr - 1][0] = a_pic[nr - 3][2];
+    c__lm[nr - 1][0] = c__lm[nr - 3][2];
 }
 
 void buildbig()
@@ -407,10 +407,10 @@ void buildbig()
             if ((i >= 1) && (j > i) && (i + j <= nr))
             {
                 ash[i][j] = ash[j][i];
-                adif[i][j] = adif[j][i];
-                apic[i][j] = apic[j][i];
-                afr[i][j] = afr[j][i];
-                alm[i][j] = alm[j][i];
+                d_dif[i][j] = d_dif[j][i];
+                a_pic[i][j] = a_pic[j][i];
+                b__fr[i][j] = b__fr[j][i];
+                c__lm[i][j] = c__lm[j][i];
             }
         }
 }
@@ -429,10 +429,10 @@ void checkmass()
     {
         for (j = 1; i + j <= nr - 1; j++)
         {
-            totalmass += adif[i][j] + afr[i][j] + alm[i][j];
+            totalmass += d_dif[i][j] + b__fr[i][j] + c__lm[i][j];
         }
     }
-    totalmass += adif[1][1] + afr[1][1] + alm[i][j];
+    totalmass += d_dif[1][1] + b__fr[1][1] + c__lm[i][j];
     printf("total mass=%.10lf\n", totalmass);
 }
 
@@ -477,22 +477,22 @@ void initialize()
                 if ((norm_inf(i - g_center_i, j - g_center_j) <= r_init) && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) &&
                     (x <= rhor_init))
                 {
-                    adif[i][j] = 0.0;
-                    apic[i][j] = 1;
-                    afr[i][j] = 0;
+                    d_dif[i][j] = 0.0;
+                    a_pic[i][j] = 1;
+                    b__fr[i][j] = 0;
                     ash[i][j] = 0;
-                    alm[i][j] = 1.0;
+                    c__lm[i][j] = 1.0;
                     k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
                 else
                 {
-                    adif[i][j] = rho;
-                    apic[i][j] = 0;
-                    afr[i][j] = 0.0;
+                    d_dif[i][j] = rho;
+                    a_pic[i][j] = 0;
+                    b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                 }
             }
             else
@@ -502,11 +502,11 @@ void initialize()
                 y1 = (double)(j - g_center_j) / r_init;
                 if (in_shape_circle1((x1 - y1) / sqrt(2.0), sqrt(3.0) * (x1 + y1) / sqrt(2.0)) == 1)
                 {
-                    adif[i][j] = 0.0;
-                    apic[i][j] = 1;
-                    afr[i][j] = 1;
+                    d_dif[i][j] = 0.0;
+                    a_pic[i][j] = 1;
+                    b__fr[i][j] = 1;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                     k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
@@ -514,11 +514,11 @@ void initialize()
 
                 else
                 {
-                    adif[i][j] = rho;
-                    apic[i][j] = 0;
-                    afr[i][j] = 0.0;
+                    d_dif[i][j] = rho;
+                    a_pic[i][j] = 0;
+                    b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                 }
             }
         }
@@ -553,44 +553,44 @@ void dynamics_diffusion()
         }
     nrhalf = nr / 2;
     if (nr % 2 == 0)
-        masscorrection = (1.0 / 7.0) * (adif[nr - 2][2] + adif[nr - 3][3] - 2.0 * adif[nrhalf][nr - nrhalf]);
+        masscorrection = (1.0 / 7.0) * (d_dif[nr - 2][2] + d_dif[nr - 3][3] - 2.0 * d_dif[nrhalf][nr - nrhalf]);
     else
-        masscorrection = (1.0 / 7.0) * (adif[nr - 2][2] + adif[nr - 3][3] - adif[nrhalf][nr - nrhalf] -
-                                        adif[nrhalf + 1][nr - nrhalf - 1]);
+        masscorrection = (1.0 / 7.0) * (d_dif[nr - 2][2] + d_dif[nr - 3][3] - d_dif[nrhalf][nr - nrhalf] -
+                                        d_dif[nrhalf + 1][nr - nrhalf - 1]);
 
     for (i = 1; i < nr; i++)
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
                 id = (i + 1);
                 iu = (i - 1);
                 jr = (j + 1);
                 jl = (j - 1);
                 count = 0;
-                if (apic[id][j] == 0)
+                if (a_pic[id][j] == 0)
                     count++;
-                if (apic[iu][j] == 0)
+                if (a_pic[iu][j] == 0)
                     count++;
-                if (apic[i][jl] == 0)
+                if (a_pic[i][jl] == 0)
                     count++;
-                if (apic[i][jr] == 0)
+                if (a_pic[i][jr] == 0)
                     count++;
-                if (apic[iu][jr] == 0)
+                if (a_pic[iu][jr] == 0)
                     count++;
-                if (apic[id][jl] == 0)
+                if (a_pic[id][jl] == 0)
                     count++;
 
                 if (count == 0)
-                    b[i][j] = adif[i][j];
+                    b[i][j] = d_dif[i][j];
                 else
                 {
 
-                    b[i][j] = (1.0 - (double)count / 7.0) * adif[i][j] +
-                              (adif[id][j] * (1.0 - apic[id][j]) + adif[iu][j] * (1.0 - apic[iu][j]) +
-                               adif[i][jl] * (1.0 - apic[i][jl]) + adif[i][jr] * (1.0 - apic[i][jr]) +
-                               adif[iu][jr] * (1.0 - apic[iu][jr]) + adif[id][jl] * (1.0 - apic[id][jl])) /
+                    b[i][j] = (1.0 - (double)count / 7.0) * d_dif[i][j] +
+                              (d_dif[id][j] * (1.0 - a_pic[id][j]) + d_dif[iu][j] * (1.0 - a_pic[iu][j]) +
+                               d_dif[i][jl] * (1.0 - a_pic[i][jl]) + d_dif[i][jr] * (1.0 - a_pic[i][jr]) +
+                               d_dif[iu][jr] * (1.0 - a_pic[iu][jr]) + d_dif[id][jl] * (1.0 - a_pic[id][jl])) /
                                   7.0;
                 }
             }
@@ -601,12 +601,12 @@ void dynamics_diffusion()
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
-            if (apic[i][j] == 0)
-                adif[i][j] = b[i][j];
+            if (a_pic[i][j] == 0)
+                d_dif[i][j] = b[i][j];
         }
     }
 
-    adif[nr - 2][1] -= masscorrection;
+    d_dif[nr - 2][1] -= masscorrection;
     createbdry();
 }
 
@@ -630,10 +630,10 @@ void dynamics_pop()
             x = uniform_01rand();
             if (x < 0.5)
             {
-                adif[i][j] = adif[i][j] * (1 + sigma);
+                d_dif[i][j] = d_dif[i][j] * (1 + sigma);
             }
             else
-                adif[i][j] = adif[i][j] * (1 - sigma);
+                d_dif[i][j] = d_dif[i][j] * (1 - sigma);
         }
     }
     createbdry();
@@ -651,10 +651,10 @@ void dynamics_pop1()
         for (i = 1; i < nr; i++)
             for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
             {
-                if (apic[i][j] == 0)
+                if (a_pic[i][j] == 0)
                 {
-                    offset = sigma * adif[i][j];
-                    adif[i][j] += offset;
+                    offset = sigma * d_dif[i][j];
+                    d_dif[i][j] += offset;
                 }
             }
     }
@@ -681,20 +681,20 @@ void dynamics_unfre()
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
-                afrij = afr[i][j];
+                afrij = b__fr[i][j];
                 y = afrij * mu;
-                afr[i][j] = afr[i][j] - y;
-                adif[i][j] = adif[i][j] + y;
+                b__fr[i][j] = b__fr[i][j] - y;
+                d_dif[i][j] = d_dif[i][j] + y;
 
-                afrij = alm[i][j];
+                afrij = c__lm[i][j];
                 if (afrij > 0.0)
                 {
                     y = afrij * gam;
-                    alm[i][j] = alm[i][j] - y;
-                    adif[i][j] = adif[i][j] + y;
+                    c__lm[i][j] = c__lm[i][j] - y;
+                    d_dif[i][j] = d_dif[i][j] + y;
                 }
             }
         }
@@ -727,14 +727,14 @@ void dynamics_fre()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            bpic[i][j] = apic[i][j];
+            bpic[i][j] = a_pic[i][j];
         }
     for (i = 1; i <= iup; i++)
     {
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
                 id = i + 1;
@@ -742,30 +742,30 @@ void dynamics_fre()
                 jr = j + 1;
                 jl = j - 1;
                 count = 0;
-                if (apic[id][j] == 1)
+                if (a_pic[id][j] == 1)
                     count++;
-                if (apic[iu][j] == 1)
+                if (a_pic[iu][j] == 1)
                     count++;
-                if (apic[i][jl] == 1)
+                if (a_pic[i][jl] == 1)
                     count++;
-                if (apic[i][jr] == 1)
+                if (a_pic[i][jr] == 1)
                     count++;
-                if (apic[iu][jr] == 1)
+                if (a_pic[iu][jr] == 1)
                     count++;
-                if (apic[id][jl] == 1)
+                if (a_pic[id][jl] == 1)
                     count++;
 
                 if (count >= 1)
                 {
 
-                    difmass = adif[i][j] + adif[id][j] * (1 - apic[id][j]) + adif[iu][j] * (1 - apic[iu][j]) +
-                              adif[i][jl] * (1 - apic[i][jl]) + adif[i][jr] * (1 - apic[i][jr]) +
-                              adif[iu][jr] * (1 - apic[iu][jr]) + adif[id][jl] * (1 - apic[id][jl]);
+                    difmass = d_dif[i][j] + d_dif[id][j] * (1 - a_pic[id][j]) + d_dif[iu][j] * (1 - a_pic[iu][j]) +
+                              d_dif[i][jl] * (1 - a_pic[i][jl]) + d_dif[i][jr] * (1 - a_pic[i][jr]) +
+                              d_dif[iu][jr] * (1 - a_pic[iu][jr]) + d_dif[id][jl] * (1 - a_pic[id][jl]);
 
                     if (count <= 2)
                     {
 
-                        if (afr[i][j] >= beta)
+                        if (b__fr[i][j] >= beta)
                         {
                             bpic[i][j] = 1;
                         }
@@ -774,7 +774,7 @@ void dynamics_fre()
                     if (count >= 3)
                     {
 
-                        if ((afr[i][j] >= 1.0) || ((difmass <= theta) && (afr[i][j] >= alpha)))
+                        if ((b__fr[i][j] >= 1.0) || ((difmass <= theta) && (b__fr[i][j] >= alpha)))
                         {
                             bpic[i][j] = 1;
                         }
@@ -790,12 +790,12 @@ void dynamics_fre()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if (apic[i][j] != bpic[i][j])
+            if (a_pic[i][j] != bpic[i][j])
             {
-                apic[i][j] = bpic[i][j];
+                a_pic[i][j] = bpic[i][j];
 
-                alm[i][j] += afr[i][j];
-                afr[i][j] = 0.0;
+                c__lm[i][j] += b__fr[i][j];
+                b__fr[i][j] = 0.0;
                 k = norm_inf(i - g_center_i, j - g_center_j);
                 if (k > g_r_new)
                     g_r_new = k;
@@ -839,7 +839,7 @@ void dynamics_fre1()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
                 id = i + 1;
@@ -847,26 +847,26 @@ void dynamics_fre1()
                 jr = j + 1;
                 jl = j - 1;
                 count = 0;
-                if (apic[id][j] == 1)
+                if (a_pic[id][j] == 1)
                     count++;
-                if (apic[iu][j] == 1)
+                if (a_pic[iu][j] == 1)
                     count++;
-                if (apic[i][jl] == 1)
+                if (a_pic[i][jl] == 1)
                     count++;
-                if (apic[i][jr] == 1)
+                if (a_pic[i][jr] == 1)
                     count++;
-                if (apic[iu][jr] == 1)
+                if (a_pic[iu][jr] == 1)
                     count++;
-                if (apic[id][jl] == 1)
+                if (a_pic[id][jl] == 1)
                     count++;
 
                 if (count >= 1)
                 {
-                    offset = (1.0 - kappa) * adif[i][j];
-                    afr[i][j] = afr[i][j] + offset;
-                    offset = adif[i][j] - offset;
-                    adif[i][j] = 0;
-                    alm[i][j] += offset;
+                    offset = (1.0 - kappa) * d_dif[i][j];
+                    b__fr[i][j] = b__fr[i][j] + offset;
+                    offset = d_dif[i][j] - offset;
+                    d_dif[i][j] = 0;
+                    c__lm[i][j] += offset;
                 }
             }
         }
@@ -905,17 +905,17 @@ void gui_picture_big()
         for (j = 1; j < nc; j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
-                k = floor(63.0 * (adif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
             else
             {
 
-                y = alm[i][j] + adif[i][j];
+                y = c__lm[i][j] + d_dif[i][j];
 
                 k = floor((33.0 * y - alpha) / (beta - alpha));
                 if (k > 32)
@@ -969,10 +969,10 @@ void gui_picture_rings()
         for (j = 1; j < nc; j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
-                k = floor(63.0 * (adif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
@@ -982,15 +982,15 @@ void gui_picture_rings()
                 k = k % KAPPA_MAX;
                 XSetForeground(g_xDisplay, g_xGC, g_color[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
-                if (alm[i][j] > 1 + 0.5 * (beta - 1.0))
+                if (c__lm[i][j] > 1 + 0.5 * (beta - 1.0))
                 {
-                    if (alm[i][j] >= 1 + 0.2 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.2 * (beta - 1.0))
                         k = 12;
-                    if (alm[i][j] >= 1 + 0.5 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.5 * (beta - 1.0))
                         k = 13;
-                    if (alm[i][j] >= 1 + 0.7 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.7 * (beta - 1.0))
                         k = 14;
-                    if (alm[i][j] >= beta)
+                    if (c__lm[i][j] >= beta)
                         k = 15;
 
                     XSetForeground(g_xDisplay, g_xGC, g_othp[k].pixel);
@@ -1083,15 +1083,15 @@ void io_read_state()
         for (j = 0; j < nc; j++)
         {
             fscanf(g_state_file, "%lf", &x);
-            adif[i][j] = x;
+            d_dif[i][j] = x;
             fscanf(g_state_file, "%d", &k);
-            apic[i][j] = k;
+            a_pic[i][j] = k;
             fscanf(g_state_file, "%lf", &x);
-            afr[i][j] = x;
+            b__fr[i][j] = x;
             fscanf(g_state_file, "%d", &k);
             ash[i][j] = k;
             fscanf(g_state_file, "%lf", &x);
-            alm[i][j] = x;
+            c__lm[i][j] = x;
         }
     }
     fscanf(g_state_file, "%d", &k);
@@ -1117,7 +1117,7 @@ void io_save_state()
     {
         for (j = 0; j < nc; j++)
         {
-            fprintf(g_state_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
+            fprintf(g_state_file, "%.10lf %d %.10lf %d %.10lf ", d_dif[i][j], a_pic[i][j], b__fr[i][j], ash[i][j], c__lm[i][j]);
         }
     }
     fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
@@ -1213,17 +1213,17 @@ void io_save_snowflake()
             transform();
             if (g_pq % 2 == 1)
             {
-                if (apic[i1][j1] == 0)
+                if (a_pic[i1][j1] == 0)
                 {
 
-                    k = floor(63.0 * (adif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
 
-                    y = alm[i1][j1] + adif[i1][j1];
+                    y = c__lm[i1][j1] + d_dif[i1][j1];
 
                     k = floor((33.0 * y - alpha) / (beta - alpha));
                     if (k > 32)
@@ -1235,23 +1235,23 @@ void io_save_snowflake()
             }
             else
             {
-                if (apic[i1][j1] == 0)
+                if (a_pic[i1][j1] == 0)
                 {
-                    k = floor(63.0 * (adif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
-                    if (alm[i1][j1] > 1 + 0.5 * (beta - 1.0))
+                    if (c__lm[i1][j1] > 1 + 0.5 * (beta - 1.0))
                     {
-                        if (alm[i1][j1] >= 1 + 0.2 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.2 * (beta - 1.0))
                             k = 12;
-                        if (alm[i1][j1] >= 1 + 0.5 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.5 * (beta - 1.0))
                             k = 13;
-                        if (alm[i1][j1] >= 1 + 0.7 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.7 * (beta - 1.0))
                             k = 14;
-                        if (alm[i1][j1] >= beta)
+                        if (c__lm[i1][j1] >= beta)
                             k = 15;
                         fprintf(g_state_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
                                 g_othp[k].blue * 255 / 65535);

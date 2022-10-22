@@ -82,21 +82,21 @@ int g_r_old, g_r_new;
 /** diffusive mass (vapor).
  * 
  */
-double  adif[NR_MAX][NC_MAX];
+double  d_dif[NR_MAX][NC_MAX];
 /** attachment flag, 
  * indicator of snowflake sites.
  * 
  * `true` if x belongs to the crystal at time t.
  */
-int     apic[NR_MAX][NC_MAX];
+int     a_pic[NR_MAX][NC_MAX];
 /** boundary mass (quasi-liquid).
  * 
  */
-double  afr[NR_MAX][NC_MAX];
+double  b__fr[NR_MAX][NC_MAX];
 /** crystal mass (ice).
  * 
  */
-double  alm[NR_MAX][NC_MAX];
+double  c__lm[NR_MAX][NC_MAX];
 
 /** rings pallette
  * 
@@ -219,11 +219,11 @@ void initialize()
                     && (x <= rhor_init))
                 {
                     // seed for the flake
-                    adif[i][j] = 0.0;
-                    apic[i][j] = true;
-                    afr[i][j] = 1.0;
+                    d_dif[i][j] = 0.0;
+                    a_pic[i][j] = true;
+                    b__fr[i][j] = 1.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                     k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
@@ -231,11 +231,11 @@ void initialize()
                 else
                 {
                     // filled with water vapour
-                    adif[i][j] = rho;
-                    apic[i][j] = false;
-                    afr[i][j] = 0.0;
+                    d_dif[i][j] = rho;
+                    a_pic[i][j] = false;
+                    b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                 }
             }
             else
@@ -247,22 +247,22 @@ void initialize()
                     || ((i - g_center_i >= 0) && (i - g_center_i <= r_init) && (j - g_center_j == 0)) 
                     || ((j - g_center_j <= 0) && (j - g_center_j >= -r_init) && (i - g_center_i == 0)))
                 {
-                    adif[i][j] = 0.0;
-                    apic[i][j] = true;
-                    afr[i][j] = 0.0;
+                    d_dif[i][j] = 0.0;
+                    a_pic[i][j] = true;
+                    b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 1.0;
+                    c__lm[i][j] = 1.0;
                     k = norm_inf(i - g_center_i, j - g_center_j);
                     if (k > g_r_new)
                         g_r_new = k;
                 }
                 else
                 {
-                    adif[i][j] = rho;
-                    apic[i][j] = false;
-                    afr[i][j] = 0.0;
+                    d_dif[i][j] = rho;
+                    a_pic[i][j] = false;
+                    b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
-                    alm[i][j] = 0.0;
+                    c__lm[i][j] = 0.0;
                 }
             }
         }
@@ -297,35 +297,35 @@ void dynamics_diffusion()
     {
         for (j = 0; j < nc; j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
                 jr = (j + 1) % nr;
                 jl = (j + nr - 1) % nr;
                 count = 0;
-                if (apic[id][j] == 0)
+                if (a_pic[id][j] == 0)
                     count++;
-                if (apic[iu][j] == 0)
+                if (a_pic[iu][j] == 0)
                     count++;
-                if (apic[i][jl] == 0)
+                if (a_pic[i][jl] == 0)
                     count++;
-                if (apic[i][jr] == 0)
+                if (a_pic[i][jr] == 0)
                     count++;
-                if (apic[iu][jr] == 0)
+                if (a_pic[iu][jr] == 0)
                     count++;
-                if (apic[id][jl] == 0)
+                if (a_pic[id][jl] == 0)
                     count++;
 
                 if (count == 0)
-                    b[i][j] = adif[i][j];
+                    b[i][j] = d_dif[i][j];
                 else
                 {
 
-                    b[i][j] = (1.0 - (double)count / 7.0) * adif[i][j] +
-                              (adif[id][j] * (1.0 - apic[id][j]) + adif[iu][j] * (1.0 - apic[iu][j]) +
-                               adif[i][jl] * (1.0 - apic[i][jl]) + adif[i][jr] * (1.0 - apic[i][jr]) +
-                               adif[iu][jr] * (1.0 - apic[iu][jr]) + adif[id][jl] * (1.0 - apic[id][jl])) /
+                    b[i][j] = (1.0 - (double)count / 7.0) * d_dif[i][j] +
+                              (d_dif[id][j] * (1.0 - a_pic[id][j]) + d_dif[iu][j] * (1.0 - a_pic[iu][j]) +
+                               d_dif[i][jl] * (1.0 - a_pic[i][jl]) + d_dif[i][jr] * (1.0 - a_pic[i][jr]) +
+                               d_dif[iu][jr] * (1.0 - a_pic[iu][jr]) + d_dif[id][jl] * (1.0 - a_pic[id][jl])) /
                                   7.0;
                 }
             }
@@ -336,14 +336,14 @@ void dynamics_diffusion()
     {
         for (j = 0; (j < nc); j++)
         {
-            if (apic[i][j] == 0)
-                adif[i][j] = b[i][j];
+            if (a_pic[i][j] == 0)
+                d_dif[i][j] = b[i][j];
         }
     }
 } /* dynamics_diffusion() */
 
 /**
- * Add Noise to `adif[]`
+ * Add Noise to `d_dif[]`
  */
 void dynamics_pop()
 {
@@ -362,10 +362,10 @@ void dynamics_pop()
             x = uniform_01rand();
             if (x < 0.5)
             {
-                adif[i][j] = adif[i][j] * (1 + sigma);
+                d_dif[i][j] = d_dif[i][j] * (1 + sigma);
             }
             else
-                adif[i][j] = adif[i][j] * (1 - sigma);
+                d_dif[i][j] = d_dif[i][j] * (1 - sigma);
         }
     }
 } /* dynamics_pop() */
@@ -384,10 +384,10 @@ void dynamics_pop1()
         for (i = 0; i < nr; i++)
             for (j = 0; (j < nc); j++)
             {
-                if (apic[i][j] == 0)
+                if (a_pic[i][j] == 0)
                 {
-                    offset = sigma * adif[i][j];
-                    adif[i][j] += offset;
+                    offset = sigma * d_dif[i][j];
+                    d_dif[i][j] += offset;
                 }
             }
     }
@@ -415,20 +415,20 @@ void dynamics_unfre()
     {
         for (j = jlo; j <= jup; j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
-                afrij = afr[i][j];
+                afrij = b__fr[i][j];
                 y = afrij * mu;
-                afr[i][j] = afr[i][j] - y;
-                adif[i][j] = adif[i][j] + y;
+                b__fr[i][j] = b__fr[i][j] - y;
+                d_dif[i][j] = d_dif[i][j] + y;
 
-                afrij = alm[i][j];
+                afrij = c__lm[i][j];
                 if (afrij > 0.0)
                 {
                     y = afrij * gam;
-                    alm[i][j] = alm[i][j] - y;
-                    adif[i][j] = adif[i][j] + y;
+                    c__lm[i][j] = c__lm[i][j] - y;
+                    d_dif[i][j] = d_dif[i][j] + y;
                 }
             }
         }
@@ -460,14 +460,14 @@ void dynamics_fre()
         for (j = jlo; j <= jup; j++)
         {
 
-            bpic[i][j] = apic[i][j];
+            bpic[i][j] = a_pic[i][j];
         }
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
                 id = (i + 1) % nr;
@@ -475,30 +475,30 @@ void dynamics_fre()
                 jr = (j + 1) % nc;
                 jl = (j + nc - 1) % nc;
                 count = 0;
-                if (apic[id][j] == 1)
+                if (a_pic[id][j] == 1)
                     count++;
-                if (apic[iu][j] == 1)
+                if (a_pic[iu][j] == 1)
                     count++;
-                if (apic[i][jl] == 1)
+                if (a_pic[i][jl] == 1)
                     count++;
-                if (apic[i][jr] == 1)
+                if (a_pic[i][jr] == 1)
                     count++;
-                if (apic[iu][jr] == 1)
+                if (a_pic[iu][jr] == 1)
                     count++;
-                if (apic[id][jl] == 1)
+                if (a_pic[id][jl] == 1)
                     count++;
 
                 if (count >= 1)
                 {
 
-                    difmass = adif[i][j] + adif[id][j] * (1 - apic[id][j]) + adif[iu][j] * (1 - apic[iu][j]) +
-                              adif[i][jl] * (1 - apic[i][jl]) + adif[i][jr] * (1 - apic[i][jr]) +
-                              adif[iu][jr] * (1 - apic[iu][jr]) + adif[id][jl] * (1 - apic[id][jl]);
+                    difmass = d_dif[i][j] + d_dif[id][j] * (1 - a_pic[id][j]) + d_dif[iu][j] * (1 - a_pic[iu][j]) +
+                              d_dif[i][jl] * (1 - a_pic[i][jl]) + d_dif[i][jr] * (1 - a_pic[i][jr]) +
+                              d_dif[iu][jr] * (1 - a_pic[iu][jr]) + d_dif[id][jl] * (1 - a_pic[id][jl]);
 
                     if (count <= 2)
                     {
 
-                        if (afr[i][j] >= beta)
+                        if (b__fr[i][j] >= beta)
                         {
                             bpic[i][j] = 1;
                         }
@@ -507,7 +507,7 @@ void dynamics_fre()
                     if (count >= 3)
                     {
 
-                        if ((afr[i][j] >= 1.0) || ((difmass <= theta) && (afr[i][j] >= alpha)))
+                        if ((b__fr[i][j] >= 1.0) || ((difmass <= theta) && (b__fr[i][j] >= alpha)))
                         {
                             bpic[i][j] = 1;
                         }
@@ -523,12 +523,12 @@ void dynamics_fre()
         for (j = jlo; j <= jup; j++)
         {
 
-            if (apic[i][j] != bpic[i][j])
+            if (a_pic[i][j] != bpic[i][j])
             {
-                apic[i][j] = bpic[i][j];
+                a_pic[i][j] = bpic[i][j];
 
-                alm[i][j] += afr[i][j];
-                afr[i][j] = 0.0;
+                c__lm[i][j] += b__fr[i][j];
+                b__fr[i][j] = 0.0;
                 k = norm_inf(i - g_center_i, j - g_center_j);
                 if (k > g_r_new)
                     g_r_new = k;
@@ -572,7 +572,7 @@ void dynamics_fre1()
         for (j = jlo; j <= jup; j++)
         {
 
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
 
                 id = (i + 1) % nr;
@@ -580,26 +580,26 @@ void dynamics_fre1()
                 jr = (j + 1) % nc;
                 jl = (j + nc - 1) % nc;
                 count = 0;
-                if (apic[id][j] == 1)
+                if (a_pic[id][j] == 1)
                     count++;
-                if (apic[iu][j] == 1)
+                if (a_pic[iu][j] == 1)
                     count++;
-                if (apic[i][jl] == 1)
+                if (a_pic[i][jl] == 1)
                     count++;
-                if (apic[i][jr] == 1)
+                if (a_pic[i][jr] == 1)
                     count++;
-                if (apic[iu][jr] == 1)
+                if (a_pic[iu][jr] == 1)
                     count++;
-                if (apic[id][jl] == 1)
+                if (a_pic[id][jl] == 1)
                     count++;
 
                 if (count >= 1)
                 {
-                    offset = (1.0 - kappa) * adif[i][j];
-                    afr[i][j] = afr[i][j] + offset;
-                    offset = adif[i][j] - offset;
-                    adif[i][j] = 0;
-                    alm[i][j] += offset;
+                    offset = (1.0 - kappa) * d_dif[i][j];
+                    b__fr[i][j] = b__fr[i][j] + offset;
+                    offset = d_dif[i][j] - offset;
+                    d_dif[i][j] = 0;
+                    c__lm[i][j] += offset;
                 }
             }
         }
@@ -742,15 +742,15 @@ void io_read_state()
         for (j = 0; j < nc; j++)
         {
             fscanf(g_state_file, "%lf", &x);
-            adif[i][j] = x;
+            d_dif[i][j] = x;
             fscanf(g_state_file, "%d", &k);
-            apic[i][j] = k;
+            a_pic[i][j] = k;
             fscanf(g_state_file, "%lf", &x);
-            afr[i][j] = x;
+            b__fr[i][j] = x;
             fscanf(g_state_file, "%d", &k);
             ash[i][j] = k;
             fscanf(g_state_file, "%lf", &x);
-            alm[i][j] = x;
+            c__lm[i][j] = x;
         }
     }
     fscanf(g_state_file, "%d", &k);
@@ -782,7 +782,7 @@ void io_save_state()
     {
         for (j = 0; j < nc; j++)
         {
-            fprintf(g_state_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
+            fprintf(g_state_file, "%.10lf %d %.10lf %d %.10lf ", d_dif[i][j], a_pic[i][j], b__fr[i][j], ash[i][j], c__lm[i][j]);
         }
     }
     fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
@@ -837,17 +837,17 @@ void io_save_snowflake()
             j1 = j;
             if (g_pq % 2 == 1)
             {
-                if (apic[i1][j1] == 0)
+                if (a_pic[i1][j1] == 0)
                 {
 
-                    k = floor(63.0 * (adif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
 
-                    y = alm[i1][j1] + adif[i1][j1];
+                    y = c__lm[i1][j1] + d_dif[i1][j1];
 
                     k = floor((33.0 * y - alpha) / (beta - alpha));
                     if (k > 32)
@@ -859,23 +859,23 @@ void io_save_snowflake()
             }
             else
             {
-                if (apic[i1][j1] == 0)
+                if (a_pic[i1][j1] == 0)
                 {
-                    k = floor(63.0 * (adif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
-                    if (alm[i1][j1] > 1 + 0.5 * (beta - 1.0))
+                    if (c__lm[i1][j1] > 1 + 0.5 * (beta - 1.0))
                     {
-                        if (alm[i1][j1] >= 1 + 0.2 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.2 * (beta - 1.0))
                             k = 12;
-                        if (alm[i1][j1] >= 1 + 0.5 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.5 * (beta - 1.0))
                             k = 13;
-                        if (alm[i1][j1] >= 1 + 0.7 * (beta - 1.0))
+                        if (c__lm[i1][j1] >= 1 + 0.7 * (beta - 1.0))
                             k = 14;
-                        if (alm[i1][j1] >= beta)
+                        if (c__lm[i1][j1] >= beta)
                             k = 15;
                         fprintf(g_state_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
                                 g_othp[k].blue * 255 / 65535);
@@ -907,7 +907,7 @@ void io_print_state()
     for (i = 0; i <= 9; i++)
     {
         for (j = 0; j <= 9; j++)
-            printf("%.5lf|", adif[i][j]);
+            printf("%.5lf|", d_dif[i][j]);
 
         printf("\n");
     }
@@ -924,8 +924,8 @@ void io_check_state()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if ((apic[i][j] == 1) && (adif[i][j] > 0.0))
-                printf("*%d %lf", apic[i][j], adif[i][j]);
+            if ((a_pic[i][j] == 1) && (d_dif[i][j] > 0.0))
+                printf("*%d %lf", a_pic[i][j], d_dif[i][j]);
         }
     }
 } /* io_check_state() */
@@ -1196,15 +1196,15 @@ void gui_picture_big()
     {
         for (j = 0; j < nc; j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
-                k = floor(63.0 * (adif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
             else
             {
-                y = alm[i][j] + adif[i][j];
+                y = c__lm[i][j] + d_dif[i][j];
 
                 k = floor((33.0 * y - alpha) / (beta - alpha));
                 if (k > 32)
@@ -1255,9 +1255,9 @@ void gui_picture_rings()
     {
         for (j = 0; j < nc; j++)
         {
-            if (apic[i][j] == 0)
+            if (a_pic[i][j] == 0)
             {
-                k = floor(63.0 * (adif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
@@ -1267,15 +1267,15 @@ void gui_picture_rings()
                 k = k % KAPPA_MAX;
                 XSetForeground(g_xDisplay, g_xGC, g_color[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
-                if (alm[i][j] > 1 + 0.5 * (beta - 1.0))
+                if (c__lm[i][j] > 1 + 0.5 * (beta - 1.0))
                 {
-                    if (alm[i][j] >= 1 + 0.2 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.2 * (beta - 1.0))
                         k = 12;
-                    if (alm[i][j] >= 1 + 0.5 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.5 * (beta - 1.0))
                         k = 13;
-                    if (alm[i][j] >= 1 + 0.7 * (beta - 1.0))
+                    if (c__lm[i][j] >= 1 + 0.7 * (beta - 1.0))
                         k = 14;
-                    if (alm[i][j] >= beta)
+                    if (c__lm[i][j] >= beta)
                         k = 15;
 
                     XSetForeground(g_xDisplay, g_xGC, g_othp[k].pixel);
