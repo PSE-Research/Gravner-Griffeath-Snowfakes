@@ -309,20 +309,6 @@ double sqr(double x)
     return x * x;
 }
 
-void plotstate()
-
-{
-    int i, j;
-    for (i = 0; i <= 9; i++)
-    {
-        for (j = 0; j <= 9; j++)
-            printf("%.5lf|", adif[i][j]);
-
-        printf("\n");
-    }
-    printf("\n");
-}
-
 void check()
 
 {
@@ -785,7 +771,7 @@ void dynamics()
     if (sigma > 0.0)
         dynamicspop();
 
-    /*plotstate(); */
+    /*io_plot_state(); */
 }
 
 void picturebig()
@@ -1141,6 +1127,19 @@ void io_save_snowflake()
     dum = popen(g_grahics_viewer_name, "r");
 } /* io_save_snowflake() */
 
+void io_plot_state()
+{
+    int i, j;
+    for (i = 0; i <= 9; i++)
+    {
+        for (j = 0; j <= 9; j++)
+            printf("%.5lf|", adif[i][j]);
+
+        printf("\n");
+    }
+    printf("\n");
+} /* io_plot_state() */
+
 
 void main(int argc, char *argv[])
 {
@@ -1325,7 +1324,7 @@ void main(int argc, char *argv[])
     printf("creating init. st.\n");
     initialize();
     picturebig();
-    /*plotstate(); */
+    /*io_plot_state(); */
 
     g_pq = 0;
 

@@ -309,7 +309,7 @@ double sqr(double x)
     return x * x;
 }
 
-void plotstate()
+void io_plot_state()
 
 {
     int i, j;
@@ -910,7 +910,7 @@ void dynamics()
     if (sigma > 0.0)
         dynamicspop();
 
-    /*plotstate(); */
+    /*io_plot_state(); */
 }
 
 void picturebig()
@@ -1476,7 +1476,7 @@ void main(int argc, char *argv[])
     printf("creating init. st.\n");
     initialize();
     picturebig();
-    /*plotstate(); */
+    /*io_plot_state(); */
 
     g_pq = 0;
 
