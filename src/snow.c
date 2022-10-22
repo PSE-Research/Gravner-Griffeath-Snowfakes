@@ -616,6 +616,92 @@ void io_skip()
         dum = getchar();
 } /* io_skip() */
 
+/**
+ * 从命令行读取参数.
+ * Read parameters from the command line.
+ */
+void io_get_input_params() 
+{
+    printf("enter rho:");
+    io_skip();
+    scanf("%lf", &rho);
+
+    printf("enter h:");
+    io_skip();
+    scanf("%d", &r_init);
+
+    twelve_sided = 0;
+    if (r_init < 0)
+    {
+        r_init = -r_init;
+        twelve_sided = 1;
+    }
+
+    printf("enter p:");
+    io_skip();
+    scanf("%lf", &rhor_init);
+
+    printf("enter beta:");
+    io_skip();
+    scanf("%lf", &beta);
+
+    printf("enter alpha:");
+    io_skip();
+    scanf("%lf", &alpha);
+
+    printf("enter theta:");
+    io_skip();
+    scanf("%lf", &theta);
+
+    printf("enter kappa:");
+    io_skip();
+    scanf("%lf", &kappa);
+
+    printf("enter mu:");
+    io_skip();
+    scanf("%lf", &mu);
+
+    printf("enter gamma:");
+    io_skip();
+    scanf("%lf", &gam);
+
+    printf("enter sigma:");
+    io_skip();
+    scanf("%lf", &sigma);
+
+    printf("enter no. of rows, L:");
+    io_skip();
+    scanf("%d", &nr);
+
+    printf("\n %d\n", nr);
+
+    nc = nr;
+
+    printf("size of the pixel, Zoom:");
+    io_skip();
+    scanf("%d", &sp);
+
+    printf("input file:");
+    io_skip();
+    scanf("%s", g_in_file_path);
+
+    printf("output file:");
+    io_skip();
+    scanf("%s", g_out_file_path);
+
+    printf("graphics file:");
+    io_skip();
+    scanf("%s", g_graphics_file_path);
+
+    printf("grahics viewer:");
+    io_skip();
+    scanf("%s", g_grahics_viewer_name);
+
+    printf("comments (< 100 chars):");
+    io_skip();
+    scanf("%s", g_comments);
+} /* io_get_input_params() */
+
 /** 
  * 读取 g_in_file_path 里的模拟状态
  **/
@@ -1118,88 +1204,8 @@ void main(int argc, char *argv[])
     int rootx, rooty;
     unsigned int kgb;
 
-    /* enter data */
-
-    printf("enter rho:");
-    io_skip();
-    scanf("%lf", &rho);
-
-    printf("enter h:");
-    io_skip();
-    scanf("%d", &r_init);
-
-    twelve_sided = 0;
-    if (r_init < 0)
-    {
-        r_init = -r_init;
-        twelve_sided = 1;
-    }
-
-    printf("enter p:");
-    io_skip();
-    scanf("%lf", &rhor_init);
-
-    printf("enter beta:");
-    io_skip();
-    scanf("%lf", &beta);
-
-    printf("enter alpha:");
-    io_skip();
-    scanf("%lf", &alpha);
-
-    printf("enter theta:");
-    io_skip();
-    scanf("%lf", &theta);
-
-    printf("enter kappa:");
-    io_skip();
-    scanf("%lf", &kappa);
-
-    printf("enter mu:");
-    io_skip();
-    scanf("%lf", &mu);
-
-    printf("enter gamma:");
-    io_skip();
-    scanf("%lf", &gam);
-
-    printf("enter sigma:");
-    io_skip();
-    scanf("%lf", &sigma);
-
-    printf("enter no. of rows, L:");
-    io_skip();
-    scanf("%d", &nr);
-
-    printf("\n %d\n", nr);
-
-    nc = nr;
-
-    printf("size of the pixel, Zoom:");
-    io_skip();
-    scanf("%d", &sp);
-
-    printf("input file:");
-    io_skip();
-    scanf("%s", g_in_file_path);
-
-    printf("output file:");
-    io_skip();
-    scanf("%s", g_out_file_path);
-
-    printf("graphics file:");
-    io_skip();
-    scanf("%s", g_graphics_file_path);
-
-    printf("grahics viewer:");
-    io_skip();
-    scanf("%s", g_grahics_viewer_name);
-
-    printf("comments (< 100 chars):");
-    io_skip();
-    scanf("%s", g_comments);
-
-    /* end data*/
+    /* ---- enter data */
+    io_get_input_params();
 
     g_xDisplay = XOpenDisplay("");
     g_xScreen = DefaultScreen(g_xDisplay);
