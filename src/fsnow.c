@@ -9,6 +9,7 @@
  */
 #include <math.h>
 #include <stdio.h>
+#include <string.h> // strlen
 #include <stdbool.h> // true; false
 
 #include <X11/Xlib.h>
