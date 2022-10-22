@@ -56,12 +56,13 @@ int nr, nc;
 int sp;
 
 /** Input/output files. */
+#define MAX_IO_PATH_LEN  256
 /** simulation status file */
 FILE *g_state_file;
-char g_in_file_path[30];
-char g_out_file_path[30];
-char g_graphics_file_path[30];
-char g_grahics_viewer_name[30];
+char g_in_file_path[MAX_IO_PATH_LEN];
+char g_out_file_path[MAX_IO_PATH_LEN];
+char g_graphics_file_path[MAX_IO_PATH_LEN];
+char g_grahics_viewer_name[MAX_IO_PATH_LEN];
 char g_comments[100];
 
 
