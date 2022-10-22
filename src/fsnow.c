@@ -297,7 +297,7 @@ void io_plot_state()
     printf("\n");
 }
 
-void check()
+void io_check_state()
 
 {
 

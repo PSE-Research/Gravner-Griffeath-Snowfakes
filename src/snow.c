@@ -159,22 +159,6 @@ int semi_norm(int i, int j)
         return -k;
 } /* semi_norm(int i, int j) */
 
-void check()
-{
-    int i, j, iup;
-
-    iup = g_center_i + g_r_new + 1;
-    for (i = 1; i <= iup; i++)
-    {
-        for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
-        {
-
-            if ((apic[i][j] == 1) && (adif[i][j] > 0.0))
-                printf("*%d %lf", apic[i][j], adif[i][j]);
-        }
-    }
-} /* check() */
-
 
 /* ==== Main simulation algorithm func ==== */
 
@@ -814,6 +798,22 @@ void io_plot_state()
     }
     printf("\n");
 } /* io_plot_state() */
+
+void io_check_state()
+{
+    int i, j, iup;
+
+    iup = g_center_i + g_r_new + 1;
+    for (i = 1; i <= iup; i++)
+    {
+        for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
+        {
+
+            if ((apic[i][j] == 1) && (adif[i][j] > 0.0))
+                printf("*%d %lf", apic[i][j], adif[i][j]);
+        }
+    }
+} /* io_check_state() */
 
 
 /* ==== X11 GUI helper functions ==== */
