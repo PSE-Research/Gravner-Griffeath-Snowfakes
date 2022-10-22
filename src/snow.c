@@ -927,11 +927,11 @@ void picturerings()
 void drawbuttons()
 
 {
-    char quitstring[] = "QUIT";
-    char pausestring[] = "pause";
-    char playstring[] = "play";
-    char savestring[] = "save";
-    char readstring[] = "read";
+    const char quitstring[] = "QUIT";
+    const char pausestring[] = "pause";
+    const char playstring[] = "play";
+    const char savestring[] = "save";
+    const char readstring[] = "read";
 
     XSetForeground(g_xDisplay, g_xGC, g_xBlack);
     XSetBackground(g_xDisplay, g_xGC, g_xWhite);
