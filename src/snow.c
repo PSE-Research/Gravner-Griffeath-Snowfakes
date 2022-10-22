@@ -57,7 +57,6 @@ int sp;
 
 /** Input/output files. */
 FILE *g_picture_file;
-FILE *_not_use_prof;
 char g_in_file_path[30];
 char g_out_file_path[30];
 char g_graphics_file_path[30];
@@ -73,7 +72,7 @@ int g_par_update;
 int g_par_ash;
 
 // center (1, 1)
-int _not_use_change, g_center_i, g_center_j;
+int g_center_i, g_center_j;
 int g_r_old, g_r_new;
 
 /** diffusion field */
@@ -99,12 +98,9 @@ Display *g_xDisplay;
 Window g_xWindow;
 GC g_xGC;
 XEvent g_xEvent;
-KeySym _not_use_tk;
 XSizeHints g_xSizeHints;
 int g_xScreen;
 unsigned long g_xBlack, g_xWhite;
-char _not_use_tbuf[8];
-int _not_use_kc;
 
 // main while loop control flag.
 int g_exit_flag;
@@ -119,7 +115,6 @@ XColor g_color_on[128];
 XColor g_color_off[128];
 XColor g_othp[20];
 
-int _not_use_flags = {DoRed | DoGreen | DoBlue};
 
 char gui_ICON_NAME_STR[] = "sn";
 char gui_WINDOW_NAME_STR[] = "digital snowflake";
