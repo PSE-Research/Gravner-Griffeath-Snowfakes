@@ -232,10 +232,7 @@ double myrand()
     return drand48();
 }
 
-int norminf(i, j)
-
-int i, j;
-
+int norminf(int i, int j)
 {
     if (i < 0)
         i = -i;
@@ -247,10 +244,7 @@ int i, j;
         return j;
 }
 
-int seminorm(i, j)
-
-int i, j;
-
+int seminorm(int i, int j)
 {
     int k;
 
@@ -261,10 +255,7 @@ int i, j;
         return -k;
 }
 
-int shape12(x, y)
-
-double x, y;
-
+int shape12(double x, double y)
 {
     if (x < 0)
         x = -x;
@@ -277,10 +268,7 @@ double x, y;
         return 0;
 }
 
-int shapecircle(x, y)
-
-double x, y;
-
+int shapecircle(double x, double y)
 {
 
     if (x * x + y * y <= 1)
@@ -289,10 +277,7 @@ double x, y;
         return 0;
 }
 
-int chi(i)
-
-int i;
-
+int chi(int i)
 {
     if (i == 0)
         return 0;
@@ -300,10 +285,7 @@ int i;
         return 1;
 }
 
-double sqr(x)
-
-double x;
-
+double sqr(double x)
 {
     return x * x;
 }
@@ -1128,11 +1110,7 @@ void savesnowflake()
     dum = popen(po, "r");
 }
 
-main(argc, argv)
-
-    int argc;
-char *argv[];
-
+void main(int argc, char *argv[])
 {
 
     int i, j, k, nop;
