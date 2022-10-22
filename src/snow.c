@@ -61,34 +61,38 @@ int stop;
 
 char po[30];
 
-Display *td;
-Window tw;
-GC tgc;
-XEvent te;
+/* ==== X11 Window ==== */
+Display *g_xDisplay;
+// main window
+Window g_xWindow;
+GC g_xGC;
+XEvent g_xEvent;
 KeySym tk;
-XSizeHints th;
-int ts;
-unsigned long tf, tb;
+XSizeHints g_xSizeHints;
+int g_xScreen;
+unsigned long g_xBlack, g_xWhite;
 char tbuf[8];
 int kc;
-int fin;
 
-char timestring[] = "time:";
-char activestring[] = "active area:";
+// main while loop control flag.
+int g_exit_flag;
+
+char gui_TIME_STR[] = "time:";
+char gui_ACTIVE_STR[] = "active area:";
 
 int noac, pq;
 
+// color map
 Colormap cmap;
-XColor clr[KAPPA_MAX];
-
-XColor clron[128];
-XColor clroff[128];
-XColor othp[20];
+XColor g_color[KAPPA_MAX];
+XColor g_color_on[128];
+XColor g_color_off[128];
+XColor g_othp[20];
 
 int flags = {DoRed | DoGreen | DoBlue};
 
-char in[] = "sn";
-char wn[] = "digital snowflake";
+char gui_ICON_NAME_STR[] = "sn";
+char gui_WINDOW_NAME_STR[] = "digital snowflake";
 
 int red[125], green[125], blue[125];
 
@@ -788,8 +792,8 @@ void picturebig()
             {
 
                 k = floor(63.0 * (adif[i][j] / (rho)));
-                XSetForeground(td, tgc, clroff[k].pixel);
-                XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
+                XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
+                XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
             else
             {
@@ -800,8 +804,8 @@ void picturebig()
                 if (k > 32)
                     k = 32;
 
-                XSetForeground(td, tgc, clron[k].pixel);
-                XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
+                XSetForeground(g_xDisplay, g_xGC, g_color_on[k].pixel);
+                XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
         }
     }
@@ -828,11 +832,11 @@ void picturebig()
         pqc[10 - kf] = '\0';
     }
 
-    XSetForeground(td, tgc, tf);
-    XSetBackground(td, tgc, tb);
+    XSetForeground(g_xDisplay, g_xGC, g_xBlack);
+    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 10, 45, timestring, strlen(timestring));
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 40, 45, pqc, strlen(pqc));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 10, 45, gui_TIME_STR, strlen(gui_TIME_STR));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 40, 45, pqc, strlen(pqc));
 }
 
 void picturerings()
@@ -851,15 +855,15 @@ void picturerings()
             {
 
                 k = floor(63.0 * (adif[i][j] / (rho)));
-                XSetForeground(td, tgc, clroff[k].pixel);
-                XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
+                XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
+                XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
             else
             {
                 k = ash[i][j];
                 k = k % KAPPA_MAX;
-                XSetForeground(td, tgc, clr[k].pixel);
-                XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
+                XSetForeground(g_xDisplay, g_xGC, g_color[k].pixel);
+                XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
                 if (alm[i][j] > 1 + 0.5 * (beta - 1.0))
                 {
                     if (alm[i][j] >= 1 + 0.2 * (beta - 1.0))
@@ -871,8 +875,8 @@ void picturerings()
                     if (alm[i][j] >= beta)
                         k = 15;
 
-                    XSetForeground(td, tgc, othp[k].pixel);
-                    XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
+                    XSetForeground(g_xDisplay, g_xGC, g_othp[k].pixel);
+                    XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
                 }
             }
         }
@@ -900,11 +904,11 @@ void picturerings()
         pqc[10 - kf] = '\0';
     }
 
-    XSetForeground(td, tgc, tf);
-    XSetBackground(td, tgc, tb);
+    XSetForeground(g_xDisplay, g_xGC, g_xBlack);
+    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 10, 45, timestring, strlen(timestring));
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 40, 45, pqc, strlen(pqc));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 10, 45, gui_TIME_STR, strlen(gui_TIME_STR));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 40, 45, pqc, strlen(pqc));
 }
 void drawbuttons()
 
@@ -915,26 +919,26 @@ void drawbuttons()
     char savestring[] = "save";
     char readstring[] = "read";
 
-    XSetForeground(td, tgc, tf);
-    XSetBackground(td, tgc, tb);
+    XSetForeground(g_xDisplay, g_xGC, g_xBlack);
+    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
 
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 20, 50, nc * sp + 20, nr * sp + 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 20, 50, nc * sp + 20, nr * sp + 20);
 
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 10, 10, 50, 20);
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 65, 10, 50, 20);
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 120, 10, 50, 20);
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 175, 10, 50, 20);
-    XDrawRectangle(te.xexpose.display, te.xexpose.window, tgc, 230, 10, 50, 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 10, 10, 50, 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 65, 10, 50, 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 120, 10, 50, 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 175, 10, 50, 20);
+    XDrawRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 230, 10, 50, 20);
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 20, 25, quitstring, strlen(quitstring));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 20, 25, quitstring, strlen(quitstring));
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 75, 25, pausestring, strlen(pausestring));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 75, 25, pausestring, strlen(pausestring));
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 130, 25, playstring, strlen(playstring));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 130, 25, playstring, strlen(playstring));
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 185, 25, savestring, strlen(savestring));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 185, 25, savestring, strlen(savestring));
 
-    XDrawImageString(te.xexpose.display, te.xexpose.window, tgc, 240, 25, readstring, strlen(readstring));
+    XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 240, 25, readstring, strlen(readstring));
 }
 
 void skip()
@@ -1051,8 +1055,8 @@ void savesnowflake()
                 {
 
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(picf, "%d %d %d ", clroff[k].red * 255 / 65535, clroff[k].green * 255 / 65535,
-                            clroff[k].blue * 255 / 65535);
+                    fprintf(picf, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                            g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
@@ -1063,8 +1067,8 @@ void savesnowflake()
                     if (k > 32)
                         k = 32;
 
-                    fprintf(picf, "%d %d %d ", clron[k].red * 255 / 65535, clron[k].green * 255 / 65535,
-                            clron[k].blue * 255 / 65535);
+                    fprintf(picf, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
+                            g_color_on[k].blue * 255 / 65535);
                 }
             }
             else
@@ -1072,8 +1076,8 @@ void savesnowflake()
                 if (apic[i1][j1] == 0)
                 {
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(picf, "%d %d %d ", clroff[k].red * 255 / 65535, clroff[k].green * 255 / 65535,
-                            clroff[k].blue * 255 / 65535);
+                    fprintf(picf, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                            g_color_off[k].blue * 255 / 65535);
                 }
                 else
                 {
@@ -1087,15 +1091,15 @@ void savesnowflake()
                             k = 14;
                         if (alm[i1][j1] >= beta)
                             k = 15;
-                        fprintf(picf, "%d %d %d ", othp[k].red * 255 / 65535, othp[k].green * 255 / 65535,
-                                othp[k].blue * 255 / 65535);
+                        fprintf(picf, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
+                                g_othp[k].blue * 255 / 65535);
                     }
                     else
                     {
                         k = ash[i1][j1];
                         k = k % KAPPA_MAX;
-                        fprintf(picf, "%d %d %d ", clr[k].red * 255 / 65535, clr[k].green * 255 / 65535,
-                                clr[k].blue * 255 / 65535);
+                        fprintf(picf, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
+                                g_color[k].blue * 255 / 65535);
                     }
                 }
             }
@@ -1204,34 +1208,34 @@ void main(int argc, char *argv[])
 
     /* end data*/
 
-    td = XOpenDisplay("");
-    ts = DefaultScreen(td);
-    tb = XWhitePixel(td, ts);
-    tf = XBlackPixel(td, ts);
+    g_xDisplay = XOpenDisplay("");
+    g_xScreen = DefaultScreen(g_xDisplay);
+    g_xWhite = XWhitePixel(g_xDisplay, g_xScreen);
+    g_xBlack = XBlackPixel(g_xDisplay, g_xScreen);
 
-    th.x = 0;
-    th.y = 0;
+    g_xSizeHints.x = 0;
+    g_xSizeHints.y = 0;
 
-    th.width = nc * sp + 100;
-    th.height = nr * sp + 60 + 40;
+    g_xSizeHints.width = nc * sp + 100;
+    g_xSizeHints.height = nr * sp + 60 + 40;
 
-    th.flags = PPosition | PSize;
+    g_xSizeHints.flags = PPosition | PSize;
 
-    tw = XCreateSimpleWindow(td, DefaultRootWindow(td), th.x, th.y, th.width, th.height, 7, tf, tb);
+    g_xWindow = XCreateSimpleWindow(g_xDisplay, DefaultRootWindow(g_xDisplay), g_xSizeHints.x, g_xSizeHints.y, g_xSizeHints.width, g_xSizeHints.height, 7, g_xBlack, g_xWhite);
 
-    XSetWindowBorderWidth(td, tw, 100);
+    XSetWindowBorderWidth(g_xDisplay, g_xWindow, 100);
 
-    XSetStandardProperties(td, tw, wn, in, None, argv, argc, &th);
+    XSetStandardProperties(g_xDisplay, g_xWindow, gui_WINDOW_NAME_STR, gui_ICON_NAME_STR, None, argv, argc, &g_xSizeHints);
 
-    cmap = DefaultColormap(td, ts);
+    cmap = DefaultColormap(g_xDisplay, g_xScreen);
 
     braquecolors64();
     for (i = 0; i < KAPPA_MAX; i++)
     {
-        clr[i].red = red[i] * 65535 / 255;
-        clr[i].green = green[i] * 65535 / 255;
-        clr[i].blue = blue[i] * 65535 / 255;
-        XAllocColor(td, cmap, &clr[i]);
+        g_color[i].red = red[i] * 65535 / 255;
+        g_color[i].green = green[i] * 65535 / 255;
+        g_color[i].blue = blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, cmap, &g_color[i]);
     }
 
     bluecolors33();
@@ -1239,10 +1243,10 @@ void main(int argc, char *argv[])
     for (i = 0; i <= 32; i++)
     {
 
-        clron[i].red = red[i] * 65535 / 255;
-        clron[i].green = green[i] * 65535 / 255;
-        clron[i].blue = blue[i] * 65535 / 255;
-        XAllocColor(td, cmap, &clron[i]);
+        g_color_on[i].red = red[i] * 65535 / 255;
+        g_color_on[i].green = green[i] * 65535 / 255;
+        g_color_on[i].blue = blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, cmap, &g_color_on[i]);
     }
 
     offcolors();
@@ -1250,43 +1254,43 @@ void main(int argc, char *argv[])
     for (i = 0; i <= 63; i++)
     {
 
-        clroff[63 - i].red = red[i] * 65535 / 255;
-        clroff[63 - i].green = green[i] * 65535 / 255;
-        clroff[63 - i].blue = blue[i] * 65535 / 255;
-        XAllocColor(td, cmap, &clroff[63 - i]);
+        g_color_off[63 - i].red = red[i] * 65535 / 255;
+        g_color_off[63 - i].green = green[i] * 65535 / 255;
+        g_color_off[63 - i].blue = blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, cmap, &g_color_off[63 - i]);
     }
 
-    XAllocNamedColor(td, cmap, "orange", &othp[0], &othp[0]);
-    XAllocNamedColor(td, cmap, "gray90", &othp[1], &othp[1]);
-    XAllocNamedColor(td, cmap, "gray80", &othp[2], &othp[2]);
-    XAllocNamedColor(td, cmap, "gray70", &othp[3], &othp[3]);
-    XAllocNamedColor(td, cmap, "gray60", &othp[4], &othp[4]);
-    XAllocNamedColor(td, cmap, "gray50", &othp[5], &othp[5]);
-    XAllocNamedColor(td, cmap, "gray40", &othp[6], &othp[6]);
-    XAllocNamedColor(td, cmap, "gray30", &othp[7], &othp[7]);
-    XAllocNamedColor(td, cmap, "gray25", &othp[8], &othp[8]);
-    XAllocNamedColor(td, cmap, "gray20", &othp[9], &othp[9]);
-    XAllocNamedColor(td, cmap, "black", &othp[10], &othp[10]);
-    XAllocNamedColor(td, cmap, "azure", &othp[11], &othp[11]);
-    XAllocNamedColor(td, cmap, "lightblue2", &othp[12], &othp[12]);
-    XAllocNamedColor(td, cmap, "lightblue3", &othp[13], &othp[13]);
-    XAllocNamedColor(td, cmap, "lightblue4", &othp[14], &othp[14]);
-    XAllocNamedColor(td, cmap, "cornflowerblue", &othp[15], &othp[15]);
-    XAllocNamedColor(td, cmap, "white", &othp[16], &othp[16]);
-    XAllocNamedColor(td, cmap, "palegreen", &othp[17], &othp[17]);
-    XAllocNamedColor(td, cmap, "red", &othp[18], &othp[18]);
+    XAllocNamedColor(g_xDisplay, cmap, "orange", &g_othp[0], &g_othp[0]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray90", &g_othp[1], &g_othp[1]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray80", &g_othp[2], &g_othp[2]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray70", &g_othp[3], &g_othp[3]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray60", &g_othp[4], &g_othp[4]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray50", &g_othp[5], &g_othp[5]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray40", &g_othp[6], &g_othp[6]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray30", &g_othp[7], &g_othp[7]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray25", &g_othp[8], &g_othp[8]);
+    XAllocNamedColor(g_xDisplay, cmap, "gray20", &g_othp[9], &g_othp[9]);
+    XAllocNamedColor(g_xDisplay, cmap, "black", &g_othp[10], &g_othp[10]);
+    XAllocNamedColor(g_xDisplay, cmap, "azure", &g_othp[11], &g_othp[11]);
+    XAllocNamedColor(g_xDisplay, cmap, "lightblue2", &g_othp[12], &g_othp[12]);
+    XAllocNamedColor(g_xDisplay, cmap, "lightblue3", &g_othp[13], &g_othp[13]);
+    XAllocNamedColor(g_xDisplay, cmap, "lightblue4", &g_othp[14], &g_othp[14]);
+    XAllocNamedColor(g_xDisplay, cmap, "cornflowerblue", &g_othp[15], &g_othp[15]);
+    XAllocNamedColor(g_xDisplay, cmap, "white", &g_othp[16], &g_othp[16]);
+    XAllocNamedColor(g_xDisplay, cmap, "palegreen", &g_othp[17], &g_othp[17]);
+    XAllocNamedColor(g_xDisplay, cmap, "red", &g_othp[18], &g_othp[18]);
 
-    tgc = XCreateGC(td, tw, 0, 0);
+    g_xGC = XCreateGC(g_xDisplay, g_xWindow, 0, 0);
 
-    XSetBackground(td, tgc, tb);
+    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
 
-    XSelectInput(td, tw, (ButtonPressMask | ExposureMask));
+    XSelectInput(g_xDisplay, g_xWindow, (ButtonPressMask | ExposureMask));
 
-    XMapRaised(td, tw);
+    XMapRaised(g_xDisplay, g_xWindow);
 
-    fin = F;
+    g_exit_flag = F;
 
-    XNextEvent(td, &te);
+    XNextEvent(g_xDisplay, &g_xEvent);
 
     drawbuttons();
 
@@ -1297,21 +1301,21 @@ void main(int argc, char *argv[])
 
     pq = 0;
 
-    while (fin == F)
+    while (g_exit_flag == F)
     {
-        XNextEvent(td, &te);
-        switch (te.type)
+        XNextEvent(g_xDisplay, &g_xEvent);
+        switch (g_xEvent.type)
         {
 
         case ButtonPress:
 
-            XQueryPointer(td, tw, &rw, &cw, &rootx, &rooty, &posx, &posy, &kgb);
+            XQueryPointer(g_xDisplay, g_xWindow, &rw, &cw, &rootx, &rooty, &posx, &posy, &kgb);
 
             if ((posx >= 10) && (posx <= 60) && (posy >= 10) && (posy <= 30))
             {
 
                 printf("QUIT\n");
-                fin = T;
+                g_exit_flag = T;
             }
             else if ((posx >= 65) && (posx <= 115) && (posy >= 10) && (posy <= 30))
             {
@@ -1326,7 +1330,7 @@ void main(int argc, char *argv[])
 
                 printf("play\n");
 
-                while ((XEventsQueued(td, QueuedAfterReading) == 0) && (pq != -1) && (stop == F))
+                while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (pq != -1) && (stop == F))
                 {
                     noac = 0;
                     pq++;
@@ -1367,7 +1371,7 @@ void main(int argc, char *argv[])
 
         case Expose:
 
-            if (te.xexpose.count == 0)
+            if (g_xEvent.xexpose.count == 0)
             {
                 picturebig();
                 drawbuttons();
@@ -1376,7 +1380,7 @@ void main(int argc, char *argv[])
         }
     }
 
-    XFreeGC(td, tgc);
-    XDestroyWindow(td, tw);
-    XCloseDisplay(td);
+    XFreeGC(g_xDisplay, g_xGC);
+    XDestroyWindow(g_xDisplay, g_xWindow);
+    XCloseDisplay(g_xDisplay);
 }
