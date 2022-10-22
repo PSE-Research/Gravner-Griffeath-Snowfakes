@@ -1146,7 +1146,7 @@ void main(int argc, char *argv[])
     skip();
     scanf("%lf", &rho);
 
-    printf("enter r_init:");
+    printf("enter h:");
     skip();
     scanf("%d", &r_init);
 
@@ -1157,7 +1157,7 @@ void main(int argc, char *argv[])
         twelve_sided = 1;
     }
 
-    printf("enter rhor_init:");
+    printf("enter p:");
     skip();
     scanf("%lf", &rhor_init);
 
@@ -1181,7 +1181,7 @@ void main(int argc, char *argv[])
     skip();
     scanf("%lf", &mu);
 
-    printf("enter gam:");
+    printf("enter gamma:");
     skip();
     scanf("%lf", &gam);
 
@@ -1189,7 +1189,7 @@ void main(int argc, char *argv[])
     skip();
     scanf("%lf", &sigma);
 
-    printf("enter no. of rows:");
+    printf("enter no. of rows, L:");
     skip();
     scanf("%d", &nr);
 
@@ -1197,27 +1197,27 @@ void main(int argc, char *argv[])
 
     nc = nr;
 
-    printf("size of the pixel:");
+    printf("size of the pixel, Zoom:");
     skip();
     scanf("%d", &sp);
 
-    printf("g_in_file_path:");
+    printf("input file:");
     skip();
     scanf("%s", g_in_file_path);
 
-    printf("g_out_file_path:");
+    printf("output file:");
     skip();
     scanf("%s", g_out_file_path);
 
-    printf("g_graphics_file_path:");
+    printf("graphics file:");
     skip();
     scanf("%s", g_graphics_file_path);
 
-    printf("po:");
+    printf("grahics viewer:");
     skip();
     scanf("%s", po);
 
-    printf("g_comments:");
+    printf("comments (< 100 chars):");
     skip();
     scanf("%s", g_comments);
 
