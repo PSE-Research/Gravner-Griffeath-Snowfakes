@@ -163,7 +163,6 @@ int semi_norm(int i, int j)
 /* ==== Main simulation algorithm func ==== */
 
 void initialize()
-
 {
     int t1, t2;
     int i, j, k;
@@ -254,7 +253,7 @@ void initialize()
     }
     g_r_old = g_r_new;
     g_par_ash = 1;
-}
+} /* initialize() */
 
 void dynamics_dif()
 {
