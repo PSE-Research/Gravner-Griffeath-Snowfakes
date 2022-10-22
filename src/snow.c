@@ -172,6 +172,7 @@ void initialize()
     double drand48();
     double x1, y1;
 
+    printf(".initialize: creating init. state\n");
     g_pq = 0;
 
     g_stop = false;
@@ -253,8 +254,11 @@ void initialize()
             }
         }
     }
+
     g_r_old = g_r_new;
     g_par_ash = 1;
+
+    printf(".initialize: init. finished\n");
 } /* initialize() */
 
 void dynamics_dif()
@@ -1315,7 +1319,7 @@ int main(int argc, char *argv[])
     gui_X11init(argc, argv);
     gui_draw_buttons();
 
-    printf("creating init. st.\n");
+    // ---- init state
     initialize();
     gui_picture_big();
     /*io_plot_state(); */
