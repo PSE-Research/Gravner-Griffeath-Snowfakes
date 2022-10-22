@@ -1025,8 +1025,8 @@ void io_save_picture()
     fclose(g_picture_file);
 } /* io_save_picture() */
 
-void savesnowflake()
 
+void io_save_snowflake()
 {
 
     int i, j, i1, j1, k, pqn, kf;
@@ -1134,7 +1134,8 @@ void savesnowflake()
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);
     dum = popen(g_grahics_viewer_name, "r");
-}
+} /* io_save_snowflake() */
+
 
 void main(int argc, char *argv[])
 {
@@ -1367,7 +1368,7 @@ void main(int argc, char *argv[])
             {
                 printf("save to file %s\n", g_out_file_path);
                 io_save_picture();
-                savesnowflake();
+                io_save_snowflake();
             }
 
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
