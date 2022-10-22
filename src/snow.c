@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <string.h> // strlen
 #include <stdbool.h> // true; false
+#include <stdlib.h> // srand48, drand48
+#include <time.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -133,8 +135,6 @@ int g_red[125], g_green[125], g_blue[125];
  */
 double uniform_01rand()
 {
-    double drand48();
-
     return drand48();
 } /* uniform_01rand() */
 
@@ -166,10 +166,9 @@ int semi_norm(int i, int j)
 
 void initialize()
 {
-    int t1, t2;
+    time_t t1, t2;
     int i, j, k;
     double x;
-    double drand48();
     double x1, y1;
 
     printf(".initialize: creating init. state\n");
@@ -178,11 +177,10 @@ void initialize()
     g_stop = false;
     g_par_update = 0;
 
-    srand48();
     t1 = time(&t2);
-    srand48();
     t1 = t1 % 1000;
-    printf("seed:%d\n", t1);
+    srand48(t1);
+    printf("seed:%ld\n", t1);
 
     for (i = 1; i < t1; i++)
     {
