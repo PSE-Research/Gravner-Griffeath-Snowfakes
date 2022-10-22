@@ -395,7 +395,7 @@ void dynamics_pop1()
     }
 } /* dynamics_pop1() */
 
-void dynamics_unfre()
+void dynamics_melting()
 {
     double x, y, afrij;
     int i, j, k;
@@ -435,7 +435,7 @@ void dynamics_unfre()
             }
         }
     }
-} /* dynamics_unfre() */
+} /* dynamics_melting() */
 
 void dynamics_attachment()
 {
@@ -620,7 +620,7 @@ void dynamics()
     dynamics_diffusion();
     dynamics_freezing();
     dynamics_attachment();
-    dynamics_unfre();
+    dynamics_melting();
 
     // add Noise
     if (sigma > 0.0)

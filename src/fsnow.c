@@ -660,7 +660,7 @@ void dynamics_pop1()
     }
 }
 
-void dynamics_unfre()
+void dynamics_melting()
 
 {
 
@@ -882,7 +882,7 @@ void dynamics()
     dynamics_diffusion();
     dynamics_freezing();
     dynamics_attachment();
-    dynamics_unfre();
+    dynamics_melting();
 
     if (sigma > 0.0)
         dynamics_pop();
