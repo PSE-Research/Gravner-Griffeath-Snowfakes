@@ -105,7 +105,9 @@ int     ash[NR_MAX][NC_MAX];
 
 // ---- other global var
 int g_noac;
-int g_frchange;
+
+// is `b__fr` changed?
+bool g_is_fr_changed;
 
 
 /* ==== X11 Window ==== */
@@ -409,7 +411,7 @@ void dynamics_unfre()
     iup = g_center_i + g_r_new + 1;
     jlo = g_center_j - g_r_new - 1;
     jup = g_center_j + g_r_new + 1;
-    g_frchange = false;
+    g_is_fr_changed = false;
 
     for (i = ilo; i <= iup; i++)
     {
@@ -454,7 +456,7 @@ void dynamics_attachment()
     iup = g_center_i + g_r_new + 1;
     jlo = g_center_j - g_r_new - 1;
     jup = g_center_j + g_r_new + 1;
-    g_frchange = false;
+    g_is_fr_changed = false;
 
     // copy `a_pic => bpic`
     for (i = ilo; i <= iup; i++)
@@ -538,7 +540,7 @@ void dynamics_attachment()
                 if (g_r_new > 2 * nr / 3)
                     g_stop = true;
                 ash[i][j] = g_par_ash;
-                g_frchange = true;
+                g_is_fr_changed = true;
             }
         }
     }
@@ -569,7 +571,7 @@ void dynamics_freezing()
     iup = g_center_i + g_r_new + 1;
     jlo = g_center_j - g_r_new - 1;
     jup = g_center_j + g_r_new + 1;
-    g_frchange = false;
+    g_is_fr_changed = false;
 
     for (i = ilo; i <= iup; i++)
     {
