@@ -531,7 +531,7 @@ void initialize()
     printf(".initialize: init. finished\n");
 }
 
-void dynamics_dif()
+void dynamics_diffusion()
 
 {
 
@@ -879,7 +879,7 @@ void dynamics()
 {
     int i;
 
-    dynamics_dif();
+    dynamics_diffusion();
     dynamics_fre1();
     dynamics_fre();
     dynamics_unfre();

@@ -274,7 +274,7 @@ void initialize()
     printf(".initialize: init. finished\n");
 } /* initialize() */
 
-void dynamics_dif()
+void dynamics_diffusion()
 {
     double b[NR_MAX][NC_MAX];
     double x, y;
@@ -340,7 +340,7 @@ void dynamics_dif()
                 adif[i][j] = b[i][j];
         }
     }
-} /* dynamics_dif() */
+} /* dynamics_diffusion() */
 
 /**
  * Add Noise to `adif[]`
@@ -610,7 +610,7 @@ void dynamics()
 {
     int i;
 
-    dynamics_dif();
+    dynamics_diffusion();
     dynamics_fre1();
     dynamics_fre();
     dynamics_unfre();
