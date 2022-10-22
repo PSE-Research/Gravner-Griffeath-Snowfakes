@@ -1291,10 +1291,7 @@ void gui_picture_rings()
 
 void main(int argc, char *argv[])
 {
-    int i, j, k, nop;
-    char ch;
     int posx, posy;
-
     Window rw, cw;
     int rootx, rooty;
     unsigned int kgb;
