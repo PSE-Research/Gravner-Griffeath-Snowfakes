@@ -703,6 +703,8 @@ void io_get_input_params()
     printf("comments (< 100 chars):");
     io_skip();
     scanf("%s", g_comments);
+
+    printf("\n.io_get_input_params: Read params finished.\n");
 } /* io_get_input_params() */
 
 /** 
@@ -714,7 +716,7 @@ void io_read_state()
     int i, j, k;
     double x;
 
-    printf("[io_read_state] reading simulation state from file '%s'\n", g_in_file_path);
+    printf(".io_read_state: reading simulation state from file '%s'\n", g_in_file_path);
     g_state_file = fopen(g_in_file_path, "r");
 
     for (i = 0; i < nr; i++)
@@ -735,16 +737,16 @@ void io_read_state()
     }
     fscanf(g_state_file, "%d", &k);
     g_r_old = k;
-    printf("[io_read_state] read g_r_old = %d\n", g_r_old);
+    printf(".io_read_state: read g_r_old = %d\n", g_r_old);
     fscanf(g_state_file, "%d", &k);
     g_r_new = k;
-    printf("[io_read_state] read g_r_new = %d\n", g_r_new);
+    printf(".io_read_state: read g_r_new = %d\n", g_r_new);
     fscanf(g_state_file, "%d", &k);
     g_pq = k;
-    printf("[io_read_state] read g_pq = %d\n", g_pq);
+    printf(".io_read_state: read g_pq = %d\n", g_pq);
 
     fclose(g_state_file);
-    printf("[io_read_state] File read finished.\n");
+    printf(".io_read_state: File read finished.\n");
 } /* io_read_state() */
 
 /** 
@@ -755,7 +757,7 @@ void io_save_state()
 {
     int i, j;
 
-    printf("[io_save_state] saving simulation state to file '%s'\n", g_out_file_path);
+    printf(".io_save_state: saving simulation state to file '%s'\n", g_out_file_path);
     g_state_file = fopen(g_out_file_path, "w");
 
     for (i = 0; i < nr; i++)
@@ -768,7 +770,7 @@ void io_save_state()
     fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
     fprintf(g_state_file, "%d ", g_pq);
     fclose(g_state_file);
-    printf("[io_save_state] File written successfully.\n");
+    printf(".io_save_state: File written successfully.\n");
 } /* io_save_state() */
 
 /** 
@@ -782,7 +784,7 @@ void io_save_snowflake()
     double y;
     FILE *dum;
 
-    printf("[io_save_snowflake] saving snowflake image to file '%s'\n", g_graphics_file_path);
+    printf(".io_save_snowflake: saving snowflake image to file '%s'\n", g_graphics_file_path);
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
@@ -874,7 +876,7 @@ void io_save_snowflake()
     }
 
     fclose(g_state_file);
-    printf("[io_save_snowflake] File written successfully.\n");
+    printf(".io_save_snowflake: File written successfully.\n");
 
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);

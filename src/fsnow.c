@@ -1074,7 +1074,7 @@ void io_read_state()
     int i, j, k;
     double x;
 
-    printf("[io_read_state] reading simulation state from file '%s'\n", g_in_file_path);
+    printf(".io_read_state: reading simulation state from file '%s'\n", g_in_file_path);
     g_state_file = fopen(g_in_file_path, "r");
 
     for (i = 0; i < nr; i++)
@@ -1101,7 +1101,7 @@ void io_read_state()
     g_pq = k;
 
     fclose(g_state_file);
-    printf("[io_read_state] File read finished.\n");
+    printf(".io_read_state: File read finished.\n");
 }
 
 void io_save_state()
@@ -1109,7 +1109,7 @@ void io_save_state()
 {
     int i, j;
 
-    printf("[io_save_state] saving simulation state to file '%s'\n", g_out_file_path);
+    printf(".io_save_state: saving simulation state to file '%s'\n", g_out_file_path);
     g_state_file = fopen(g_out_file_path, "w");
 
     for (i = 0; i < nr; i++)
@@ -1122,7 +1122,7 @@ void io_save_state()
     fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
     fprintf(g_state_file, "%d ", g_pq);
     fclose(g_state_file);
-    printf("[io_save_state] File written successfully.\n");
+    printf(".io_save_state: File written successfully.\n");
 }
 
 void io_save_snowflake()
@@ -1177,7 +1177,7 @@ void io_save_snowflake()
         j1 = x1 + 1;
     }
 
-    printf("[io_save_snowflake] saving snowflake image to file '%s'\n", g_graphics_file_path);
+    printf(".io_save_snowflake: saving snowflake image to file '%s'\n", g_graphics_file_path);
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
@@ -1269,7 +1269,7 @@ void io_save_snowflake()
     }
 
     fclose(g_state_file);
-    printf("[io_save_snowflake] File written successfully.\n");
+    printf(".io_save_snowflake: File written successfully.\n");
 
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);
@@ -1368,6 +1368,7 @@ void main(int argc, char *argv[])
     io_skip();
     scanf("%s", g_comments);
 
+    printf("\n.main: Read params finished.\n");
     /* end data*/
 
     g_xDisplay = XOpenDisplay("");
@@ -1456,7 +1457,7 @@ void main(int argc, char *argv[])
 
     gui_draw_buttons();
 
-    printf("creating init. st.\n");
+    printf("creating init. state\n");
     initialize();
     gui_picture_big();
     /*io_plot_state(); */
