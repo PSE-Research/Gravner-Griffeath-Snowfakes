@@ -547,7 +547,7 @@ void dynamics_fre()
     }
 } /* dynamics_fre() */
 
-void dynamics_fre1()
+void dynamics_freezing()
 {
     double x, y;
     int i, j, k;
@@ -593,6 +593,7 @@ void dynamics_fre1()
                 if (a_pic[id][jl] == 1)
                     count++;
 
+                // --- freezing
                 if (count >= 1)
                 {
                     offset = (1.0 - kappa) * d_dif[i][j];
@@ -604,14 +605,14 @@ void dynamics_fre1()
             }
         }
     }
-} /* dynamics_fre1() */
+} /* dynamics_freezing() */
 
 void dynamics()
 {
     int i;
 
     dynamics_diffusion();
-    dynamics_fre1();
+    dynamics_freezing();
     dynamics_fre();
     dynamics_unfre();
 

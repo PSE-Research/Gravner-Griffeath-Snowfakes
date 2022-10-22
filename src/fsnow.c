@@ -815,7 +815,7 @@ void dynamics_fre()
     createbdry();
 }
 
-void dynamics_fre1()
+void dynamics_freezing()
 
 {
 
@@ -880,7 +880,7 @@ void dynamics()
     int i;
 
     dynamics_diffusion();
-    dynamics_fre1();
+    dynamics_freezing();
     dynamics_fre();
     dynamics_unfre();
 
