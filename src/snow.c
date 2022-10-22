@@ -1004,8 +1004,10 @@ void io_read_picture()
     fclose(g_picture_file);
 } /* io_read_picture() */
 
-void savepicture()
-
+/** 
+ * 保存模拟状态到 g_out_file_path
+ **/
+void io_save_picture()
 {
     int i, j;
 
@@ -1021,7 +1023,7 @@ void savepicture()
     fprintf(g_picture_file, "%d %d ", g_r_old, g_r_new);
     fprintf(g_picture_file, "%d ", g_pq);
     fclose(g_picture_file);
-}
+} /* io_save_picture() */
 
 void savesnowflake()
 
@@ -1364,7 +1366,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
                 printf("save to file %s\n", g_out_file_path);
-                savepicture();
+                io_save_picture();
                 savesnowflake();
             }
 

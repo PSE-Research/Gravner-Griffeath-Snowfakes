@@ -1125,7 +1125,7 @@ void io_read_picture()
     fclose(g_picture_file);
 }
 
-void savepicture()
+void io_save_picture()
 
 {
     int i, j;
@@ -1523,7 +1523,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
                 printf("save to file %s\n", g_out_file_path);
-                savepicture();
+                io_save_picture();
                 savesnowflake();
             }
 
