@@ -1115,6 +1115,13 @@ void gui_X11init(int argc, char *argv[])
     XNextEvent(g_xDisplay, &g_xEvent);
 } /* gui_X11init(int argc, char *argv[]) */
 
+void gui_X11clean()
+{
+    XFreeGC(g_xDisplay, g_xGC);
+    XDestroyWindow(g_xDisplay, g_xWindow);
+    XCloseDisplay(g_xDisplay);
+} /* gui_X11clean() */
+
 void gui_draw_buttons()
 {
     const char quitstring[] = "QUIT";
@@ -1384,7 +1391,6 @@ void main(int argc, char *argv[])
         }
     }
 
-    XFreeGC(g_xDisplay, g_xGC);
-    XDestroyWindow(g_xDisplay, g_xWindow);
-    XCloseDisplay(g_xDisplay);
-}
+    // do clean befor exit.
+    gui_X11clean();
+} // main
