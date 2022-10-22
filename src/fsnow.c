@@ -1106,6 +1106,7 @@ void io_save_state()
 {
     int i, j;
 
+    printf("[io_save_state] saving simulation state to file '%s'\n", g_out_file_path);
     g_state_file = fopen(g_out_file_path, "w");
 
     for (i = 0; i < nr; i++)
@@ -1118,6 +1119,7 @@ void io_save_state()
     fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
     fprintf(g_state_file, "%d ", g_pq);
     fclose(g_state_file);
+    printf("[io_save_state] File written successfully.\n");
 }
 
 void io_save_snowflake()
@@ -1172,6 +1174,7 @@ void io_save_snowflake()
         j1 = x1 + 1;
     }
 
+    printf("[io_save_snowflake] saving snowflake image to file '%s'\n", g_graphics_file_path);
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
@@ -1263,6 +1266,7 @@ void io_save_snowflake()
     }
 
     fclose(g_state_file);
+    printf("[io_save_snowflake] File written successfully.\n");
 
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);
@@ -1498,7 +1502,7 @@ void main(int argc, char *argv[])
             }
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
-                printf("[save] to file %s\n", g_out_file_path);
+                printf("[save] to file\n");
                 io_save_state();
                 io_save_snowflake();
             }
