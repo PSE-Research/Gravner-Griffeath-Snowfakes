@@ -60,7 +60,7 @@ FILE *g_picture_file;
 char g_in_file_path[30];
 char g_out_file_path[30];
 char g_graphics_file_path[30];
-char po[30];
+char g_grahics_viewer_name[30];
 char g_comments[100];
 
 
@@ -1051,7 +1051,7 @@ void savesnowflake()
 
     fprintf(g_picture_file, "#: no : no : no \n");
 
-    fprintf(g_picture_file, "#: %s\n", po);
+    fprintf(g_picture_file, "#: %s\n", g_grahics_viewer_name);
     fprintf(g_picture_file, "#: %s\n", g_comments);
 
     fprintf(g_picture_file, "%d %d\n", nr, nr);
@@ -1124,9 +1124,9 @@ void savesnowflake()
 
     fclose(g_picture_file);
 
-    strcat(po, " ");
-    strcat(po, g_graphics_file_path);
-    dum = popen(po, "r");
+    strcat(g_grahics_viewer_name, " ");
+    strcat(g_grahics_viewer_name, g_graphics_file_path);
+    dum = popen(g_grahics_viewer_name, "r");
 }
 
 void main(int argc, char *argv[])
@@ -1215,7 +1215,7 @@ void main(int argc, char *argv[])
 
     printf("grahics viewer:");
     skip();
-    scanf("%s", po);
+    scanf("%s", g_grahics_viewer_name);
 
     printf("comments (< 100 chars):");
     skip();
