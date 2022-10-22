@@ -739,9 +739,10 @@ void io_read_picture()
 } /* io_read_picture() */
 
 /** 
- * 保存模拟状态到 g_out_file_path
+ * 保存模拟状态到 "output file"
+ * Save the simulation state to "output file"
  **/
-void io_save_picture()
+void io_save_state()
 {
     int i, j;
 
@@ -757,7 +758,7 @@ void io_save_picture()
     fprintf(g_picture_file, "%d %d ", g_r_old, g_r_new);
     fprintf(g_picture_file, "%d ", g_pq);
     fclose(g_picture_file);
-} /* io_save_picture() */
+} /* io_save_state() */
 
 /** 
  * 保存雪花图片到 g_graphics_file_path
@@ -1354,7 +1355,7 @@ int main(int argc, char *argv[])
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
                 printf("[save] to file %s\n", g_out_file_path);
-                io_save_picture();
+                io_save_state();
                 io_save_snowflake();
             }
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
