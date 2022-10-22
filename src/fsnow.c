@@ -21,19 +21,6 @@
 
 #define KAPPA_MAX 64
 
-int sp;
-
-/** diffusion field */
-double  adif[NR_MAX][NC_MAX];
-/** indicator of snowflake sites */
-int     apic[NR_MAX][NC_MAX];
-/** boundary mass */
-double  afr[NR_MAX][NC_MAX];
-/** crystal mass */
-double  alm[NR_MAX][NC_MAX];
-
-/** rings pallette */
-int     ash[NR_MAX][NC_MAX];
 
 /* ==== Input Parameters ==== */
 /* --- [Initial state] */
@@ -78,20 +65,35 @@ char po[30];
 char g_comments[100];
 
 
-// center (1, 1)
-int _not_use_change, g_center_i, g_center_j;
-
+/* ==== Global Variables ==== */
+// ---- initialize()
+int g_pq;
+int g_stop;
 int g_par_update;
-
 int g_par_ash;
 
+// center (1, 1)
+int _not_use_change, g_center_i, g_center_j;
 int g_r_old, g_r_new;
 
+/** diffusion field */
+double  adif[NR_MAX][NC_MAX];
+/** indicator of snowflake sites */
+int     apic[NR_MAX][NC_MAX];
+/** boundary mass */
+double  afr[NR_MAX][NC_MAX];
+/** crystal mass */
+double  alm[NR_MAX][NC_MAX];
+
+/** rings pallette */
+int     ash[NR_MAX][NC_MAX];
+
+// ---- other global var
+int g_noac;
 int g_frchange;
 
-int g_stop;
 
-
+/* ==== X11 Window ==== */
 Display *g_xDisplay;
 Window g_xWindow;
 GC g_xGC;
@@ -106,8 +108,6 @@ int g_exit_flag;
 
 char gui_TIME_STR[] = "time:";
 char gui_ACTIVE_STR[] = "active area:";
-
-int g_noac, g_pq;
 
 Colormap g_cmap;
 XColor g_color[KAPPA_MAX];
