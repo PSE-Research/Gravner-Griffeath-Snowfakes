@@ -714,6 +714,7 @@ void io_read_state()
     int i, j, k;
     double x;
 
+    printf("[io_read_state] reading simulation state from file '%s'\n", g_in_file_path);
     g_state_file = fopen(g_in_file_path, "r");
 
     for (i = 0; i < nr; i++)
@@ -734,11 +735,16 @@ void io_read_state()
     }
     fscanf(g_state_file, "%d", &k);
     g_r_old = k;
+    printf("[io_read_state] read g_r_old = %d\n", g_r_old);
     fscanf(g_state_file, "%d", &k);
     g_r_new = k;
+    printf("[io_read_state] read g_r_new = %d\n", g_r_new);
     fscanf(g_state_file, "%d", &k);
     g_pq = k;
+    printf("[io_read_state] read g_pq = %d\n", g_pq);
+
     fclose(g_state_file);
+    printf("[io_read_state] File read finished.\n");
 } /* io_read_state() */
 
 /** 
@@ -1362,7 +1368,7 @@ int main(int argc, char *argv[])
             }
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
             {
-                printf("[read] from file %s\n", g_in_file_path);
+                printf("[read] from file\n");
                 io_read_state();
                 dynamics_pop1();
                 gui_picture_big();
