@@ -56,7 +56,7 @@ int nr, nc;
 int sp;
 
 /** Input/output files. */
-FILE *g_picture_file;
+FILE *g_state_file;
 char g_in_file_path[30];
 char g_out_file_path[30];
 char g_graphics_file_path[30];
@@ -1072,31 +1072,31 @@ void io_read_state()
     int i, j, k;
     double x;
 
-    g_picture_file = fopen(g_in_file_path, "r");
+    g_state_file = fopen(g_in_file_path, "r");
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-            fscanf(g_picture_file, "%lf", &x);
+            fscanf(g_state_file, "%lf", &x);
             adif[i][j] = x;
-            fscanf(g_picture_file, "%d", &k);
+            fscanf(g_state_file, "%d", &k);
             apic[i][j] = k;
-            fscanf(g_picture_file, "%lf", &x);
+            fscanf(g_state_file, "%lf", &x);
             afr[i][j] = x;
-            fscanf(g_picture_file, "%d", &k);
+            fscanf(g_state_file, "%d", &k);
             ash[i][j] = k;
-            fscanf(g_picture_file, "%lf", &x);
+            fscanf(g_state_file, "%lf", &x);
             alm[i][j] = x;
         }
     }
-    fscanf(g_picture_file, "%d", &k);
+    fscanf(g_state_file, "%d", &k);
     g_r_old = k;
-    fscanf(g_picture_file, "%d", &k);
+    fscanf(g_state_file, "%d", &k);
     g_r_new = k;
-    fscanf(g_picture_file, "%d", &k);
+    fscanf(g_state_file, "%d", &k);
     g_pq = k;
-    fclose(g_picture_file);
+    fclose(g_state_file);
 }
 
 void io_save_state()
@@ -1104,18 +1104,18 @@ void io_save_state()
 {
     int i, j;
 
-    g_picture_file = fopen(g_out_file_path, "w");
+    g_state_file = fopen(g_out_file_path, "w");
 
     for (i = 0; i < nr; i++)
     {
         for (j = 0; j < nc; j++)
         {
-            fprintf(g_picture_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
+            fprintf(g_state_file, "%.10lf %d %.10lf %d %.10lf ", adif[i][j], apic[i][j], afr[i][j], ash[i][j], alm[i][j]);
         }
     }
-    fprintf(g_picture_file, "%d %d ", g_r_old, g_r_new);
-    fprintf(g_picture_file, "%d ", g_pq);
-    fclose(g_picture_file);
+    fprintf(g_state_file, "%d %d ", g_r_old, g_r_new);
+    fprintf(g_state_file, "%d ", g_pq);
+    fclose(g_state_file);
 }
 
 void io_save_snowflake()
@@ -1170,30 +1170,30 @@ void io_save_snowflake()
         j1 = x1 + 1;
     }
 
-    g_picture_file = fopen(g_graphics_file_path, "w");
-    fprintf(g_picture_file, "P3\n");
+    g_state_file = fopen(g_graphics_file_path, "w");
+    fprintf(g_state_file, "P3\n");
 
-    fprintf(g_picture_file, "#rho:%lf\n", rho);
-    fprintf(g_picture_file, "#h:%d\n", r_init);
-    fprintf(g_picture_file, "#p:%lf\n", rhor_init);
-    fprintf(g_picture_file, "#beta:%lf\n", beta);
-    fprintf(g_picture_file, "#alpha:%lf\n", alpha);
-    fprintf(g_picture_file, "#theta:%lf\n", theta);
-    fprintf(g_picture_file, "#kappa:%lf\n", kappa);
-    fprintf(g_picture_file, "#mu:%lf\n", mu);
-    fprintf(g_picture_file, "#gam:%lf\n", gam);
-    fprintf(g_picture_file, "#sigma:%lf\n", sigma);
+    fprintf(g_state_file, "#rho:%lf\n", rho);
+    fprintf(g_state_file, "#h:%d\n", r_init);
+    fprintf(g_state_file, "#p:%lf\n", rhor_init);
+    fprintf(g_state_file, "#beta:%lf\n", beta);
+    fprintf(g_state_file, "#alpha:%lf\n", alpha);
+    fprintf(g_state_file, "#theta:%lf\n", theta);
+    fprintf(g_state_file, "#kappa:%lf\n", kappa);
+    fprintf(g_state_file, "#mu:%lf\n", mu);
+    fprintf(g_state_file, "#gam:%lf\n", gam);
+    fprintf(g_state_file, "#sigma:%lf\n", sigma);
 
-    fprintf(g_picture_file, "#L:%d\n", nr);
-    fprintf(g_picture_file, "#Z:%d\n", sp);
+    fprintf(g_state_file, "#L:%d\n", nr);
+    fprintf(g_state_file, "#Z:%d\n", sp);
 
-    fprintf(g_picture_file, "#: no : no : no \n");
+    fprintf(g_state_file, "#: no : no : no \n");
 
-    fprintf(g_picture_file, "#: %s\n", g_grahics_viewer_name);
-    fprintf(g_picture_file, "#: %s\n", g_comments);
+    fprintf(g_state_file, "#: %s\n", g_grahics_viewer_name);
+    fprintf(g_state_file, "#: %s\n", g_comments);
 
-    fprintf(g_picture_file, "%d %d\n", 2 * (nc - 2) + 1, 2 * (nr - 2) + 1);
-    fprintf(g_picture_file, "255\n");
+    fprintf(g_state_file, "%d %d\n", 2 * (nc - 2) + 1, 2 * (nr - 2) + 1);
+    fprintf(g_state_file, "255\n");
     buildbig();
     printf("\n");
 
@@ -1208,7 +1208,7 @@ void io_save_snowflake()
                 {
 
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(g_picture_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
@@ -1220,7 +1220,7 @@ void io_save_snowflake()
                     if (k > 32)
                         k = 32;
 
-                    fprintf(g_picture_file, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
+                    fprintf(g_state_file, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
                             g_color_on[k].blue * 255 / 65535);
                 }
             }
@@ -1229,7 +1229,7 @@ void io_save_snowflake()
                 if (apic[i1][j1] == 0)
                 {
                     k = floor(63.0 * (adif[i1][j1] / (rho)));
-                    fprintf(g_picture_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
+                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
                 else
@@ -1244,23 +1244,23 @@ void io_save_snowflake()
                             k = 14;
                         if (alm[i1][j1] >= beta)
                             k = 15;
-                        fprintf(g_picture_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
+                        fprintf(g_state_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
                                 g_othp[k].blue * 255 / 65535);
                     }
                     else
                     {
                         k = ash[i1][j1];
                         k = k % KAPPA_MAX;
-                        fprintf(g_picture_file, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
+                        fprintf(g_state_file, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
                                 g_color[k].blue * 255 / 65535);
                     }
                 }
             }
         }
-        fprintf(g_picture_file, "\n");
+        fprintf(g_state_file, "\n");
     }
 
-    fclose(g_picture_file);
+    fclose(g_state_file);
 
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);
