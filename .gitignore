@@ -1,6 +1,11 @@
 # docs
 *.pdf
 
+# binary
+snow
+fsnow
+*.exe
+
 # output
 pltest
 *.ppm
