@@ -123,7 +123,7 @@ XColor g_othp[20];
 int g_red[125], g_green[125], g_blue[125];
 
 
-void bluecolors33()
+void gui_blue_colors33()
 {
     int i;
     g_red[0]= 71; g_green[0]=204; g_blue[0]=231;
@@ -161,7 +161,7 @@ void bluecolors33()
     g_red[32]= 10; g_green[32]=20; g_blue[32]=100;
 }
 
-void braquecolors64()
+void gui_braque_colors64()
 {
     int i;
 
@@ -231,7 +231,7 @@ void braquecolors64()
     g_red[63]= 105; g_green[63]=130; g_blue[63]=141;
 }
 
-void offcolors()
+void gui_off_colors64()
 {
     int i;
 
@@ -913,7 +913,7 @@ void dynamics()
     /*io_plot_state(); */
 }
 
-void picturebig()
+void gui_picture_big()
 
 {
     int i, j, k, pqn, kf;
@@ -979,7 +979,7 @@ void picturebig()
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 40, 45, pqc, strlen(pqc));
 }
 
-void picturerings()
+void gui_picture_rings()
 
 {
     int i, j, k, pqn, kf;
@@ -1051,7 +1051,7 @@ void picturerings()
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 10, 45, gui_TIME_STR, strlen(gui_TIME_STR));
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 40, 45, pqc, strlen(pqc));
 }
-void drawbuttons()
+void gui_draw_buttons()
 
 {
     char quitstring[] = "QUIT";
@@ -1408,7 +1408,7 @@ void main(int argc, char *argv[])
 
     g_cmap = DefaultColormap(g_xDisplay, g_xScreen);
 
-    braquecolors64();
+    gui_braque_colors64();
     for (i = 0; i < KAPPA_MAX; i++)
     {
         g_color[i].red = g_red[i] * 65535 / 255;
@@ -1417,7 +1417,7 @@ void main(int argc, char *argv[])
         XAllocColor(g_xDisplay, g_cmap, &g_color[i]);
     }
 
-    bluecolors33();
+    gui_blue_colors33();
 
     for (i = 0; i <= 32; i++)
     {
@@ -1428,7 +1428,7 @@ void main(int argc, char *argv[])
         XAllocColor(g_xDisplay, g_cmap, &g_color_on[i]);
     }
 
-    offcolors();
+    gui_off_colors64();
 
     for (i = 0; i <= 63; i++)
     {
@@ -1471,11 +1471,11 @@ void main(int argc, char *argv[])
 
     XNextEvent(g_xDisplay, &g_xEvent);
 
-    drawbuttons();
+    gui_draw_buttons();
 
     printf("creating init. st.\n");
     initialize();
-    picturebig();
+    gui_picture_big();
     /*io_plot_state(); */
 
     g_pq = 0;
@@ -1500,9 +1500,9 @@ void main(int argc, char *argv[])
             {
                 printf("pause\n");
                 if (g_pq % 2 == 0)
-                    picturerings();
+                    gui_picture_rings();
                 else
-                    picturebig();
+                    gui_picture_big();
             }
             else if ((posx >= 120) && (posx <= 170) && (posy >= 10) && (posy <= 30))
             {
@@ -1516,7 +1516,7 @@ void main(int argc, char *argv[])
                     dynamics();
                     if (g_pq % 10 == 0)
                     {
-                        picturebig();
+                        gui_picture_big();
                     }
                 }
             }
@@ -1534,7 +1534,7 @@ void main(int argc, char *argv[])
                 io_read_picture();
                 dynamicspop1();
                 createbdry();
-                picturebig();
+                gui_picture_big();
             }
 
             else
@@ -1544,7 +1544,7 @@ void main(int argc, char *argv[])
                 g_noac = 0;
                 g_pq++;
                 dynamics();
-                picturebig();
+                gui_picture_big();
                 checkmass();
             }
 
@@ -1554,8 +1554,8 @@ void main(int argc, char *argv[])
 
             if (g_xEvent.xexpose.count == 0)
             {
-                picturebig();
-                drawbuttons();
+                gui_picture_big();
+                gui_draw_buttons();
             }
             break;
         }
