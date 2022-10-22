@@ -79,16 +79,28 @@ int g_par_ash;
 int g_center_i, g_center_j;
 int g_r_old, g_r_new;
 
-/** diffusion field */
+/** diffusive mass (vapor).
+ * 
+ */
 double  adif[NR_MAX][NC_MAX];
-/** indicator of snowflake sites */
+/** attachment flag, 
+ * indicator of snowflake sites.
+ * 
+ * `true` if x belongs to the crystal at time t.
+ */
 int     apic[NR_MAX][NC_MAX];
-/** boundary mass */
+/** boundary mass (quasi-liquid).
+ * 
+ */
 double  afr[NR_MAX][NC_MAX];
-/** crystal mass */
+/** crystal mass (ice).
+ * 
+ */
 double  alm[NR_MAX][NC_MAX];
 
-/** rings pallette */
+/** rings pallette
+ * 
+ */
 int     ash[NR_MAX][NC_MAX];
 
 // ---- other global var
@@ -173,10 +185,10 @@ void initialize()
 
     printf(".initialize: creating init. state\n");
     g_pq = 0;
-
     g_stop = false;
     g_par_update = 0;
 
+    // --- gen rand seed
     t1 = time(&t2);
     t1 = t1 % 1000;
     srand48(t1);
@@ -201,12 +213,15 @@ void initialize()
 
             if (twelve_sided == 0)
             {
-                if ((norm_inf(i - g_center_i, j - g_center_j) <= r_init) && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) &&
-                    (x <= rhor_init))
+                if (
+                    (norm_inf(i - g_center_i, j - g_center_j) <= r_init) 
+                    && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) 
+                    && (x <= rhor_init))
                 {
+                    // seed for the flake
                     adif[i][j] = 0.0;
-                    apic[i][j] = 1;
-                    afr[i][j] = 1;
+                    apic[i][j] = true;
+                    afr[i][j] = 1.0;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
                     k = norm_inf(i - g_center_i, j - g_center_j);
@@ -215,8 +230,9 @@ void initialize()
                 }
                 else
                 {
+                    // filled with water vapour
                     adif[i][j] = rho;
-                    apic[i][j] = 0;
+                    apic[i][j] = false;
                     afr[i][j] = 0.0;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
@@ -224,15 +240,15 @@ void initialize()
             }
             else
             {
-
                 x1 = (double)(i - g_center_i) / r_init;
                 y1 = (double)(j - g_center_j) / r_init;
-                if ((((i - g_center_i) == -(j - g_center_j)) && (i - g_center_i <= 0) && (i - g_center_i >= -r_init)) ||
-                    ((i - g_center_i >= 0) && (i - g_center_i <= r_init) && (j - g_center_j == 0)) ||
-                    ((j - g_center_j <= 0) && (j - g_center_j >= -r_init) && (i - g_center_i == 0)))
+                if (
+                    (((i - g_center_i) == -(j - g_center_j)) && (i - g_center_i <= 0) && (i - g_center_i >= -r_init)) 
+                    || ((i - g_center_i >= 0) && (i - g_center_i <= r_init) && (j - g_center_j == 0)) 
+                    || ((j - g_center_j <= 0) && (j - g_center_j >= -r_init) && (i - g_center_i == 0)))
                 {
                     adif[i][j] = 0.0;
-                    apic[i][j] = 1;
+                    apic[i][j] = true;
                     afr[i][j] = 0.0;
                     ash[i][j] = 0;
                     alm[i][j] = 1.0;
@@ -240,11 +256,10 @@ void initialize()
                     if (k > g_r_new)
                         g_r_new = k;
                 }
-
                 else
                 {
                     adif[i][j] = rho;
-                    apic[i][j] = 0;
+                    apic[i][j] = false;
                     afr[i][j] = 0.0;
                     ash[i][j] = 0;
                     alm[i][j] = 0.0;
