@@ -955,6 +955,9 @@ void drawbuttons()
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 240, 25, readstring, strlen(readstring));
 }
 
+
+/* ==== IO helper functions ==== */
+
 /**
  * 跳过其他字符，直到遇见 `:`.
  * 
@@ -1025,7 +1028,9 @@ void io_save_picture()
     fclose(g_picture_file);
 } /* io_save_picture() */
 
-
+/** 
+ * 保存雪花图片到 g_graphics_file_path
+ **/
 void io_save_snowflake()
 {
 
