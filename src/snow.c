@@ -1,9 +1,10 @@
 /**
- * MODELING SNOW CRYSTAL GROWTH II
+ * MODELING SNOW CRYSTAL GROWTH II (normal/slow version)
  * 
  *  Janko Gravner <gravner@math.ucdavis.edu> 
  *  David Griffeath <griffeat@math.wisc.edu>
  * 
+ * Refactoring by Chengyu HAN, 2022/10/22
  * Revised version, September 2007
  */
 #include <stdio.h>
