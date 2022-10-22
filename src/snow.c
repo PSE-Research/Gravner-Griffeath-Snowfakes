@@ -955,15 +955,19 @@ void drawbuttons()
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 240, 25, readstring, strlen(readstring));
 }
 
-void skip()
-
+/**
+ * 跳过其他字符，直到遇见 `:`.
+ * 
+ * 用于处理复制粘贴输入的情况。
+ */
+void io_skip()
 {
     char dum;
 
     dum = getchar();
     while (dum != ':')
         dum = getchar();
-}
+} /* io_skip() */
 
 void readpicture()
 
@@ -1142,11 +1146,11 @@ void main(int argc, char *argv[])
     /* enter data */
 
     printf("enter rho:");
-    skip();
+    io_skip();
     scanf("%lf", &rho);
 
     printf("enter h:");
-    skip();
+    io_skip();
     scanf("%d", &r_init);
 
     twelve_sided = 0;
@@ -1157,39 +1161,39 @@ void main(int argc, char *argv[])
     }
 
     printf("enter p:");
-    skip();
+    io_skip();
     scanf("%lf", &rhor_init);
 
     printf("enter beta:");
-    skip();
+    io_skip();
     scanf("%lf", &beta);
 
     printf("enter alpha:");
-    skip();
+    io_skip();
     scanf("%lf", &alpha);
 
     printf("enter theta:");
-    skip();
+    io_skip();
     scanf("%lf", &theta);
 
     printf("enter kappa:");
-    skip();
+    io_skip();
     scanf("%lf", &kappa);
 
     printf("enter mu:");
-    skip();
+    io_skip();
     scanf("%lf", &mu);
 
     printf("enter gamma:");
-    skip();
+    io_skip();
     scanf("%lf", &gam);
 
     printf("enter sigma:");
-    skip();
+    io_skip();
     scanf("%lf", &sigma);
 
     printf("enter no. of rows, L:");
-    skip();
+    io_skip();
     scanf("%d", &nr);
 
     printf("\n %d\n", nr);
@@ -1197,27 +1201,27 @@ void main(int argc, char *argv[])
     nc = nr;
 
     printf("size of the pixel, Zoom:");
-    skip();
+    io_skip();
     scanf("%d", &sp);
 
     printf("input file:");
-    skip();
+    io_skip();
     scanf("%s", g_in_file_path);
 
     printf("output file:");
-    skip();
+    io_skip();
     scanf("%s", g_out_file_path);
 
     printf("graphics file:");
-    skip();
+    io_skip();
     scanf("%s", g_graphics_file_path);
 
     printf("grahics viewer:");
-    skip();
+    io_skip();
     scanf("%s", g_grahics_viewer_name);
 
     printf("comments (< 100 chars):");
-    skip();
+    io_skip();
     scanf("%s", g_comments);
 
     /* end data*/
