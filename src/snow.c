@@ -190,10 +190,10 @@ double sqr(double x)
     return x * x;
 }
 
+
+
 void check()
-
 {
-
     int i, j, iup;
 
     iup = g_center_i + g_r_new + 1;
@@ -206,7 +206,10 @@ void check()
                 printf("*%d %lf", apic[i][j], adif[i][j]);
         }
     }
-}
+} /* check() */
+
+
+/* ==== Main simulation algorithm func ==== */
 
 void initialize()
 
@@ -302,10 +305,8 @@ void initialize()
     g_par_ash = 1;
 }
 
-void dynamicsdif()
-
+void dynamics_dif()
 {
-
     double b[NR_MAX][NC_MAX];
     double x, y;
     int i, j, k;
@@ -370,12 +371,12 @@ void dynamicsdif()
                 adif[i][j] = b[i][j];
         }
     }
-}
+} /* dynamics_dif() */
 
 /**
  * Add Noise to `adif[]`
  */
-void dynamicspop()
+void dynamics_pop()
 {
     double b[NR_MAX][NC_MAX];
     double x, y;
@@ -398,9 +399,9 @@ void dynamicspop()
                 adif[i][j] = adif[i][j] * (1 - sigma);
         }
     }
-} /* dynamicspop() */
+} /* dynamics_pop() */
 
-void dynamicspop1()
+void dynamics_pop1()
 {
     int i, j;
     double offset;
@@ -417,12 +418,10 @@ void dynamicspop1()
                 }
             }
     }
-} /* dynamicspop1() */
+} /* dynamics_pop1() */
 
-void dynamicsunfre()
-
+void dynamics_unfre()
 {
-
     double x, y, afrij;
     int i, j, k;
     int id, iu, jl, jr;
@@ -461,12 +460,10 @@ void dynamicsunfre()
             }
         }
     }
-}
+} /* dynamics_unfre() */
 
-void dynamicsfre()
-
+void dynamics_fre()
 {
-
     int bpic[NR_MAX][NC_MAX];
 
     double x, y, afrij;
@@ -575,12 +572,10 @@ void dynamicsfre()
         g_par_ash = g_par_ash + 1;
         g_r_old = g_r_new;
     }
-}
+} /* dynamics_fre() */
 
-void dynamicsfre1()
-
+void dynamics_fre1()
 {
-
     double x, y;
     int i, j, k;
     int id, iu, jl, jr;
@@ -636,24 +631,23 @@ void dynamicsfre1()
             }
         }
     }
-}
+} /* dynamics_fre1() */
 
 void dynamics()
-
 {
     int i;
 
-    dynamicsdif();
-    dynamicsfre1();
-    dynamicsfre();
-    dynamicsunfre();
+    dynamics_dif();
+    dynamics_fre1();
+    dynamics_fre();
+    dynamics_unfre();
 
     // add Noise
     if (sigma > 0.0)
-        dynamicspop();
+        dynamics_pop();
 
-    /*io_plot_state(); */
-}
+    /* io_plot_state(); */
+} /* dynamics() */
 
 
 /* ==== IO helper functions ==== */
@@ -1386,7 +1380,7 @@ void main(int argc, char *argv[])
 
                 printf("read from file %s\n", g_in_file_path);
                 io_read_picture();
-                dynamicspop1();
+                dynamics_pop1();
                 gui_picture_big();
             }
 

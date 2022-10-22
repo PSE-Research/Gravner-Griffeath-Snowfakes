@@ -554,7 +554,7 @@ void initialize()
     buildbig();
 }
 
-void dynamicsdif()
+void dynamics_dif()
 
 {
 
@@ -633,7 +633,7 @@ void dynamicsdif()
     createbdry();
 }
 
-void dynamicspop()
+void dynamics_pop()
 
 {
 
@@ -662,7 +662,7 @@ void dynamicspop()
     createbdry();
 }
 
-void dynamicspop1()
+void dynamics_pop1()
 
 {
 
@@ -683,7 +683,7 @@ void dynamicspop1()
     }
 }
 
-void dynamicsunfre()
+void dynamics_unfre()
 
 {
 
@@ -726,7 +726,7 @@ void dynamicsunfre()
     createbdry();
 }
 
-void dynamicsfre()
+void dynamics_fre()
 
 {
 
@@ -838,7 +838,7 @@ void dynamicsfre()
     createbdry();
 }
 
-void dynamicsfre1()
+void dynamics_fre1()
 
 {
 
@@ -902,13 +902,13 @@ void dynamics()
 {
     int i;
 
-    dynamicsdif();
-    dynamicsfre1();
-    dynamicsfre();
-    dynamicsunfre();
+    dynamics_dif();
+    dynamics_fre1();
+    dynamics_fre();
+    dynamics_unfre();
 
     if (sigma > 0.0)
-        dynamicspop();
+        dynamics_pop();
 
     /*io_plot_state(); */
 }
@@ -1532,7 +1532,7 @@ void main(int argc, char *argv[])
 
                 printf("read from file %s\n", g_in_file_path);
                 io_read_picture();
-                dynamicspop1();
+                dynamics_pop1();
                 createbdry();
                 gui_picture_big();
             }
