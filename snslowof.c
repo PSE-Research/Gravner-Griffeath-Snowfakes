@@ -1,3 +1,11 @@
+/**
+ * MODELING SNOW CRYSTAL GROWTH II
+ * 
+ *  Janko Gravner <gravner@math.ucdavis.edu> 
+ *  David Griffeath <griffeat@math.wisc.edu>
+ * 
+ * Revised version, September 2007
+ */
 #include <stdio.h>
 #include <math.h>
 
