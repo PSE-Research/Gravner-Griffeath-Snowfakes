@@ -604,6 +604,7 @@ void dynamics()
 
 /**
  * 跳过其他字符，直到遇见 `:`.
+ * Skip any other characters until you meet a colon `:`.
  * 
  * 用于处理复制粘贴输入的情况。
  */
