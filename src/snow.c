@@ -969,8 +969,10 @@ void io_skip()
         dum = getchar();
 } /* io_skip() */
 
-void readpicture()
-
+/** 
+ * 读取 g_in_file_path 里的模拟状态
+ **/
+void io_read_picture()
 {
     int i, j, k;
     double x;
@@ -1000,7 +1002,7 @@ void readpicture()
     fscanf(g_picture_file, "%d", &k);
     g_pq = k;
     fclose(g_picture_file);
-}
+} /* io_read_picture() */
 
 void savepicture()
 
@@ -1370,7 +1372,7 @@ void main(int argc, char *argv[])
             {
 
                 printf("read from file %s\n", g_in_file_path);
-                readpicture();
+                io_read_picture();
                 dynamicspop1();
                 picturebig();
             }

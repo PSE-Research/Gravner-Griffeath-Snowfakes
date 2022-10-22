@@ -1092,7 +1092,7 @@ void io_skip()
         dum = getchar();
 }
 
-void readpicture()
+void io_read_picture()
 
 {
     int i, j, k;
@@ -1531,7 +1531,7 @@ void main(int argc, char *argv[])
             {
 
                 printf("read from file %s\n", g_in_file_path);
-                readpicture();
+                io_read_picture();
                 dynamicspop1();
                 createbdry();
                 picturebig();
