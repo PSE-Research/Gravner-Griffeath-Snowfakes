@@ -159,40 +159,6 @@ int semi_norm(int i, int j)
         return -k;
 } /* semi_norm(int i, int j) */
 
-int in_shape12(double x, double y)
-{
-    if (x < 0)
-        x = -x;
-    if (y < 0)
-        y = -y;
-    if ((sqrt(2.0) * y < 1.0) && (y + sqrt(3.0) * x <= sqrt(2.0)) && (sqrt(2.0) * x < 1.0) &&
-        (x + sqrt(3.0) * y <= sqrt(2.0)))
-        return 1;
-    else
-        return 0;
-} /* in_shape12(double x, double y) */
-
-int in_shape_circle1(double x, double y)
-{
-    if (x * x + y * y <= 1)
-        return 1;
-    else
-        return 0;
-} /* in_shape_circle1(double x, double y) */
-
-int chi(int i)
-{
-    if (i == 0)
-        return 0;
-    else
-        return 1;
-}
-
-double sqr(double x)
-{
-    return x * x;
-}
-
 void check()
 {
     int i, j, iup;
