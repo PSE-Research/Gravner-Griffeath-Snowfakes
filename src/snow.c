@@ -683,9 +683,6 @@ void io_get_input_params()
     printf("enter no. of rows, L:");
     io_skip();
     scanf("%d", &nr);
-
-    printf("\n %d\n", nr);
-
     nc = nr;
 
     printf("size of the pixel, Zoom:");

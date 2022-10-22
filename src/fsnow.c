@@ -1342,9 +1342,6 @@ void main(int argc, char *argv[])
     printf("enter no. of rows, L:");
     io_skip();
     scanf("%d", &nr);
-
-    printf("\n %d\n", nr);
-
     nc = nr;
 
     printf("size of the pixel, Zoom:");
