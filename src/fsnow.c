@@ -1467,12 +1467,12 @@ void main(int argc, char *argv[])
             if ((posx >= 10) && (posx <= 60) && (posy >= 10) && (posy <= 30))
             {
 
-                printf("QUIT\n");
+                printf("[QUIT]\n");
                 g_exit_flag = true;
             }
             else if ((posx >= 65) && (posx <= 115) && (posy >= 10) && (posy <= 30))
             {
-                printf("pause\n");
+                printf("[pause]\n");
                 if (g_pq % 2 == 0)
                     gui_picture_rings();
                 else
@@ -1481,7 +1481,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 120) && (posx <= 170) && (posy >= 10) && (posy <= 30))
             {
 
-                printf("play\n");
+                printf("[play]\n");
 
                 while ((XEventsQueued(g_xDisplay, QueuedAfterReading) == 0) && (g_pq != -1) && (g_stop == false))
                 {
@@ -1496,7 +1496,7 @@ void main(int argc, char *argv[])
             }
             else if ((posx >= 175) && (posx <= 225) && (posy >= 10) && (posy <= 30))
             {
-                printf("save to file %s\n", g_out_file_path);
+                printf("[save] to file %s\n", g_out_file_path);
                 io_save_picture();
                 io_save_snowflake();
             }
@@ -1504,7 +1504,7 @@ void main(int argc, char *argv[])
             else if ((posx >= 230) && (posx <= 280) && (posy >= 10) && (posy <= 30))
             {
 
-                printf("read from file %s\n", g_in_file_path);
+                printf("[read] from file %s\n", g_in_file_path);
                 io_read_picture();
                 dynamics_pop1();
                 createbdry();
@@ -1513,7 +1513,7 @@ void main(int argc, char *argv[])
 
             else
             {
-                printf("step\n");
+                printf("[step]\n");
 
                 g_noac = 0;
                 g_pq++;
