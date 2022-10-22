@@ -1,0 +1,6 @@
+# docs
+*.pdf
+
+# output
+pltest
+*.ppm
