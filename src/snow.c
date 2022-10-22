@@ -16,19 +16,19 @@
 #define T 1
 #define F 0
 
-#define nrmax 1002
-#define ncmax 1002
+#define NR_MAX 1002
+#define NC_MAX 1002
 
-#define kappamax 64
+#define KAPPA_MAX 64
 
 int sp;
 
-double adif[nrmax][ncmax]; /*diffusion field*/
-int apic[nrmax][ncmax];    /*indicator of snowflake sites*/
-double afr[nrmax][ncmax];  /* boundary mass*/
-double alm[nrmax][ncmax];  /*crystal mass*/
+double adif[NR_MAX][NC_MAX]; /*diffusion field*/
+int apic[NR_MAX][NC_MAX];    /*indicator of snowflake sites*/
+double afr[NR_MAX][NC_MAX];  /* boundary mass*/
+double alm[NR_MAX][NC_MAX];  /*crystal mass*/
 
-int ash[nrmax][ncmax]; /*rings pallette*/
+int ash[NR_MAX][NC_MAX]; /*rings pallette*/
 
 /* parameters*/
 
@@ -74,7 +74,7 @@ char activestring[] = "active area:";
 int noac, pq;
 
 Colormap cmap;
-XColor clr[kappamax];
+XColor clr[KAPPA_MAX];
 
 XColor clron[128];
 XColor clroff[128];
@@ -433,7 +433,7 @@ void dynamicsdif()
 
 {
 
-    double b[nrmax][ncmax];
+    double b[NR_MAX][NC_MAX];
     double x, y;
     int i, j, k;
     int id, iu, jl, jr;
@@ -503,7 +503,7 @@ void dynamicspop()
 
 {
 
-    double b[nrmax][ncmax];
+    double b[NR_MAX][NC_MAX];
     double x, y;
     int i, j, k;
     int id, iu, jl, jr;
@@ -596,7 +596,7 @@ void dynamicsfre()
 
 {
 
-    int bpic[nrmax][ncmax];
+    int bpic[NR_MAX][NC_MAX];
 
     double x, y, afrij;
     int i, j, k;
@@ -870,7 +870,7 @@ void picturerings()
             else
             {
                 k = ash[i][j];
-                k = k % kappamax;
+                k = k % KAPPA_MAX;
                 XSetForeground(td, tgc, clr[k].pixel);
                 XFillRectangle(te.xexpose.display, te.xexpose.window, tgc, j * sp + 30, i * sp + 60, sp, sp);
                 if (alm[i][j] > 1 + 0.5 * (beta - 1.0))
@@ -1106,7 +1106,7 @@ void savesnowflake()
                     else
                     {
                         k = ash[i1][j1];
-                        k = k % kappamax;
+                        k = k % KAPPA_MAX;
                         fprintf(picf, "%d %d %d ", clr[k].red * 255 / 65535, clr[k].green * 255 / 65535,
                                 clr[k].blue * 255 / 65535);
                     }
@@ -1243,7 +1243,7 @@ char *argv[];
     cmap = DefaultColormap(td, ts);
 
     braquecolors64();
-    for (i = 0; i < kappamax; i++)
+    for (i = 0; i < KAPPA_MAX; i++)
     {
         clr[i].red = red[i] * 65535 / 255;
         clr[i].green = green[i] * 65535 / 255;
