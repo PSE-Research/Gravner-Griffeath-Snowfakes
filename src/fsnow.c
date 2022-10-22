@@ -94,28 +94,32 @@ int g_frchange;
 
 /* ==== X11 Window ==== */
 Display *g_xDisplay;
+// main window
 Window g_xWindow;
 GC g_xGC;
 XEvent g_xEvent;
+// windows size hint
 XSizeHints g_xSizeHints;
+// default screen number
 int g_xScreen;
+// white and black pixel value
 unsigned long g_xBlack, g_xWhite;
+// main while loop control flag.
 int g_exit_flag;
 
+// x11 windows in args
+char gui_ICON_NAME_STR[] = "sn";
+char gui_WINDOW_NAME_STR[] = "digital snowflake";
 char gui_TIME_STR[] = "time:";
 char gui_ACTIVE_STR[] = "active area:";
 
+// ---- color map
 Colormap g_cmap;
 XColor g_color[KAPPA_MAX];
-
 XColor g_color_on[128];
 XColor g_color_off[128];
 XColor g_othp[20];
-
-
-char gui_ICON_NAME_STR[] = "sn";
-char gui_WINDOW_NAME_STR[] = "digital snowflake";
-
+// temp color array
 int g_red[125], g_green[125], g_blue[125];
 
 
