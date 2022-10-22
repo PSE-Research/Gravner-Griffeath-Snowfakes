@@ -1,0 +1,61 @@
+Snowflake Simulator
+
+(1) Diffusion. Diffusive mass evolves by discrete diffusion with weight
+    1/7 on each neighbor site, incl. the center site.  
+    Reflecting boundary conditions are used at the edge of the crystal.
+    
+(2) Freezing. Proportion kappa of diffusive mass at a boundary site 
+    joins the crystal mass. The remainder (proportion 1-kappa) joins 
+    the boundary mass.  
+
+(3) Attachment. A boundary site with 4 or more attached neighbors joins 
+    the crystal automatically. A boundary site with 3 attached neighbors 
+    joins the snowflake if either it has boundary mass>=1, or it has 
+    diffusive mass<theta in its neighborhood and it has boundary mass>=alpha. 
+    Finally, a boundary site with 1 or 2 attached neighbors needs boundary 
+    mass>=beta to join the crystal.   
+    Once a site is attached, its boundary mass joins the crystal mass.
+ 
+(4) Melting. Proportion mu of boundary mass proportion gamma of crystal 
+    mass off the crystal become diffusive mass.
+
+(5) Noise. Proportion sigma of the diffusing mass at each site appears or 
+    disappears, with probability 0.5 each. 
+
+Each discrete time unit (1),(2),(3), (4), and (5) are performed in this order.
+
+***Initial state
+   (h is the radius of the initial hexagon of density p in the middle of the array, 
+   rho the density of diffusing particles elsewhere.)
+
+enter rho:0.58
+enter h:0
+enter p:1
+
+(Note. h<0 is interpreted as special initialization with radius -h.) 
+
+***Dynamics.
+
+enter beta:2.0
+enter alpha:0.0 0.3
+enter theta:0.002 0.007595
+enter kappa:0 .05
+enter mu:0 .01
+enter gamma:0.0000515
+enter sigma:0.0 -0.5
+
+(Note. sigma<0 turns off the noise, but reduces the diffusion field of a read file.) 
+
+***Size of the (square) LxL system.
+
+enter L:150
+zoom Z:2
+
+***Input/output files.
+
+infile:pltest
+outfile:pltest
+graphicsfile:test.ppm
+(Note. The saved palette differs depending on the parity of time.Press [pause] to see.)
+grahics viewer:gimp
+comments(<100 characters): Test file. 
