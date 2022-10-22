@@ -1026,6 +1026,95 @@ void gui_off_colors64()
 } /* gui_off_colors64() */
 
 
+void gui_X11init(int argc, char *argv[])
+{
+    int i;
+    
+    g_xDisplay = XOpenDisplay("");
+    g_xScreen = DefaultScreen(g_xDisplay);
+    g_xWhite = XWhitePixel(g_xDisplay, g_xScreen);
+    g_xBlack = XBlackPixel(g_xDisplay, g_xScreen);
+
+    g_xSizeHints.x = 0;
+    g_xSizeHints.y = 0;
+
+    g_xSizeHints.width = nc * sp + 100;
+    g_xSizeHints.height = nr * sp + 60 + 40;
+
+    g_xSizeHints.flags = PPosition | PSize;
+
+    g_xWindow = XCreateSimpleWindow(g_xDisplay, DefaultRootWindow(g_xDisplay), g_xSizeHints.x, g_xSizeHints.y, g_xSizeHints.width, g_xSizeHints.height, 7, g_xBlack, g_xWhite);
+
+    XSetWindowBorderWidth(g_xDisplay, g_xWindow, 100);
+
+    XSetStandardProperties(g_xDisplay, g_xWindow, gui_WINDOW_NAME_STR, gui_ICON_NAME_STR, None, argv, argc, &g_xSizeHints);
+
+    g_cmap = DefaultColormap(g_xDisplay, g_xScreen);
+
+    gui_braque_colors64();
+    for (i = 0; i < KAPPA_MAX; i++)
+    {
+        g_color[i].red = g_red[i] * 65535 / 255;
+        g_color[i].green = g_green[i] * 65535 / 255;
+        g_color[i].blue = g_blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, g_cmap, &g_color[i]);
+    }
+
+    gui_blue_colors33();
+
+    for (i = 0; i <= 32; i++)
+    {
+
+        g_color_on[i].red = g_red[i] * 65535 / 255;
+        g_color_on[i].green = g_green[i] * 65535 / 255;
+        g_color_on[i].blue = g_blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, g_cmap, &g_color_on[i]);
+    }
+
+    gui_off_colors64();
+
+    for (i = 0; i <= 63; i++)
+    {
+
+        g_color_off[63 - i].red = g_red[i] * 65535 / 255;
+        g_color_off[63 - i].green = g_green[i] * 65535 / 255;
+        g_color_off[63 - i].blue = g_blue[i] * 65535 / 255;
+        XAllocColor(g_xDisplay, g_cmap, &g_color_off[63 - i]);
+    }
+
+    XAllocNamedColor(g_xDisplay, g_cmap, "orange", &g_othp[0], &g_othp[0]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray90", &g_othp[1], &g_othp[1]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray80", &g_othp[2], &g_othp[2]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray70", &g_othp[3], &g_othp[3]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray60", &g_othp[4], &g_othp[4]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray50", &g_othp[5], &g_othp[5]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray40", &g_othp[6], &g_othp[6]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray30", &g_othp[7], &g_othp[7]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray25", &g_othp[8], &g_othp[8]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "gray20", &g_othp[9], &g_othp[9]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "black", &g_othp[10], &g_othp[10]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "azure", &g_othp[11], &g_othp[11]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue2", &g_othp[12], &g_othp[12]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue3", &g_othp[13], &g_othp[13]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue4", &g_othp[14], &g_othp[14]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "cornflowerblue", &g_othp[15], &g_othp[15]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "white", &g_othp[16], &g_othp[16]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "palegreen", &g_othp[17], &g_othp[17]);
+    XAllocNamedColor(g_xDisplay, g_cmap, "red", &g_othp[18], &g_othp[18]);
+
+    g_xGC = XCreateGC(g_xDisplay, g_xWindow, 0, 0);
+
+    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
+
+    XSelectInput(g_xDisplay, g_xWindow, (ButtonPressMask | ExposureMask));
+
+    XMapRaised(g_xDisplay, g_xWindow);
+
+    g_exit_flag = false;
+
+    XNextEvent(g_xDisplay, &g_xEvent);
+} /* gui_X11init(int argc, char *argv[]) */
+
 void gui_draw_buttons()
 {
     const char quitstring[] = "QUIT";
@@ -1055,7 +1144,6 @@ void gui_draw_buttons()
 
     XDrawImageString(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, 240, 25, readstring, strlen(readstring));
 } /* gui_draw_buttons() */
-
 
 void gui_picture_big()
 {
@@ -1195,7 +1283,6 @@ void gui_picture_rings()
 
 void main(int argc, char *argv[])
 {
-
     int i, j, k, nop;
     char ch;
     int posx, posy;
@@ -1207,90 +1294,8 @@ void main(int argc, char *argv[])
     /* ---- enter data */
     io_get_input_params();
 
-    g_xDisplay = XOpenDisplay("");
-    g_xScreen = DefaultScreen(g_xDisplay);
-    g_xWhite = XWhitePixel(g_xDisplay, g_xScreen);
-    g_xBlack = XBlackPixel(g_xDisplay, g_xScreen);
-
-    g_xSizeHints.x = 0;
-    g_xSizeHints.y = 0;
-
-    g_xSizeHints.width = nc * sp + 100;
-    g_xSizeHints.height = nr * sp + 60 + 40;
-
-    g_xSizeHints.flags = PPosition | PSize;
-
-    g_xWindow = XCreateSimpleWindow(g_xDisplay, DefaultRootWindow(g_xDisplay), g_xSizeHints.x, g_xSizeHints.y, g_xSizeHints.width, g_xSizeHints.height, 7, g_xBlack, g_xWhite);
-
-    XSetWindowBorderWidth(g_xDisplay, g_xWindow, 100);
-
-    XSetStandardProperties(g_xDisplay, g_xWindow, gui_WINDOW_NAME_STR, gui_ICON_NAME_STR, None, argv, argc, &g_xSizeHints);
-
-    g_cmap = DefaultColormap(g_xDisplay, g_xScreen);
-
-    gui_braque_colors64();
-    for (i = 0; i < KAPPA_MAX; i++)
-    {
-        g_color[i].red = g_red[i] * 65535 / 255;
-        g_color[i].green = g_green[i] * 65535 / 255;
-        g_color[i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, g_cmap, &g_color[i]);
-    }
-
-    gui_blue_colors33();
-
-    for (i = 0; i <= 32; i++)
-    {
-
-        g_color_on[i].red = g_red[i] * 65535 / 255;
-        g_color_on[i].green = g_green[i] * 65535 / 255;
-        g_color_on[i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, g_cmap, &g_color_on[i]);
-    }
-
-    gui_off_colors64();
-
-    for (i = 0; i <= 63; i++)
-    {
-
-        g_color_off[63 - i].red = g_red[i] * 65535 / 255;
-        g_color_off[63 - i].green = g_green[i] * 65535 / 255;
-        g_color_off[63 - i].blue = g_blue[i] * 65535 / 255;
-        XAllocColor(g_xDisplay, g_cmap, &g_color_off[63 - i]);
-    }
-
-    XAllocNamedColor(g_xDisplay, g_cmap, "orange", &g_othp[0], &g_othp[0]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray90", &g_othp[1], &g_othp[1]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray80", &g_othp[2], &g_othp[2]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray70", &g_othp[3], &g_othp[3]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray60", &g_othp[4], &g_othp[4]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray50", &g_othp[5], &g_othp[5]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray40", &g_othp[6], &g_othp[6]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray30", &g_othp[7], &g_othp[7]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray25", &g_othp[8], &g_othp[8]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "gray20", &g_othp[9], &g_othp[9]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "black", &g_othp[10], &g_othp[10]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "azure", &g_othp[11], &g_othp[11]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue2", &g_othp[12], &g_othp[12]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue3", &g_othp[13], &g_othp[13]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "lightblue4", &g_othp[14], &g_othp[14]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "cornflowerblue", &g_othp[15], &g_othp[15]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "white", &g_othp[16], &g_othp[16]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "palegreen", &g_othp[17], &g_othp[17]);
-    XAllocNamedColor(g_xDisplay, g_cmap, "red", &g_othp[18], &g_othp[18]);
-
-    g_xGC = XCreateGC(g_xDisplay, g_xWindow, 0, 0);
-
-    XSetBackground(g_xDisplay, g_xGC, g_xWhite);
-
-    XSelectInput(g_xDisplay, g_xWindow, (ButtonPressMask | ExposureMask));
-
-    XMapRaised(g_xDisplay, g_xWindow);
-
-    g_exit_flag = false;
-
-    XNextEvent(g_xDisplay, &g_xEvent);
-
+    /* ---- X11 GUI */
+    gui_X11init(argc, argv);
     gui_draw_buttons();
 
     printf("creating init. st.\n");
