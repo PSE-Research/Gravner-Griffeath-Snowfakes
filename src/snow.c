@@ -435,7 +435,7 @@ void dynamics_unfre()
     }
 } /* dynamics_unfre() */
 
-void dynamics_fre()
+void dynamics_attachment()
 {
     int bpic[NR_MAX][NC_MAX];
 
@@ -456,24 +456,24 @@ void dynamics_fre()
     jup = g_center_j + g_r_new + 1;
     g_frchange = false;
 
+    // copy `a_pic => bpic`
     for (i = ilo; i <= iup; i++)
         for (j = jlo; j <= jup; j++)
         {
-
             bpic[i][j] = a_pic[i][j];
         }
+
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
-
             if (a_pic[i][j] == 0)
             {
-
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
                 jr = (j + 1) % nc;
                 jl = (j + nc - 1) % nc;
+
                 count = 0;
                 if (a_pic[id][j] == 1)
                     count++;
@@ -490,45 +490,48 @@ void dynamics_fre()
 
                 if (count >= 1)
                 {
-
                     difmass = d_dif[i][j] + d_dif[id][j] * (1 - a_pic[id][j]) + d_dif[iu][j] * (1 - a_pic[iu][j]) +
                               d_dif[i][jl] * (1 - a_pic[i][jl]) + d_dif[i][jr] * (1 - a_pic[i][jr]) +
                               d_dif[iu][jr] * (1 - a_pic[iu][jr]) + d_dif[id][jl] * (1 - a_pic[id][jl]);
 
+                    // [3a] count = [1, 2]
                     if (count <= 2)
                     {
-
                         if (b__fr[i][j] >= beta)
                         {
                             bpic[i][j] = 1;
                         }
                     }
 
+                    // [3b]
                     if (count >= 3)
                     {
-
                         if ((b__fr[i][j] >= 1.0) || ((difmass <= theta) && (b__fr[i][j] >= alpha)))
                         {
                             bpic[i][j] = 1;
                         }
                     }
+                    
+                    // [3c]
                     if (count >= 4)
                         bpic[i][j] = 1;
-                }
-            }
+                } /* if (count >= 1) */
+            } /* if (a_pic[i][j] == 0) */
         }
     }
+
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
-
+            // 使用 bpic 更新 a_pic
             if (a_pic[i][j] != bpic[i][j])
             {
                 a_pic[i][j] = bpic[i][j];
 
                 c__lm[i][j] += b__fr[i][j];
                 b__fr[i][j] = 0.0;
+
                 k = norm_inf(i - g_center_i, j - g_center_j);
                 if (k > g_r_new)
                     g_r_new = k;
@@ -539,13 +542,14 @@ void dynamics_fre()
             }
         }
     }
+
     g_par_update = 1 - g_par_update;
     if (g_r_new - g_r_old == 1)
     {
         g_par_ash = g_par_ash + 1;
         g_r_old = g_r_new;
     }
-} /* dynamics_fre() */
+} /* dynamics_attachment() */
 
 void dynamics_freezing()
 {
@@ -613,7 +617,7 @@ void dynamics()
 
     dynamics_diffusion();
     dynamics_freezing();
-    dynamics_fre();
+    dynamics_attachment();
     dynamics_unfre();
 
     // add Noise

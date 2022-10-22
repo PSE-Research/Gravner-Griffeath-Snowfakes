@@ -703,7 +703,7 @@ void dynamics_unfre()
     createbdry();
 }
 
-void dynamics_fre()
+void dynamics_attachment()
 
 {
 
@@ -881,7 +881,7 @@ void dynamics()
 
     dynamics_diffusion();
     dynamics_freezing();
-    dynamics_fre();
+    dynamics_attachment();
     dynamics_unfre();
 
     if (sigma > 0.0)
