@@ -606,7 +606,7 @@ void dynamics()
     if (sigma > 0.0)
         dynamics_pop();
 
-    /* io_plot_state(); */
+    /* io_print_state(); */
 } /* dynamics() */
 
 
@@ -891,7 +891,7 @@ void io_save_snowflake()
     dum = popen(g_grahics_viewer_name, "r");
 } /* io_save_snowflake() */
 
-void io_plot_state()
+void io_print_state()
 {
     int i, j;
     for (i = 0; i <= 9; i++)
@@ -902,7 +902,7 @@ void io_plot_state()
         printf("\n");
     }
     printf("\n");
-} /* io_plot_state() */
+} /* io_print_state() */
 
 void io_check_state()
 {
@@ -1324,7 +1324,7 @@ int main(int argc, char *argv[])
     // ---- init state
     initialize();
     gui_picture_big();
-    /*io_plot_state(); */
+    /*io_print_state(); */
 
     // ---- main loop
     g_pq = 0;

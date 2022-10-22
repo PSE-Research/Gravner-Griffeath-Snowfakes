@@ -285,7 +285,7 @@ int in_shape_circle1(double x, double y)
         return 0;
 }
 
-void io_plot_state()
+void io_print_state()
 
 {
     int i, j;
@@ -889,7 +889,7 @@ void dynamics()
     if (sigma > 0.0)
         dynamics_pop();
 
-    /*io_plot_state(); */
+    /*io_print_state(); */
 }
 
 void gui_picture_big()
@@ -1463,7 +1463,7 @@ void main(int argc, char *argv[])
     // ---- init state
     initialize();
     gui_picture_big();
-    /*io_plot_state(); */
+    /*io_print_state(); */
 
     g_pq = 0;
 
