@@ -209,8 +209,12 @@ int norm_inf(int i, int j)
 #endif // _USE_FAST_IMPL
 } /* norm_inf(int i, int j) */
 
+/** abs(i + j) */
 int semi_norm(int i, int j)
 {
+#ifdef _USE_FAST_IMPL
+    return abs(i + j);
+#else
     int k;
 
     k = i + j;
@@ -218,6 +222,7 @@ int semi_norm(int i, int j)
         return k;
     else
         return -k;
+#endif // _USE_FAST_IMPL
 } /* semi_norm(int i, int j) */
 
 
