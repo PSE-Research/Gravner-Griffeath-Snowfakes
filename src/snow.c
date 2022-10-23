@@ -1178,6 +1178,10 @@ int gui_get_on_color_idx(int i, int j)
     double y = c__lm[i][j] + d_dif[i][j];
     int k = floor((33.0 * y - alpha) / (beta - alpha));
 
+    // note: 修复初始化之后只有固相, y==0 的情况. 此时 k == -1
+    if (k < 0)
+        k = 0;
+
     if (k > 32)
         k = 32;
 
