@@ -13,6 +13,7 @@
 #include <stdbool.h> // true; false
 #include <stdlib.h> // srand48, drand48
 #include <time.h>
+#include <limits.h> // UCHAR_MAX, USHRT_MAX
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -943,8 +944,8 @@ void io_save_snowflake()
                 {
 
                     k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
-                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
-                            g_color_off[k].blue * 255 / 65535);
+                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * UCHAR_MAX / USHRT_MAX, g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
+                            g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
                 else
                 {
@@ -955,8 +956,8 @@ void io_save_snowflake()
                     if (k > 32)
                         k = 32;
 
-                    fprintf(g_state_file, "%d %d %d ", g_color_on[k].red * 255 / 65535, g_color_on[k].green * 255 / 65535,
-                            g_color_on[k].blue * 255 / 65535);
+                    fprintf(g_state_file, "%d %d %d ", g_color_on[k].red * UCHAR_MAX / USHRT_MAX, g_color_on[k].green * UCHAR_MAX / USHRT_MAX,
+                            g_color_on[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
             }
             else
@@ -964,8 +965,8 @@ void io_save_snowflake()
                 if (not_snowflake(a_pic[i1][j1]))
                 {
                     k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
-                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
-                            g_color_off[k].blue * 255 / 65535);
+                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * UCHAR_MAX / USHRT_MAX, g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
+                            g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
                 else
                 {
@@ -979,15 +980,15 @@ void io_save_snowflake()
                             k = 14;
                         if (c__lm[i1][j1] >= beta)
                             k = 15;
-                        fprintf(g_state_file, "%d %d %d ", g_othp[k].red * 255 / 65535, g_othp[k].green * 255 / 65535,
-                                g_othp[k].blue * 255 / 65535);
+                        fprintf(g_state_file, "%d %d %d ", g_othp[k].red * UCHAR_MAX / USHRT_MAX, g_othp[k].green * UCHAR_MAX / USHRT_MAX,
+                                g_othp[k].blue * UCHAR_MAX / USHRT_MAX);
                     }
                     else
                     {
                         k = ash[i1][j1];
                         k = k % KAPPA_MAX;
-                        fprintf(g_state_file, "%d %d %d ", g_color[k].red * 255 / 65535, g_color[k].green * 255 / 65535,
-                                g_color[k].blue * 255 / 65535);
+                        fprintf(g_state_file, "%d %d %d ", g_color[k].red * UCHAR_MAX / USHRT_MAX, g_color[k].green * UCHAR_MAX / USHRT_MAX,
+                                g_color[k].blue * UCHAR_MAX / USHRT_MAX);
                     }
                 }
             }
@@ -1183,9 +1184,9 @@ void gui_X11init(int argc, char *argv[])
     gui_braque_colors64();
     for (i = 0; i < KAPPA_MAX; i++)
     {
-        g_color[i].red = g_red[i] * 65535 / 255;
-        g_color[i].green = g_green[i] * 65535 / 255;
-        g_color[i].blue = g_blue[i] * 65535 / 255;
+        g_color[i].red = g_red[i] * USHRT_MAX / UCHAR_MAX;
+        g_color[i].green = g_green[i] * USHRT_MAX / UCHAR_MAX;
+        g_color[i].blue = g_blue[i] * USHRT_MAX / UCHAR_MAX;
         XAllocColor(g_xDisplay, g_cmap, &g_color[i]);
     }
 
@@ -1194,9 +1195,9 @@ void gui_X11init(int argc, char *argv[])
     for (i = 0; i <= 32; i++)
     {
 
-        g_color_on[i].red = g_red[i] * 65535 / 255;
-        g_color_on[i].green = g_green[i] * 65535 / 255;
-        g_color_on[i].blue = g_blue[i] * 65535 / 255;
+        g_color_on[i].red = g_red[i] * USHRT_MAX / UCHAR_MAX;
+        g_color_on[i].green = g_green[i] * USHRT_MAX / UCHAR_MAX;
+        g_color_on[i].blue = g_blue[i] * USHRT_MAX / UCHAR_MAX;
         XAllocColor(g_xDisplay, g_cmap, &g_color_on[i]);
     }
 
@@ -1205,9 +1206,9 @@ void gui_X11init(int argc, char *argv[])
     for (i = 0; i <= 63; i++)
     {
 
-        g_color_off[63 - i].red = g_red[i] * 65535 / 255;
-        g_color_off[63 - i].green = g_green[i] * 65535 / 255;
-        g_color_off[63 - i].blue = g_blue[i] * 65535 / 255;
+        g_color_off[63 - i].red = g_red[i] * USHRT_MAX / UCHAR_MAX;
+        g_color_off[63 - i].green = g_green[i] * USHRT_MAX / UCHAR_MAX;
+        g_color_off[63 - i].blue = g_blue[i] * USHRT_MAX / UCHAR_MAX;
         XAllocColor(g_xDisplay, g_cmap, &g_color_off[63 - i]);
     }
 
