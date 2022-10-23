@@ -358,7 +358,7 @@ void dynamics_diffusion()
     // 当前格子近邻未结晶格子计数.
     int not_flake_count;
 
-    // b[] 置零
+    // --- b[] 置零
     // TODO: memset(b, 0, sizeof(b));
     for (i = 0; i < nr; i++)
         for (j = 0; (j < nc); j++)
@@ -366,8 +366,8 @@ void dynamics_diffusion()
             b[i][j] = 0.0;
         }
 
+    // --- 遍历所有非结晶格子, 计算新的气象质量, 结果保存到临时变量 b[] 中
     for (i = 0; i < nr; i++)
-    {
         for (j = 0; j < nc; j++)
         {
             if (not_snowflake(a_pic[i][j]))
@@ -419,18 +419,16 @@ void dynamics_diffusion()
                         
                     b[i][j] = residual_gas_mass + received_gas_mass;
                 }
-            }
+            } /* if (not_snowflake(a_pic[i][j])) */
         }
-    }
 
+    // --- 更新非结晶格子的气相质量 d_dif
     for (i = 0; i < nr; i++)
-    {
         for (j = 0; (j < nc); j++)
         {
             if (not_snowflake(a_pic[i][j]))
                 d_dif[i][j] = b[i][j];
         }
-    }
 } /* dynamics_diffusion() */
 
 /**
