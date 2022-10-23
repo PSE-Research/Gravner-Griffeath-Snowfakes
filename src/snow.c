@@ -193,6 +193,13 @@ XColor g_othp[20];
 int g_red[125], g_green[125], g_blue[125];
 
 
+/* ==== Helper function forward declaration ==== */
+// --- colors
+int gui_get_off_color_idx(int i, int j);
+int gui_get_on_color_idx(int i, int j);
+int gui_get_color_idx(int i, int j);
+int gui_get_othp_color_idx(int i, int j);
+
 /* ==== Speed helper functions ==== */
 bool not_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
