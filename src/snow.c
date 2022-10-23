@@ -409,12 +409,12 @@ void dynamics_diffusion()
                      */
                     double received_gas_mass =
                         (
-                              d_dif[id][j] * (1.0 - a_pic[id][j])  
-                            + d_dif[iu][j] * (1.0 - a_pic[iu][j]) 
-                            + d_dif[i][jl] * (1.0 - a_pic[i][jl])  
-                            + d_dif[i][jr] * (1.0 - a_pic[i][jr]) 
-                            + d_dif[iu][jr] * (1.0 - a_pic[iu][jr]) 
-                            + d_dif[id][jl] * (1.0 - a_pic[id][jl])
+                              d_dif[id][j] * not_snowflake(a_pic[id][j]) 
+                            + d_dif[iu][j] * not_snowflake(a_pic[iu][j])
+                            + d_dif[i][jl] * not_snowflake(a_pic[i][jl]) 
+                            + d_dif[i][jr] * not_snowflake(a_pic[i][jr])
+                            + d_dif[iu][jr] * not_snowflake(a_pic[iu][jr])
+                            + d_dif[id][jl] * not_snowflake(a_pic[id][jl])
                         ) / 7.0;
                         
                     b[i][j] = residual_gas_mass + received_gas_mass;
