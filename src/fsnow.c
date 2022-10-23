@@ -40,7 +40,7 @@ int twelve_sided;
 /**
  * density `p`
  */
-double rhor_init;
+double init_crystal_seed_probability;
 
 /* --- [Dynamics] */
 /** Dynamics params
@@ -475,7 +475,7 @@ void initialize()
             if (twelve_sided == 0)
             {
                 if ((norm_inf(i - g_center_i, j - g_center_j) <= init_crystal_seed_radius) && (semi_norm(i - g_center_i, j - g_center_j) <= init_crystal_seed_radius) &&
-                    (x <= rhor_init))
+                    (x <= init_crystal_seed_probability))
                 {
                     d_dif[i][j] = 0.0;
                     a_pic[i][j] = 1;
@@ -1184,7 +1184,7 @@ void io_save_snowflake()
 
     fprintf(g_state_file, "#init_gas_rho:%lf\n", init_gas_rho);
     fprintf(g_state_file, "#h:%d\n", init_crystal_seed_radius);
-    fprintf(g_state_file, "#p:%lf\n", rhor_init);
+    fprintf(g_state_file, "#p:%lf\n", init_crystal_seed_probability);
     fprintf(g_state_file, "#beta:%lf\n", beta);
     fprintf(g_state_file, "#alpha:%lf\n", alpha);
     fprintf(g_state_file, "#theta:%lf\n", theta);
@@ -1307,7 +1307,7 @@ void main(int argc, char *argv[])
 
     printf("enter p:");
     io_skip();
-    scanf("%lf", &rhor_init);
+    scanf("%lf", &init_crystal_seed_probability);
 
     printf("enter beta:");
     io_skip();
