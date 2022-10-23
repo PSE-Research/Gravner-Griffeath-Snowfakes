@@ -164,7 +164,7 @@ int g_red[125], g_green[125], g_blue[125];
 
 
 /* ==== Speed helper functions ==== */
-inline bool not_snowflake(bool pic) {
+bool not_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
     return !pic;
 #else
@@ -172,7 +172,7 @@ inline bool not_snowflake(bool pic) {
 #endif
 } // not_snowflake
 
-inline bool is_snowflake(bool pic) {
+bool is_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
     return pic;
 #else
