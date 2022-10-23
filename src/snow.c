@@ -913,7 +913,6 @@ void io_save_state()
 void io_save_snowflake()
 {
     int i, j, i1, j1, k;
-    double y;
 
     printf(".io_save_snowflake: saving snowflake image to file '%s'\n", g_graphics_file_path);
     g_state_file = fopen(g_graphics_file_path, "w");
@@ -1348,7 +1347,6 @@ void gui_draw_buttons()
 void gui_picture_big()
 {
     int i, j, k, pqn, kf;
-    double y;
     char pqc[10];
 
     for (i = 0; i < nr; i++)
