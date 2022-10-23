@@ -132,7 +132,7 @@ int g_xScreen;
 // white and black pixel value
 unsigned long g_xBlack, g_xWhite;
 // main while loop control flag.
-int g_exit_flag;
+bool g_exit_flag;
 
 // x11 windows in args
 const char gui_ICON_NAME_STR[] = "sn";
