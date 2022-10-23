@@ -974,14 +974,7 @@ void io_save_snowflake()
                 {
                     if (c__lm[i1][j1] > 1 + 0.5 * (beta - 1.0))
                     {
-                        if (c__lm[i1][j1] >= 1 + 0.2 * (beta - 1.0))
-                            k = 12;
-                        if (c__lm[i1][j1] >= 1 + 0.5 * (beta - 1.0))
-                            k = 13;
-                        if (c__lm[i1][j1] >= 1 + 0.7 * (beta - 1.0))
-                            k = 14;
-                        if (c__lm[i1][j1] >= beta)
-                            k = 15;
+                        k = gui_get_othp_color_idx(i1, j1);
                         fprintf(g_state_file, "%d %d %d ", 
                             g_othp[k].red * UCHAR_MAX / USHRT_MAX, 
                             g_othp[k].green * UCHAR_MAX / USHRT_MAX,
@@ -1196,6 +1189,26 @@ int gui_get_color_idx(int i, int j)
     return k;
 } /* gui_get_color_idx(int i, int j) */
 
+/** idx for g_othp[] */
+int gui_get_othp_color_idx(int i, int j)
+{
+    int k = 0;
+    double c_lm_ij = c__lm[i][j];
+    assert( c_lm_ij > (1 + 0.5 * (beta - 1.0)) );
+    
+    if (c__lm[i][j] >= 1 + 0.2 * (beta - 1.0))
+        k = 12;
+    if (c__lm[i][j] >= 1 + 0.5 * (beta - 1.0))
+        k = 13;
+    if (c__lm[i][j] >= 1 + 0.7 * (beta - 1.0))
+        k = 14;
+    if (c__lm[i][j] >= beta)
+        k = 15;
+
+    assert( 0 <= k && k <= 18 );
+    return k;
+} /* gui_get_color_idx(int i, int j) */
+
 
 void gui_X11init(int argc, char *argv[])
 {
@@ -1402,15 +1415,7 @@ void gui_picture_rings()
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
                 if (c__lm[i][j] > 1 + 0.5 * (beta - 1.0))
                 {
-                    if (c__lm[i][j] >= 1 + 0.2 * (beta - 1.0))
-                        k = 12;
-                    if (c__lm[i][j] >= 1 + 0.5 * (beta - 1.0))
-                        k = 13;
-                    if (c__lm[i][j] >= 1 + 0.7 * (beta - 1.0))
-                        k = 14;
-                    if (c__lm[i][j] >= beta)
-                        k = 15;
-
+                    k = gui_get_othp_color_idx(i, j);
                     XSetForeground(g_xDisplay, g_xGC, g_othp[k].pixel);
                     XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
                 }
