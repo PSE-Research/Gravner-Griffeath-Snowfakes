@@ -639,7 +639,7 @@ void dynamics_add_noise()
     createbdry();
 }
 
-void dynamics_pop1()
+void dynamics_add_noise1()
 
 {
 
@@ -1514,7 +1514,7 @@ void main(int argc, char *argv[])
 
                 printf("[read] from file\n");
                 io_read_state();
-                dynamics_pop1();
+                dynamics_add_noise1();
                 createbdry();
                 gui_picture_big();
             }

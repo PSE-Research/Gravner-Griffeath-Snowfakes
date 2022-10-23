@@ -700,7 +700,7 @@ void dynamics_add_noise()
  * 
  * Note: 仅在从状态文件 (in file) 读取状态后调用.
  */
-void dynamics_pop1()
+void dynamics_add_noise1()
 {
     int i, j;
     double offset;
@@ -717,7 +717,7 @@ void dynamics_pop1()
                 }
             }
     }
-} /* dynamics_pop1() */
+} /* dynamics_add_noise1() */
 
 void dynamics()
 {
@@ -1494,7 +1494,7 @@ int main(int argc, char *argv[])
             {
                 printf("[read] from file\n");
                 io_read_state();
-                dynamics_pop1();
+                dynamics_add_noise1();
                 gui_picture_big();
             }
             else
