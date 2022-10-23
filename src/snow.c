@@ -23,6 +23,11 @@
 
 #define KAPPA_MAX 64
 
+// The cell is part of the snowflake.
+#define HAS_SNOWFLACK   true
+// Cell is NOT yet part of the snowflake.
+#define NOT_SNOWFLACK   false
+
 
 /* ==== Input Parameters ==== */
 /* --- [Initial state] */
@@ -88,7 +93,7 @@ double  d_dif[NR_MAX][NC_MAX];
  * 
  * `true` if x belongs to the crystal at time t.
  */
-int     a_pic[NR_MAX][NC_MAX];
+bool    a_pic[NR_MAX][NC_MAX];
 /** boundary mass (quasi-liquid).
  * 
  */
@@ -222,7 +227,7 @@ void initialize()
                 {
                     // seed for the flake
                     d_dif[i][j] = 0.0;
-                    a_pic[i][j] = true;
+                    a_pic[i][j] = HAS_SNOWFLACK;
                     b__fr[i][j] = 1.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
@@ -234,7 +239,7 @@ void initialize()
                 {
                     // filled with water vapour
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = false;
+                    a_pic[i][j] = NOT_SNOWFLACK;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
@@ -250,7 +255,7 @@ void initialize()
                     || ((j - g_center_j <= 0) && (j - g_center_j >= -r_init) && (i - g_center_i == 0)))
                 {
                     d_dif[i][j] = 0.0;
-                    a_pic[i][j] = true;
+                    a_pic[i][j] = HAS_SNOWFLACK;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 1.0;
@@ -261,7 +266,7 @@ void initialize()
                 else
                 {
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = false;
+                    a_pic[i][j] = NOT_SNOWFLACK;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
