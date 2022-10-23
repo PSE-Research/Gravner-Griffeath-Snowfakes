@@ -352,15 +352,9 @@ void initialize()
 void dynamics_diffusion()
 {
     double b[NR_MAX][NC_MAX];
-    double x, y;
-    int i, j, k;
+    int i, j;
     int id, iu, jl, jr;
-    int jend;
-    int part;
     int count;
-    double b1, b2;
-    double masscorrection;
-    int nrhalf;
 
     for (i = 0; i < nr; i++)
         for (j = 0; (j < nc); j++)
