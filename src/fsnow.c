@@ -1182,7 +1182,7 @@ void io_save_snowflake()
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
-    fprintf(g_state_file, "#init_gas_rho:%lf\n", init_gas_rho);
+    fprintf(g_state_file, "#rho:%lf\n", init_gas_rho);
     fprintf(g_state_file, "#h:%d\n", init_crystal_seed_radius);
     fprintf(g_state_file, "#p:%lf\n", init_crystal_seed_probability);
     fprintf(g_state_file, "#beta:%lf\n", beta);
@@ -1290,7 +1290,7 @@ void main(int argc, char *argv[])
 
     /* enter data */
 
-    printf("enter init_gas_rho:");
+    printf("enter rho:");
     io_skip();
     scanf("%lf", &init_gas_rho);
 

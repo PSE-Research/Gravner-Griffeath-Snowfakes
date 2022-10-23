@@ -751,7 +751,7 @@ void io_skip()
  */
 void io_get_input_params() 
 {
-    printf("enter init_gas_rho:");
+    printf("enter rho:");
     io_skip();
     scanf("%lf", &init_gas_rho);
 
@@ -908,7 +908,7 @@ void io_save_snowflake()
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
-    fprintf(g_state_file, "#init_gas_rho:%lf\n", init_gas_rho);
+    fprintf(g_state_file, "#rho:%lf\n", init_gas_rho);
     fprintf(g_state_file, "#h:%d\n", init_crystal_seed_radius);
     fprintf(g_state_file, "#p:%lf\n", init_crystal_seed_probability);
     fprintf(g_state_file, "#beta:%lf\n", beta);
@@ -916,7 +916,7 @@ void io_save_snowflake()
     fprintf(g_state_file, "#theta:%lf\n", theta);
     fprintf(g_state_file, "#kappa:%lf\n", kappa);
     fprintf(g_state_file, "#mu:%lf\n", mu);
-    fprintf(g_state_file, "#gam:%lf\n", gam);
+    fprintf(g_state_file, "#gamma:%lf\n", gam);
     fprintf(g_state_file, "#sigma:%lf\n", sigma);
 
     fprintf(g_state_file, "#L:%d\n", nr);
