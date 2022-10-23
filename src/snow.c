@@ -28,9 +28,9 @@
 #define KAPPA_MAX 64
 
 // The cell is part of the snowflake.
-#define HAS_SNOWFLACK   true
+#define HAS_SNOWFLAKE   true
 // Cell is NOT yet part of the snowflake.
-#define NOT_SNOWFLACK   false
+#define NOT_SNOWFLAKE   false
 
 
 /* ==== Input Parameters ==== */
@@ -155,7 +155,7 @@ inline bool not_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
     return !pic;
 #else
-    return pic == NOT_SNOWFLACK;
+    return pic == NOT_SNOWFLAKE;
 #endif
 } // not_snowflake
 
@@ -163,7 +163,7 @@ inline bool is_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
     return pic;
 #else
-    return pic == HAS_SNOWFLACK;
+    return pic == HAS_SNOWFLAKE;
 #endif
 } // is_snowflake
 
@@ -248,7 +248,7 @@ void initialize()
                 {
                     // seed for the flake
                     d_dif[i][j] = 0.0;
-                    a_pic[i][j] = HAS_SNOWFLACK;
+                    a_pic[i][j] = HAS_SNOWFLAKE;
                     b__fr[i][j] = 1.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
@@ -260,7 +260,7 @@ void initialize()
                 {
                     // filled with water vapour
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = NOT_SNOWFLACK;
+                    a_pic[i][j] = NOT_SNOWFLAKE;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
@@ -276,7 +276,7 @@ void initialize()
                     || ((j - g_center_j <= 0) && (j - g_center_j >= -r_init) && (i - g_center_i == 0)))
                 {
                     d_dif[i][j] = 0.0;
-                    a_pic[i][j] = HAS_SNOWFLACK;
+                    a_pic[i][j] = HAS_SNOWFLAKE;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 1.0;
@@ -287,7 +287,7 @@ void initialize()
                 else
                 {
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = NOT_SNOWFLACK;
+                    a_pic[i][j] = NOT_SNOWFLAKE;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
