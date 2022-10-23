@@ -687,11 +687,9 @@ void dynamics_add_noise()
         {
             x = uniform_01rand();
             if (x < 0.5)
-            {
-                d_dif[i][j] = d_dif[i][j] * (1 + sigma);
-            }
+                d_dif[i][j] *= (1 + sigma);
             else
-                d_dif[i][j] = d_dif[i][j] * (1 - sigma);
+                d_dif[i][j] *= (1 - sigma);
         }
     }
 } /* dynamics_add_noise() */
