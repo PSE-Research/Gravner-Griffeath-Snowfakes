@@ -674,7 +674,7 @@ void dynamics_freezing()
                 {
                     // 占比 (1 - kappa) 的质量进入【液相】
                     offset = (1.0 - kappa) * d_dif[i][j];
-                    b__fr[i][j] = b__fr[i][j] + offset;
+                    b__fr[i][j] += offset;
                     offset = d_dif[i][j] - offset;
                     // 占比 (kappa) 的质量进入【固相】
                     c__lm[i][j] += offset;
