@@ -507,17 +507,17 @@ void dynamics_attachment()
                 jl = (j + nc - 1) % nc;
 
                 count = 0;
-                if (a_pic[id][j] == 1)
+                if (is_snowflake(a_pic[id][j]))
                     count++;
-                if (a_pic[iu][j] == 1)
+                if (is_snowflake(a_pic[iu][j]))
                     count++;
-                if (a_pic[i][jl] == 1)
+                if (is_snowflake(a_pic[i][jl]))
                     count++;
-                if (a_pic[i][jr] == 1)
+                if (is_snowflake(a_pic[i][jr]))
                     count++;
-                if (a_pic[iu][jr] == 1)
+                if (is_snowflake(a_pic[iu][jr]))
                     count++;
-                if (a_pic[id][jl] == 1)
+                if (is_snowflake(a_pic[id][jl]))
                     count++;
 
                 if (count >= 1)
@@ -616,17 +616,17 @@ void dynamics_freezing()
                 jr = (j + 1) % nc;
                 jl = (j + nc - 1) % nc;
                 count = 0;
-                if (a_pic[id][j] == 1)
+                if (is_snowflake(a_pic[id][j]))
                     count++;
-                if (a_pic[iu][j] == 1)
+                if (is_snowflake(a_pic[iu][j]))
                     count++;
-                if (a_pic[i][jl] == 1)
+                if (is_snowflake(a_pic[i][jl]))
                     count++;
-                if (a_pic[i][jr] == 1)
+                if (is_snowflake(a_pic[i][jr]))
                     count++;
-                if (a_pic[iu][jr] == 1)
+                if (is_snowflake(a_pic[iu][jr]))
                     count++;
-                if (a_pic[id][jl] == 1)
+                if (is_snowflake(a_pic[id][jl]))
                     count++;
 
                 // --- freezing
@@ -961,7 +961,7 @@ void io_check_state()
         for (j = 1; ((j <= i) && (i + j <= nr - 1)); j++)
         {
 
-            if ((a_pic[i][j] == 1) && (d_dif[i][j] > 0.0))
+            if ((is_snowflake(a_pic[i][j])) && (d_dif[i][j] > 0.0))
                 printf("*%d %lf", a_pic[i][j], d_dif[i][j]);
         }
     }
