@@ -625,6 +625,9 @@ void dynamics_attachment()
     }
 } /* dynamics_attachment() */
 
+/**
+ * 处理气相液化与结晶过程.
+ */
 void dynamics_freezing()
 {
     int i, j;
@@ -640,18 +643,18 @@ void dynamics_freezing()
     jup = g_center_j + g_r_new + 1;
     g_is_fr_changed = false;
 
+    // --- 遍历边界附近所有未结晶的格子
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
-
             if (not_snowflake(a_pic[i][j]))
             {
-
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
                 jr = (j + 1) % nc;
                 jl = (j + nc - 1) % nc;
+
                 count = 0;
                 if (is_snowflake(a_pic[id][j]))
                     count++;
@@ -669,11 +672,14 @@ void dynamics_freezing()
                 // --- freezing
                 if (count >= 1)
                 {
+                    // 占比 (1 - kappa) 的质量进入【液相】
                     offset = (1.0 - kappa) * d_dif[i][j];
                     b__fr[i][j] = b__fr[i][j] + offset;
                     offset = d_dif[i][j] - offset;
-                    d_dif[i][j] = 0;
+                    // 占比 (kappa) 的质量进入【固相】
                     c__lm[i][j] += offset;
+                    // 【气相】无剩余质量
+                    d_dif[i][j] = 0;
                 }
             }
         }
