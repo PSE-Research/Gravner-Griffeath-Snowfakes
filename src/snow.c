@@ -55,7 +55,11 @@ double rhor_init;
 /** Dynamics params
  * 
  */
-double beta, kappa, mu, theta, alpha, gam, sigma;
+double beta, kappa, theta, alpha, sigma;
+/** [melting] 液相气化率 */
+double mu;
+/** [melting] 固相升华率 */
+double gam;
 
 /** Size of the (square) LxL system.
  * 
