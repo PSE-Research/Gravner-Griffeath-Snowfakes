@@ -942,22 +942,24 @@ void io_save_snowflake()
             {
                 if (not_snowflake(a_pic[i1][j1]))
                 {
-
                     k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
-                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * UCHAR_MAX / USHRT_MAX, g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
-                            g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
+                    fprintf(g_state_file, "%d %d %d ", 
+                        g_color_off[k].red * UCHAR_MAX / USHRT_MAX, 
+                        g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
+                        g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
                 else
                 {
-
                     y = c__lm[i1][j1] + d_dif[i1][j1];
 
                     k = floor((33.0 * y - alpha) / (beta - alpha));
                     if (k > 32)
                         k = 32;
 
-                    fprintf(g_state_file, "%d %d %d ", g_color_on[k].red * UCHAR_MAX / USHRT_MAX, g_color_on[k].green * UCHAR_MAX / USHRT_MAX,
-                            g_color_on[k].blue * UCHAR_MAX / USHRT_MAX);
+                    fprintf(g_state_file, "%d %d %d ", 
+                        g_color_on[k].red * UCHAR_MAX / USHRT_MAX, 
+                        g_color_on[k].green * UCHAR_MAX / USHRT_MAX,
+                        g_color_on[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
             }
             else
@@ -965,8 +967,10 @@ void io_save_snowflake()
                 if (not_snowflake(a_pic[i1][j1]))
                 {
                     k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
-                    fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * UCHAR_MAX / USHRT_MAX, g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
-                            g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
+                    fprintf(g_state_file, "%d %d %d ", 
+                        g_color_off[k].red * UCHAR_MAX / USHRT_MAX, 
+                        g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
+                        g_color_off[k].blue * UCHAR_MAX / USHRT_MAX);
                 }
                 else
                 {
@@ -980,15 +984,19 @@ void io_save_snowflake()
                             k = 14;
                         if (c__lm[i1][j1] >= beta)
                             k = 15;
-                        fprintf(g_state_file, "%d %d %d ", g_othp[k].red * UCHAR_MAX / USHRT_MAX, g_othp[k].green * UCHAR_MAX / USHRT_MAX,
-                                g_othp[k].blue * UCHAR_MAX / USHRT_MAX);
+                        fprintf(g_state_file, "%d %d %d ", 
+                            g_othp[k].red * UCHAR_MAX / USHRT_MAX, 
+                            g_othp[k].green * UCHAR_MAX / USHRT_MAX,
+                            g_othp[k].blue * UCHAR_MAX / USHRT_MAX);
                     }
                     else
                     {
                         k = ash[i1][j1];
                         k = k % KAPPA_MAX;
-                        fprintf(g_state_file, "%d %d %d ", g_color[k].red * UCHAR_MAX / USHRT_MAX, g_color[k].green * UCHAR_MAX / USHRT_MAX,
-                                g_color[k].blue * UCHAR_MAX / USHRT_MAX);
+                        fprintf(g_state_file, "%d %d %d ", 
+                            g_color[k].red * UCHAR_MAX / USHRT_MAX, 
+                            g_color[k].green * UCHAR_MAX / USHRT_MAX,
+                            g_color[k].blue * UCHAR_MAX / USHRT_MAX);
                     }
                 }
             }
