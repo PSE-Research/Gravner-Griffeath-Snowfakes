@@ -10,3 +10,6 @@ fsnow
 # output
 pltest
 *.ppm
+
+# python env
+envs/
