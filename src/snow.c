@@ -436,13 +436,8 @@ void dynamics_diffusion()
  */
 void dynamics_pop()
 {
-    double b[NR_MAX][NC_MAX];
-    double x, y;
-    int i, j, k;
-    int id, iu, jl, jr;
-    int part;
-    int count;
-    double offset;
+    double x;
+    int i, j;
 
     for (i = 0; i < nr; i++)
     {
@@ -484,14 +479,8 @@ void dynamics_pop1()
 
 void dynamics_melting()
 {
-    double x, y, afrij;
-    int i, j, k;
-    int id, iu, jl, jr;
-    int part;
-    int count;
-    double offset;
-    double difmass;
-
+    double y, afrij;
+    int i, j;
     int ilo, iup, jlo, jup;
 
     ilo = g_center_i - g_r_new - 1;
@@ -528,14 +517,10 @@ void dynamics_attachment()
 {
     int bpic[NR_MAX][NC_MAX];
 
-    double x, y, afrij;
     int i, j, k;
     int id, iu, jl, jr;
-    int part;
     int count;
-    double offset;
-    double nfrsum;
-    double frmass, difmass;
+    double difmass;
 
     int ilo, iup, jlo, jup;
 
@@ -642,17 +627,12 @@ void dynamics_attachment()
 
 void dynamics_freezing()
 {
-    double x, y;
-    int i, j, k;
+    int i, j;
     int id, iu, jl, jr;
-    int part;
     int count;
     double offset;
-    double frmass;
-    double blockmass;
 
     int ilo, iup, jlo, jup;
-    double epsilon;
 
     ilo = g_center_i - g_r_new - 1;
     iup = g_center_i + g_r_new + 1;
@@ -702,7 +682,6 @@ void dynamics_freezing()
 
 void dynamics()
 {
-    int i;
 
     dynamics_diffusion();
     dynamics_freezing();
@@ -890,11 +869,8 @@ void io_save_state()
  **/
 void io_save_snowflake()
 {
-    int i, j, i1, j1, k, pqn, kf;
-    char pqc[10];
-    double totalmass;
+    int i, j, i1, j1, k;
     double y;
-    FILE *dum;
 
     printf(".io_save_snowflake: saving snowflake image to file '%s'\n", g_graphics_file_path);
     g_state_file = fopen(g_graphics_file_path, "w");
@@ -992,7 +968,7 @@ void io_save_snowflake()
 
     strcat(g_grahics_viewer_name, " ");
     strcat(g_grahics_viewer_name, g_graphics_file_path);
-    dum = popen(g_grahics_viewer_name, "r");
+    popen(g_grahics_viewer_name, "r");
 } /* io_save_snowflake() */
 
 void io_print_state()
@@ -1031,7 +1007,6 @@ void io_check_state()
 
 void gui_blue_colors33()
 {
-    int i;
     g_red[0]= 71; g_green[0]=204; g_blue[0]=231;
     g_red[1]= 70; g_green[1]=200; g_blue[1]=230;
     g_red[2]= 69; g_green[2]=196; g_blue[2]=229;
@@ -1069,8 +1044,6 @@ void gui_blue_colors33()
 
 void gui_braque_colors64()
 {
-    int i;
-
     g_red[0]= 130; g_green[0]=166; g_blue[0]=167;
     g_red[1]= 140; g_green[1]=176; g_blue[1]=186;
     g_red[2]= 156; g_green[2]=193; g_blue[2]=200;
