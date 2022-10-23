@@ -80,7 +80,12 @@ char g_comments[100];
 /* ==== Global Variables ==== */
 // ---- initialize()
 int g_pq;
-int g_stop;
+/** Iteration stop flag.
+ * Stop iterating when the snowflake grows to 2/3 of the grid.
+ * 
+ * Note: search for "g_stop = true" to check the condition.
+ */
+bool g_stop;
 int g_par_update;
 int g_par_ash;
 
