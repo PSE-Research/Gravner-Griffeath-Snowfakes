@@ -18,6 +18,10 @@
 #include <X11/Xutil.h>
 
 
+// Use a faster, not more meaningful implementation
+#define _USE_FAST_IMPL
+
+
 #define NR_MAX 1002
 #define NC_MAX 1002
 
@@ -145,6 +149,23 @@ XColor g_othp[20];
 // temp color array
 int g_red[125], g_green[125], g_blue[125];
 
+
+/* ==== Speed helper functions ==== */
+inline bool not_snowflake(bool pic) {
+#ifdef _USE_FAST_IMPL
+    return !pic;
+#else
+    return pic == NOT_SNOWFLACK;
+#endif
+} // not_snowflake
+
+inline bool is_snowflake(bool pic) {
+#ifdef _USE_FAST_IMPL
+    return pic;
+#else
+    return pic == HAS_SNOWFLACK;
+#endif
+} // is_snowflake
 
 /* ==== Math helper functions ==== */
 
@@ -308,7 +329,7 @@ void dynamics_diffusion()
     {
         for (j = 0; j < nc; j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
@@ -316,17 +337,17 @@ void dynamics_diffusion()
                 jl = (j + nr - 1) % nr;
 
                 count = 0;
-                if (a_pic[id][j] == 0)
+                if (not_snowflake(a_pic[id][j]))
                     count++;
-                if (a_pic[iu][j] == 0)
+                if (not_snowflake(a_pic[iu][j]))
                     count++;
-                if (a_pic[i][jl] == 0)
+                if (not_snowflake(a_pic[i][jl]))
                     count++;
-                if (a_pic[i][jr] == 0)
+                if (not_snowflake(a_pic[i][jr]))
                     count++;
-                if (a_pic[iu][jr] == 0)
+                if (not_snowflake(a_pic[iu][jr]))
                     count++;
-                if (a_pic[id][jl] == 0)
+                if (not_snowflake(a_pic[id][jl]))
                     count++;
 
                 if (count == 0)
@@ -347,7 +368,7 @@ void dynamics_diffusion()
     {
         for (j = 0; (j < nc); j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
                 d_dif[i][j] = b[i][j];
         }
     }
@@ -395,7 +416,7 @@ void dynamics_pop1()
         for (i = 0; i < nr; i++)
             for (j = 0; (j < nc); j++)
             {
-                if (a_pic[i][j] == 0)
+                if (not_snowflake(a_pic[i][j]))
                 {
                     offset = sigma * d_dif[i][j];
                     d_dif[i][j] += offset;
@@ -426,7 +447,7 @@ void dynamics_melting()
     {
         for (j = jlo; j <= jup; j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
 
                 afrij = b__fr[i][j];
@@ -478,7 +499,7 @@ void dynamics_attachment()
     {
         for (j = jlo; j <= jup; j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
@@ -527,7 +548,7 @@ void dynamics_attachment()
                     if (count >= 4)
                         bpic[i][j] = 1;
                 } /* if (count >= 1) */
-            } /* if (a_pic[i][j] == 0) */
+            } /* if (not_snowflake(a_pic[i][j])) */
         }
     }
 
@@ -587,7 +608,7 @@ void dynamics_freezing()
         for (j = jlo; j <= jup; j++)
         {
 
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
 
                 id = (i + 1) % nr;
@@ -853,7 +874,7 @@ void io_save_snowflake()
             j1 = j;
             if (g_pq % 2 == 1)
             {
-                if (a_pic[i1][j1] == 0)
+                if (not_snowflake(a_pic[i1][j1]))
                 {
 
                     k = floor(63.0 * (d_dif[i1][j1] / (rho)));
@@ -875,7 +896,7 @@ void io_save_snowflake()
             }
             else
             {
-                if (a_pic[i1][j1] == 0)
+                if (not_snowflake(a_pic[i1][j1]))
                 {
                     k = floor(63.0 * (d_dif[i1][j1] / (rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
@@ -1212,7 +1233,7 @@ void gui_picture_big()
     {
         for (j = 0; j < nc; j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
                 k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
@@ -1271,7 +1292,7 @@ void gui_picture_rings()
     {
         for (j = 0; j < nc; j++)
         {
-            if (a_pic[i][j] == 0)
+            if (not_snowflake(a_pic[i][j]))
             {
                 k = floor(63.0 * (d_dif[i][j] / (rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
