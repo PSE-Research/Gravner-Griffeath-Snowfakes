@@ -78,7 +78,9 @@ char g_comments[100];
 
 
 /* ==== Global Variables ==== */
+
 // ---- initialize()
+/** Iteration Counter */
 int g_pq;
 /** Iteration stop flag.
  * Stop iterating when the snowflake grows to 2/3 of the grid.
@@ -86,7 +88,9 @@ int g_pq;
  * Note: search for "g_stop = true" to check the condition.
  */
 bool g_stop;
+/** set and update, but [not use]. */
 int g_par_update;
+/** Counters, starting from 1, for updating `ash[]`. */
 int g_par_ash;
 
 // center (1, 1)
