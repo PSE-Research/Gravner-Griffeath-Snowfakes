@@ -351,10 +351,12 @@ void initialize()
  */
 void dynamics_diffusion()
 {
+    // 更新 a_pic 用的临时数组 
     double b[NR_MAX][NC_MAX];
     int i, j;
     int id, iu, jl, jr;
-    int count;
+    // 当前格子近邻未结晶格子计数.
+    int not_flake_count;
 
     for (i = 0; i < nr; i++)
         for (j = 0; (j < nc); j++)
@@ -368,38 +370,51 @@ void dynamics_diffusion()
         {
             if (not_snowflake(a_pic[i][j]))
             {
+                // 使用循环边界
                 id = (i + 1) % nr;
                 iu = (i + nr - 1) % nr;
                 jr = (j + 1) % nr;
                 jl = (j + nr - 1) % nr;
 
-                count = 0;
+                not_flake_count = 0;
                 if (not_snowflake(a_pic[id][j]))
-                    count++;
+                    not_flake_count++;
                 if (not_snowflake(a_pic[iu][j]))
-                    count++;
+                    not_flake_count++;
                 if (not_snowflake(a_pic[i][jl]))
-                    count++;
+                    not_flake_count++;
                 if (not_snowflake(a_pic[i][jr]))
-                    count++;
+                    not_flake_count++;
                 if (not_snowflake(a_pic[iu][jr]))
-                    count++;
+                    not_flake_count++;
                 if (not_snowflake(a_pic[id][jl]))
-                    count++;
+                    not_flake_count++;
 
-                if (count == 0)
+                if (not_flake_count == 0)
                     b[i][j] = d_dif[i][j];
                 else
                 {
-                    b[i][j] = (1.0 - (double)count / 7.0) * d_dif[i][j] 
-                            + (
-                                  d_dif[id][j] * (1.0 - a_pic[id][j])  
-                                + d_dif[iu][j] * (1.0 - a_pic[iu][j]) 
-                                + d_dif[i][jl] * (1.0 - a_pic[i][jl])  
-                                + d_dif[i][jr] * (1.0 - a_pic[i][jr]) 
-                                + d_dif[iu][jr] * (1.0 - a_pic[iu][jr]) 
-                                + d_dif[id][jl] * (1.0 - a_pic[id][jl])
-                            ) / 7.0;
+                    /** 气相扩散后，剩余的气相质量.
+                     * 
+                     * 每个非雪花的格子，将均分当前格子 1/7 的气相质量.
+                     */
+                    double residual_gas_mass = (1.0 - (double)not_flake_count / 7.0) * d_dif[i][j];
+                    /** 从其他格子扩散来的总气相质量.
+                     * 
+                     * - 已经变成雪花的格子，则不会有气相质量扩散过来.
+                     * - 未结晶的格子, 会扩散 1/7 的质量过来.
+                     */
+                    double received_gas_mass =
+                        (
+                              d_dif[id][j] * (1.0 - a_pic[id][j])  
+                            + d_dif[iu][j] * (1.0 - a_pic[iu][j]) 
+                            + d_dif[i][jl] * (1.0 - a_pic[i][jl])  
+                            + d_dif[i][jr] * (1.0 - a_pic[i][jr]) 
+                            + d_dif[iu][jr] * (1.0 - a_pic[iu][jr]) 
+                            + d_dif[id][jl] * (1.0 - a_pic[id][jl])
+                        ) / 7.0;
+                        
+                    b[i][j] = residual_gas_mass + received_gas_mass;
                 }
             }
         }
