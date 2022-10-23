@@ -678,20 +678,15 @@ void dynamics_melting()
  */
 void dynamics_add_noise()
 {
-    double x;
-    int i, j;
-
-    for (i = 0; i < nr; i++)
-    {
-        for (j = 0; j < nc; j++)
+    for (int i = 0; i < nr; i++)
+        for (int j = 0; j < nc; j++)
         {
-            x = uniform_01rand();
+            double x = uniform_01rand();
             if (x < 0.5)
                 d_dif[i][j] *= (1 + sigma);
             else
                 d_dif[i][j] *= (1 - sigma);
         }
-    }
 } /* dynamics_add_noise() */
 
 /**
