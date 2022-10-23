@@ -477,9 +477,13 @@ void dynamics_pop1()
     }
 } /* dynamics_pop1() */
 
+/** 边界上, 液相气化与固相升华.
+ * 
+ * - mu     液相气化率
+ * - gamma  固相升华率
+ */
 void dynamics_melting()
 {
-    double y, afrij;
     int i, j;
     int ilo, iup, jlo, jup;
 
@@ -495,18 +499,21 @@ void dynamics_melting()
         {
             if (not_snowflake(a_pic[i][j]))
             {
+                double b_ij, c_ij, dif_inc;
 
-                afrij = b__fr[i][j];
-                y = afrij * mu;
-                b__fr[i][j] -= y;
-                d_dif[i][j] += y;
+                // 占比 mu 的液相气化
+                b_ij = b__fr[i][j];
+                dif_inc = b_ij * mu;
+                b__fr[i][j] -= dif_inc;
+                d_dif[i][j] += dif_inc;
 
-                afrij = c__lm[i][j];
-                if (afrij > 0.0)
+                // 占比 gamma 的固相升华
+                c_ij = c__lm[i][j];
+                if (c_ij > 0.0)
                 {
-                    y = afrij * gam;
-                    c__lm[i][j] -= y;
-                    d_dif[i][j] += y;
+                    dif_inc = c_ij * gam;
+                    c__lm[i][j] -= dif_inc;
+                    d_dif[i][j] += dif_inc;
                 }
             }
         }
