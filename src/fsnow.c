@@ -610,7 +610,7 @@ void dynamics_diffusion()
     createbdry();
 }
 
-void dynamics_pop()
+void dynamics_add_noise()
 
 {
 
@@ -885,7 +885,7 @@ void dynamics()
     dynamics_melting();
 
     if (sigma > 0.0)
-        dynamics_pop();
+        dynamics_add_noise();
 
     /*io_print_state(); */
 }

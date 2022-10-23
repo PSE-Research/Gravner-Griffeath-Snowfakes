@@ -676,7 +676,7 @@ void dynamics_melting()
 /**
  * Add Noise to `d_dif[]`
  */
-void dynamics_pop()
+void dynamics_add_noise()
 {
     double x;
     int i, j;
@@ -694,7 +694,7 @@ void dynamics_pop()
                 d_dif[i][j] = d_dif[i][j] * (1 - sigma);
         }
     }
-} /* dynamics_pop() */
+} /* dynamics_add_noise() */
 
 /**
  * 
@@ -729,7 +729,7 @@ void dynamics()
 
     // add Noise
     if (sigma > 0.0)
-        dynamics_pop();
+        dynamics_add_noise();
 
     /* io_print_state(); */
 } /* dynamics() */
