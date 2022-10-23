@@ -35,7 +35,7 @@ double rho;
  * 
  * Note. h<0 is interpreted as special initialization with radius -h.
  */
-int r_init;
+int init_crystal_seed_radius;
 int twelve_sided;
 /**
  * density `p`
@@ -474,7 +474,7 @@ void initialize()
 
             if (twelve_sided == 0)
             {
-                if ((norm_inf(i - g_center_i, j - g_center_j) <= r_init) && (semi_norm(i - g_center_i, j - g_center_j) <= r_init) &&
+                if ((norm_inf(i - g_center_i, j - g_center_j) <= init_crystal_seed_radius) && (semi_norm(i - g_center_i, j - g_center_j) <= init_crystal_seed_radius) &&
                     (x <= rhor_init))
                 {
                     d_dif[i][j] = 0.0;
@@ -498,8 +498,8 @@ void initialize()
             else
             {
 
-                x1 = (double)(i - g_center_i) / r_init;
-                y1 = (double)(j - g_center_j) / r_init;
+                x1 = (double)(i - g_center_i) / init_crystal_seed_radius;
+                y1 = (double)(j - g_center_j) / init_crystal_seed_radius;
                 if (in_shape_circle1((x1 - y1) / sqrt(2.0), sqrt(3.0) * (x1 + y1) / sqrt(2.0)) == 1)
                 {
                     d_dif[i][j] = 0.0;
@@ -1183,7 +1183,7 @@ void io_save_snowflake()
     fprintf(g_state_file, "P3\n");
 
     fprintf(g_state_file, "#rho:%lf\n", rho);
-    fprintf(g_state_file, "#h:%d\n", r_init);
+    fprintf(g_state_file, "#h:%d\n", init_crystal_seed_radius);
     fprintf(g_state_file, "#p:%lf\n", rhor_init);
     fprintf(g_state_file, "#beta:%lf\n", beta);
     fprintf(g_state_file, "#alpha:%lf\n", alpha);
@@ -1296,12 +1296,12 @@ void main(int argc, char *argv[])
 
     printf("enter h:");
     io_skip();
-    scanf("%d", &r_init);
+    scanf("%d", &init_crystal_seed_radius);
 
     twelve_sided = 0;
-    if (r_init < 0)
+    if (init_crystal_seed_radius < 0)
     {
-        r_init = -r_init;
+        init_crystal_seed_radius = -init_crystal_seed_radius;
         twelve_sided = 1;
     }
 
