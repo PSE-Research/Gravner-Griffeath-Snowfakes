@@ -98,6 +98,7 @@ int g_par_ash;
  * Note: After initialization, is a Constant.
  */
 int g_center_i, g_center_j;
+/** The frontier of snowflake growing. */
 int g_r_old, g_r_new;
 
 /** diffusive mass (vapor).
