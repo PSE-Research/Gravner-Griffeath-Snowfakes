@@ -210,6 +210,24 @@ int norm_inf(int i, int j)
         return j;
 } /* norm_inf(int i, int j) */
 
+/** 
+ * 计算当前网格相对于中心点(g_center_i, g_center_j)的距离.
+ * 
+ * ref: 
+ *  - "max" form, https://www.redblobgames.com/grids/hexagons/#distances
+ *  - Axial coordinates, https://www.redblobgames.com/grids/hexagons/#distances-axial
+ */
+int hex_coord_distance(int i, int j)
+{
+    int s = -i - j;
+    int center_k = -g_center_i - g_center_j;
+    int dq = i - g_center_i;
+    int dr = j - g_center_j;
+    int ds = s - center_k;
+
+    return (abs(dq) + abs(dr) + abs(ds)) / 2;
+} /* hex_coord_distance(int i, int j) */
+
 /** abs(i + j) */
 int semi_norm(int i, int j)
 {
