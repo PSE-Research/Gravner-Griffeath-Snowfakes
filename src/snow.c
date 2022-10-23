@@ -498,15 +498,15 @@ void dynamics_melting()
 
                 afrij = b__fr[i][j];
                 y = afrij * mu;
-                b__fr[i][j] = b__fr[i][j] - y;
-                d_dif[i][j] = d_dif[i][j] + y;
+                b__fr[i][j] -= y;
+                d_dif[i][j] += y;
 
                 afrij = c__lm[i][j];
                 if (afrij > 0.0)
                 {
                     y = afrij * gam;
-                    c__lm[i][j] = c__lm[i][j] - y;
-                    d_dif[i][j] = d_dif[i][j] + y;
+                    c__lm[i][j] -= y;
+                    d_dif[i][j] += y;
                 }
             }
         }
