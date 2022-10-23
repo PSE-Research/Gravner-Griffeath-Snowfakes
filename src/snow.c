@@ -458,59 +458,15 @@ void dynamics_diffusion()
 } /* dynamics_diffusion() */
 
 /**
- * Add Noise to `d_dif[]`
+ * 处理气相液化与结晶过程.
  */
-void dynamics_pop()
-{
-    double x;
-    int i, j;
-
-    for (i = 0; i < nr; i++)
-    {
-        for (j = 0; j < nc; j++)
-        {
-            x = uniform_01rand();
-            if (x < 0.5)
-            {
-                d_dif[i][j] = d_dif[i][j] * (1 + sigma);
-            }
-            else
-                d_dif[i][j] = d_dif[i][j] * (1 - sigma);
-        }
-    }
-} /* dynamics_pop() */
-
-/**
- * 
- * Note: 仅在从状态文件 (in file) 读取状态后调用.
- */
-void dynamics_pop1()
+void dynamics_freezing()
 {
     int i, j;
+    int id, iu, jl, jr;
+    int count;
     double offset;
 
-    if (sigma < 0)
-    {
-        for (i = 0; i < nr; i++)
-            for (j = 0; (j < nc); j++)
-            {
-                if (not_snowflake(a_pic[i][j]))
-                {
-                    offset = sigma * d_dif[i][j];
-                    d_dif[i][j] += offset;
-                }
-            }
-    }
-} /* dynamics_pop1() */
-
-/** 边界上, 液相气化与固相升华.
- * 
- * - mu     液相气化率
- * - gamma  固相升华率
- */
-void dynamics_melting()
-{
-    int i, j;
     int ilo, iup, jlo, jup;
 
     ilo = g_center_i - g_r_new - 1;
@@ -519,32 +475,48 @@ void dynamics_melting()
     jup = g_center_j + g_r_new + 1;
     g_is_fr_changed = false;
 
+    // --- 遍历边界附近所有未结晶的格子
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
             if (not_snowflake(a_pic[i][j]))
             {
-                double b_ij, c_ij, dif_inc;
+                id = (i + 1) % nr;
+                iu = (i + nr - 1) % nr;
+                jr = (j + 1) % nc;
+                jl = (j + nc - 1) % nc;
 
-                // 占比 mu 的液相气化
-                b_ij = b__fr[i][j];
-                dif_inc = b_ij * mu;
-                b__fr[i][j] -= dif_inc;
-                d_dif[i][j] += dif_inc;
+                count = 0;
+                if (is_snowflake(a_pic[id][j]))
+                    count++;
+                if (is_snowflake(a_pic[iu][j]))
+                    count++;
+                if (is_snowflake(a_pic[i][jl]))
+                    count++;
+                if (is_snowflake(a_pic[i][jr]))
+                    count++;
+                if (is_snowflake(a_pic[iu][jr]))
+                    count++;
+                if (is_snowflake(a_pic[id][jl]))
+                    count++;
 
-                // 占比 gamma 的固相升华
-                c_ij = c__lm[i][j];
-                if (c_ij > 0.0)
+                // --- freezing
+                if (count >= 1)
                 {
-                    dif_inc = c_ij * gam;
-                    c__lm[i][j] -= dif_inc;
-                    d_dif[i][j] += dif_inc;
+                    // 占比 (1 - kappa) 的质量进入【液相】
+                    offset = (1.0 - kappa) * d_dif[i][j];
+                    b__fr[i][j] += offset;
+                    offset = d_dif[i][j] - offset;
+                    // 占比 (kappa) 的质量进入【固相】
+                    c__lm[i][j] += offset;
+                    // 【气相】无剩余质量
+                    d_dif[i][j] = 0;
                 }
             }
         }
     }
-} /* dynamics_melting() */
+} /* dynamics_freezing() */
 
 void dynamics_attachment()
 {
@@ -658,16 +630,14 @@ void dynamics_attachment()
     }
 } /* dynamics_attachment() */
 
-/**
- * 处理气相液化与结晶过程.
+/** 边界上, 液相气化与固相升华.
+ * 
+ * - mu     液相气化率
+ * - gamma  固相升华率
  */
-void dynamics_freezing()
+void dynamics_melting()
 {
     int i, j;
-    int id, iu, jl, jr;
-    int count;
-    double offset;
-
     int ilo, iup, jlo, jup;
 
     ilo = g_center_i - g_r_new - 1;
@@ -676,48 +646,78 @@ void dynamics_freezing()
     jup = g_center_j + g_r_new + 1;
     g_is_fr_changed = false;
 
-    // --- 遍历边界附近所有未结晶的格子
     for (i = ilo; i <= iup; i++)
     {
         for (j = jlo; j <= jup; j++)
         {
             if (not_snowflake(a_pic[i][j]))
             {
-                id = (i + 1) % nr;
-                iu = (i + nr - 1) % nr;
-                jr = (j + 1) % nc;
-                jl = (j + nc - 1) % nc;
+                double b_ij, c_ij, dif_inc;
 
-                count = 0;
-                if (is_snowflake(a_pic[id][j]))
-                    count++;
-                if (is_snowflake(a_pic[iu][j]))
-                    count++;
-                if (is_snowflake(a_pic[i][jl]))
-                    count++;
-                if (is_snowflake(a_pic[i][jr]))
-                    count++;
-                if (is_snowflake(a_pic[iu][jr]))
-                    count++;
-                if (is_snowflake(a_pic[id][jl]))
-                    count++;
+                // 占比 mu 的液相气化
+                b_ij = b__fr[i][j];
+                dif_inc = b_ij * mu;
+                b__fr[i][j] -= dif_inc;
+                d_dif[i][j] += dif_inc;
 
-                // --- freezing
-                if (count >= 1)
+                // 占比 gamma 的固相升华
+                c_ij = c__lm[i][j];
+                if (c_ij > 0.0)
                 {
-                    // 占比 (1 - kappa) 的质量进入【液相】
-                    offset = (1.0 - kappa) * d_dif[i][j];
-                    b__fr[i][j] += offset;
-                    offset = d_dif[i][j] - offset;
-                    // 占比 (kappa) 的质量进入【固相】
-                    c__lm[i][j] += offset;
-                    // 【气相】无剩余质量
-                    d_dif[i][j] = 0;
+                    dif_inc = c_ij * gam;
+                    c__lm[i][j] -= dif_inc;
+                    d_dif[i][j] += dif_inc;
                 }
             }
         }
     }
-} /* dynamics_freezing() */
+} /* dynamics_melting() */
+
+/**
+ * Add Noise to `d_dif[]`
+ */
+void dynamics_pop()
+{
+    double x;
+    int i, j;
+
+    for (i = 0; i < nr; i++)
+    {
+        for (j = 0; j < nc; j++)
+        {
+            x = uniform_01rand();
+            if (x < 0.5)
+            {
+                d_dif[i][j] = d_dif[i][j] * (1 + sigma);
+            }
+            else
+                d_dif[i][j] = d_dif[i][j] * (1 - sigma);
+        }
+    }
+} /* dynamics_pop() */
+
+/**
+ * 
+ * Note: 仅在从状态文件 (in file) 读取状态后调用.
+ */
+void dynamics_pop1()
+{
+    int i, j;
+    double offset;
+
+    if (sigma < 0)
+    {
+        for (i = 0; i < nr; i++)
+            for (j = 0; (j < nc); j++)
+            {
+                if (not_snowflake(a_pic[i][j]))
+                {
+                    offset = sigma * d_dif[i][j];
+                    d_dif[i][j] += offset;
+                }
+            }
+    }
+} /* dynamics_pop1() */
 
 void dynamics()
 {
