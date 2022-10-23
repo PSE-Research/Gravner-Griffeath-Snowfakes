@@ -51,15 +51,35 @@ int twelve_sided;
  */
 double rhor_init;
 
-/* --- [Dynamics] */
-/** Dynamics params
+/* --- [Dynamics] 结晶动力学参数 */
+
+/** [freezing] 气相(直接)结晶率.
+ * 
+ * + kappa       凝华进入【固相】
+ * + (1 - kappa) 液化进入【液相】
+ */
+double kappa;
+/** [attachment] 1~2晶体邻居，【液相】结晶阈值下限.
+ * 
+ * 拥有 1~2 个已结晶的邻居时, 元胞的结晶阈值.
+ * ( >= beta ) 即可结晶
+ */
+double beta;
+/** [attachment] 3晶体邻居，【液相】结晶阈值下限.
  * 
  */
-double beta, kappa, theta, alpha, sigma;
+double alpha;
+/** [attachment] 3晶体邻居，邻居【气相】结晶阈值上限.
+ * 
+ */
+double theta;
 /** [melting] 液相气化率 */
 double mu;
 /** [melting] 固相升华率 */
 double gam;
+/** [noise] 添加的噪声幅度 */
+double sigma;
+
 
 /** Size of the (square) LxL system.
  * 
