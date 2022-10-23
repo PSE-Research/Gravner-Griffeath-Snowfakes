@@ -27,9 +27,9 @@
 /* ==== Input Parameters ==== */
 /* --- [Initial state] */
 /**
- * `rho` the density of diffusing particles elsewhere
+ * `init_gas_rho` the density of diffusing particles elsewhere
  */
-double rho;
+double init_gas_rho;
 /**
  * `h` is the radius of the initial hexagon of density `p` in the middle of the array
  * 
@@ -488,7 +488,7 @@ void initialize()
                 }
                 else
                 {
-                    d_dif[i][j] = rho;
+                    d_dif[i][j] = init_gas_rho;
                     a_pic[i][j] = 0;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
@@ -514,7 +514,7 @@ void initialize()
 
                 else
                 {
-                    d_dif[i][j] = rho;
+                    d_dif[i][j] = init_gas_rho;
                     a_pic[i][j] = 0;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
@@ -908,7 +908,7 @@ void gui_picture_big()
             if (a_pic[i][j] == 0)
             {
 
-                k = floor(63.0 * (d_dif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (init_gas_rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
@@ -972,7 +972,7 @@ void gui_picture_rings()
             if (a_pic[i][j] == 0)
             {
 
-                k = floor(63.0 * (d_dif[i][j] / (rho)));
+                k = floor(63.0 * (d_dif[i][j] / (init_gas_rho)));
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
@@ -1182,7 +1182,7 @@ void io_save_snowflake()
     g_state_file = fopen(g_graphics_file_path, "w");
     fprintf(g_state_file, "P3\n");
 
-    fprintf(g_state_file, "#rho:%lf\n", rho);
+    fprintf(g_state_file, "#init_gas_rho:%lf\n", init_gas_rho);
     fprintf(g_state_file, "#h:%d\n", init_crystal_seed_radius);
     fprintf(g_state_file, "#p:%lf\n", rhor_init);
     fprintf(g_state_file, "#beta:%lf\n", beta);
@@ -1216,7 +1216,7 @@ void io_save_snowflake()
                 if (a_pic[i1][j1] == 0)
                 {
 
-                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
@@ -1237,7 +1237,7 @@ void io_save_snowflake()
             {
                 if (a_pic[i1][j1] == 0)
                 {
-                    k = floor(63.0 * (d_dif[i1][j1] / (rho)));
+                    k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
                     fprintf(g_state_file, "%d %d %d ", g_color_off[k].red * 255 / 65535, g_color_off[k].green * 255 / 65535,
                             g_color_off[k].blue * 255 / 65535);
                 }
@@ -1290,9 +1290,9 @@ void main(int argc, char *argv[])
 
     /* enter data */
 
-    printf("enter rho:");
+    printf("enter init_gas_rho:");
     io_skip();
-    scanf("%lf", &rho);
+    scanf("%lf", &init_gas_rho);
 
     printf("enter h:");
     io_skip();
