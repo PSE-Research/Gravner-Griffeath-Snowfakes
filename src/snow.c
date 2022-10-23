@@ -989,8 +989,7 @@ void io_save_snowflake()
                     }
                     else
                     {
-                        k = ash[i1][j1];
-                        k = k % KAPPA_MAX;
+                        k = gui_get_color_idx(i1, j1);
                         fprintf(g_state_file, "%d %d %d ", 
                             g_color[k].red * UCHAR_MAX / USHRT_MAX, 
                             g_color[k].green * UCHAR_MAX / USHRT_MAX,
@@ -1186,6 +1185,16 @@ int gui_get_on_color_idx(int i, int j)
     assert( 0 <= k && k <= 32 );
     return k;
 } /* gui_get_on_color_idx(int i, int j) */
+
+/** idx for g_color[] */
+int gui_get_color_idx(int i, int j)
+{
+    int k = ash[i][j];
+    k = k % KAPPA_MAX;
+
+    assert( 0 <= k && k <= 63 );
+    return k;
+} /* gui_get_color_idx(int i, int j) */
 
 
 void gui_X11init(int argc, char *argv[])
@@ -1388,8 +1397,7 @@ void gui_picture_rings()
             }
             else
             {
-                k = ash[i][j];
-                k = k % KAPPA_MAX;
+                k = gui_get_color_idx(i, j);
                 XSetForeground(g_xDisplay, g_xGC, g_color[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
                 if (c__lm[i][j] > 1 + 0.5 * (beta - 1.0))
