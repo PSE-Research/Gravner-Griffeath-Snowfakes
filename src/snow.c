@@ -191,16 +191,22 @@ double uniform_01rand()
     return drand48();
 } /* uniform_01rand() */
 
+/** max( abs(i), abs(j) ) */
 int norm_inf(int i, int j)
 {
+#ifdef _USE_FAST_IMPL
+    return max( abs(i), abs(j) );
+#else
     if (i < 0)
         i = -i;
     if (j < 0)
         j = -j;
+
     if (i > j)
         return i;
     else
         return j;
+#endif // _USE_FAST_IMPL
 } /* norm_inf(int i, int j) */
 
 int semi_norm(int i, int j)
