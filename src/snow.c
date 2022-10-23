@@ -352,7 +352,7 @@ void initialize()
 void dynamics_diffusion()
 {
     // 更新 a_pic 用的临时数组 
-    double b[NR_MAX][NC_MAX] = { 0.0 };
+    double b[NR_MAX][NC_MAX] = { {0.0} };
     int i, j;
     int id, iu, jl, jr;
     // 当前格子近邻未结晶格子计数.
