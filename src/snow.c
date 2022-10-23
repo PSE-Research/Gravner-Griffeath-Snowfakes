@@ -352,12 +352,14 @@ void initialize()
 void dynamics_diffusion()
 {
     // 更新 a_pic 用的临时数组 
-    double b[NR_MAX][NC_MAX];
+    double b[NR_MAX][NC_MAX] = { 0.0 };
     int i, j;
     int id, iu, jl, jr;
     // 当前格子近邻未结晶格子计数.
     int not_flake_count;
 
+    // b[] 置零
+    // TODO: memset(b, 0, sizeof(b));
     for (i = 0; i < nr; i++)
         for (j = 0; (j < nc); j++)
         {
@@ -390,6 +392,7 @@ void dynamics_diffusion()
                 if (not_snowflake(a_pic[id][jl]))
                     not_flake_count++;
 
+                // Note: 实际上 if 分支可以合并. not_flake_count == 0 时, else 分支与 if 结果一致.
                 if (not_flake_count == 0)
                     b[i][j] = d_dif[i][j];
                 else
