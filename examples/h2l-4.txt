@@ -1,0 +1,24 @@
+MODELING SNOW CRYSTAL GROWTH II
+Figure 4.
+
+
+rho:0.58
+h:0
+p:1
+
+beta:3.2
+alpha:0
+theta:0
+kappa:0
+mu:0
+gamma:0
+sigma:0
+
+L:250
+Z:2
+
+infile:h2l-4
+outfile:h2l-4
+graphicsfile:h2l-4.ppm
+grahics viewer:gimp
+comments(<100 chars): h2l-4 file. 
