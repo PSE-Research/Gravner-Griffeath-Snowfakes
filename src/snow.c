@@ -195,18 +195,19 @@ double uniform_01rand()
 int norm_inf(int i, int j)
 {
 #ifdef _USE_FAST_IMPL
-    return max( abs(i), abs(j) );
+    i = abs(i);
+    j = abs(j);
 #else
     if (i < 0)
         i = -i;
     if (j < 0)
         j = -j;
+#endif // _USE_FAST_IMPL
 
     if (i > j)
         return i;
     else
         return j;
-#endif // _USE_FAST_IMPL
 } /* norm_inf(int i, int j) */
 
 /** abs(i + j) */
