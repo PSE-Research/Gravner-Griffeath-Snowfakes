@@ -34,19 +34,21 @@
 
 
 /* ==== Input Parameters ==== */
-/* --- [Initial state] */
-/**
+
+/* --- [Initial state] 初始化参数 */
+
+/** [initialize] 初始气相密度.
  * `rho` the density of diffusing particles elsewhere
  */
 double rho;
-/**
+/** [initialize] 初始晶种半径.
  * `h` is the radius of the initial hexagon of density `p` in the middle of the array
  * 
  * Note. h<0 is interpreted as special initialization with radius -h.
  */
 int r_init;
 int twelve_sided;
-/**
+/** [initialize] 初始晶种密度.
  * density `p`
  */
 double rhor_init;
