@@ -276,6 +276,10 @@ void initialize()
     printf(".initialize: init. finished\n");
 } /* initialize() */
 
+/**
+ * 对元胞及其邻居的气象质量(d)进行平均化.
+ * 
+ */
 void dynamics_diffusion()
 {
     double b[NR_MAX][NC_MAX];
@@ -305,6 +309,7 @@ void dynamics_diffusion()
                 iu = (i + nr - 1) % nr;
                 jr = (j + 1) % nr;
                 jl = (j + nr - 1) % nr;
+
                 count = 0;
                 if (a_pic[id][j] == 0)
                     count++;
@@ -323,7 +328,6 @@ void dynamics_diffusion()
                     b[i][j] = d_dif[i][j];
                 else
                 {
-
                     b[i][j] = (1.0 - (double)count / 7.0) * d_dif[i][j] +
                               (d_dif[id][j] * (1.0 - a_pic[id][j]) + d_dif[iu][j] * (1.0 - a_pic[iu][j]) +
                                d_dif[i][jl] * (1.0 - a_pic[i][jl]) + d_dif[i][jr] * (1.0 - a_pic[i][jr]) +
