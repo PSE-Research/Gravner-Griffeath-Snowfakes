@@ -93,7 +93,10 @@ int g_par_update;
 /** Counters, starting from 1, for updating `ash[]`. */
 int g_par_ash;
 
-// center (1, 1)
+/** Center point of the grid: (nr/2, nc/2).
+ * 
+ * Note: After initialization, is a Constant.
+ */
 int g_center_i, g_center_j;
 int g_r_old, g_r_new;
 
