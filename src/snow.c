@@ -15,6 +15,9 @@
 #include <time.h>
 #include <limits.h> // UCHAR_MAX, USHRT_MAX
 
+// for dev
+#include <assert.h>
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
@@ -942,7 +945,7 @@ void io_save_snowflake()
             {
                 if (not_snowflake(a_pic[i1][j1]))
                 {
-                    k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
+                    k = gui_get_off_color_idx(i1, j1);
                     fprintf(g_state_file, "%d %d %d ", 
                         g_color_off[k].red * UCHAR_MAX / USHRT_MAX, 
                         g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
@@ -966,7 +969,7 @@ void io_save_snowflake()
             {
                 if (not_snowflake(a_pic[i1][j1]))
                 {
-                    k = floor(63.0 * (d_dif[i1][j1] / (init_gas_rho)));
+                    k = gui_get_off_color_idx(i1, j1);
                     fprintf(g_state_file, "%d %d %d ", 
                         g_color_off[k].red * UCHAR_MAX / USHRT_MAX, 
                         g_color_off[k].green * UCHAR_MAX / USHRT_MAX,
@@ -1163,6 +1166,18 @@ void gui_off_colors64()
     }
 } /* gui_off_colors64() */
 
+// --- helper funcs to get color idx
+
+/** idx for g_color_off[] */
+int gui_get_off_color_idx(int i, int j)
+{
+    // 气相质量相对于初始浓度，[0, 64) 线性取值
+    int k = floor(63.0 * (d_dif[i][j] / (init_gas_rho)));
+
+    assert( 0 <= k && k <= 63 );
+    return k;
+} /* gui_get_off_color_idx(int i, int j) */
+
 
 void gui_X11init(int argc, char *argv[])
 {
@@ -1210,7 +1225,6 @@ void gui_X11init(int argc, char *argv[])
     }
 
     gui_off_colors64();
-
     for (i = 0; i <= 63; i++)
     {
 
@@ -1306,7 +1320,7 @@ void gui_picture_big()
         {
             if (not_snowflake(a_pic[i][j]))
             {
-                k = floor(63.0 * (d_dif[i][j] / (init_gas_rho)));
+                k = gui_get_off_color_idx(i, j);
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
@@ -1365,7 +1379,7 @@ void gui_picture_rings()
         {
             if (not_snowflake(a_pic[i][j]))
             {
-                k = floor(63.0 * (d_dif[i][j] / (init_gas_rho)));
+                k = gui_get_off_color_idx(i, j);
                 XSetForeground(g_xDisplay, g_xGC, g_color_off[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
