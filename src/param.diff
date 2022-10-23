@@ -1,0 +1,40 @@
+- Input parameters with descriptions
++ 附带说明的输入参数
+
+
+***Initial state
+- rho the density of diffusing particles elsewhere.
+- h is the radius of the initial hexagon of density p in the middle of the array
+- h<0 is interpreted as special initialization with radius -h.
+
+rho:0.58
+h:-1
+p:1
+
+
+***Dynamics.
+- sigma<0 turns off the noise, but reduces the diffusion field of a read file.
+
+beta:2.0
+alpha:0.0
+theta:0.002
+kappa:0
+mu:0
+gamma:0.0000515
+sigma:0.0
+
+
+***Size of the (square) LxL system.
+
+L:150
+zoom Z:2
+
+
+***Input/output files.
+- The saved palette differs depending on the parity of time.Press [pause] to see.
+
+infile:params-test
+outfile:params-test
+graphicsfile:params-test.ppm
+grahics viewer:gimp
+comments(<100 chars): params-test file. 
