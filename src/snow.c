@@ -953,12 +953,7 @@ void io_save_snowflake()
                 }
                 else
                 {
-                    y = c__lm[i1][j1] + d_dif[i1][j1];
-
-                    k = floor((33.0 * y - alpha) / (beta - alpha));
-                    if (k > 32)
-                        k = 32;
-
+                    k = gui_get_on_color_idx(i1, j1);
                     fprintf(g_state_file, "%d %d %d ", 
                         g_color_on[k].red * UCHAR_MAX / USHRT_MAX, 
                         g_color_on[k].green * UCHAR_MAX / USHRT_MAX,
@@ -1178,6 +1173,20 @@ int gui_get_off_color_idx(int i, int j)
     return k;
 } /* gui_get_off_color_idx(int i, int j) */
 
+/** idx for g_color_on[] */
+int gui_get_on_color_idx(int i, int j)
+{
+    // 液相、固相质量和
+    double y = c__lm[i][j] + d_dif[i][j];
+    int k = floor((33.0 * y - alpha) / (beta - alpha));
+
+    if (k > 32)
+        k = 32;
+
+    assert( 0 <= k && k <= 32 );
+    return k;
+} /* gui_get_on_color_idx(int i, int j) */
+
 
 void gui_X11init(int argc, char *argv[])
 {
@@ -1214,7 +1223,6 @@ void gui_X11init(int argc, char *argv[])
     }
 
     gui_blue_colors33();
-
     for (i = 0; i <= 32; i++)
     {
 
@@ -1326,12 +1334,7 @@ void gui_picture_big()
             }
             else
             {
-                y = c__lm[i][j] + d_dif[i][j];
-
-                k = floor((33.0 * y - alpha) / (beta - alpha));
-                if (k > 32)
-                    k = 32;
-
+                k = gui_get_on_color_idx(i, j);
                 XSetForeground(g_xDisplay, g_xGC, g_color_on[k].pixel);
                 XFillRectangle(g_xEvent.xexpose.display, g_xEvent.xexpose.window, g_xGC, j * sp + 30, i * sp + 60, sp, sp);
             }
