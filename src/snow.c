@@ -30,7 +30,7 @@
 // The cell is part of the snowflake.
 #define HAS_SNOWFLAKE   true
 // Cell is NOT yet part of the snowflake.
-#define NOT_SNOWFLAKE   false
+#define NO_SNOWFLAKE   false
 
 
 /* ==== Input Parameters ==== */
@@ -168,7 +168,7 @@ bool not_snowflake(bool pic) {
 #ifdef _USE_FAST_IMPL
     return !pic;
 #else
-    return pic == NOT_SNOWFLAKE;
+    return pic == NO_SNOWFLAKE;
 #endif
 } // not_snowflake
 
@@ -285,7 +285,7 @@ void initialize()
                 {
                     // filled with water vapour
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = NOT_SNOWFLAKE;
+                    a_pic[i][j] = NO_SNOWFLAKE;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
@@ -312,7 +312,7 @@ void initialize()
                 else
                 {
                     d_dif[i][j] = rho;
-                    a_pic[i][j] = NOT_SNOWFLAKE;
+                    a_pic[i][j] = NO_SNOWFLAKE;
                     b__fr[i][j] = 0.0;
                     ash[i][j] = 0;
                     c__lm[i][j] = 0.0;
